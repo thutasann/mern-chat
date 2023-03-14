@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
-import { User } from '../models/user-schema';
-import { UserProps } from '../types';
+const User = require('../models/user-schema');
+import { LoginUserProps, UserProps } from '../types';
 import { generateToken } from '../utils/token';
 
 export const registerUser = asyncHandler(
@@ -41,3 +41,21 @@ export const registerUser = asyncHandler(
 		}
 	},
 );
+
+export const authUser = asyncHandler(async (req: Request, res: Response) => {
+	const { email, password }: LoginUserProps = req.body;
+	const user = await User.findOne({ email });
+
+	if (user && (await user.matchPassword(password))) {
+		res.json({
+			_id: user._id,
+			name: user.name,
+			email: user.email,
+			pic: user.pic,
+			token: generateToken(user._id),
+		});
+	} else {
+		res.status(401);
+		throw new Error('Invalid Email or Password');
+	}
+});

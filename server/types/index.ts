@@ -4,3 +4,8 @@ export interface UserProps {
 	password: string;
 	pic: string;
 }
+
+export interface LoginUserProps {
+	email: string;
+	password: string;
+}
