@@ -1,8 +1,8 @@
 import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
-const User = require('../models/user-schema');
 import { LoginUserProps, UserProps } from '../types';
 import { generateToken } from '../utils/token';
+const User = require('../models/user-schema');
 
 export const registerUser = asyncHandler(
 	async (req: Request, res: Response) => {
@@ -58,4 +58,18 @@ export const authUser = asyncHandler(async (req: Request, res: Response) => {
 		res.status(401);
 		throw new Error('Invalid Email or Password');
 	}
+});
+
+// api/usre?search=
+export const allUsers = asyncHandler(async (req: any, res: Response) => {
+	const keyword = req.query.search
+		? {
+				$or: [
+					{ name: { $regex: req.query.search, $options: 'i' } },
+					{ email: { $regex: req.query.search, $options: 'i' } },
+				],
+		  }
+		: {};
+	const users = await User.find(keyword);
+	res.send(users);
 });
