@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import { UserProps } from '../types';
 
-const userModel = new mongoose.Schema(
+const userModel = new mongoose.Schema<UserProps>(
 	{
 		name: { type: 'String', required: true },
 		email: { type: 'String', unique: true, required: true },
@@ -40,6 +41,6 @@ userModel.pre('save', async function (next) {
 	this.password = await bcrypt.hash(this.password, salt);
 });
 
-const User = mongoose.model('User', userModel);
+const User = mongoose.model<UserProps>('User', userModel);
 
 module.exports = User;

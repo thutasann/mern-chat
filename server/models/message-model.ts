@@ -1,22 +1,26 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+import { MessageProps } from '../types';
 
-const messageModel = new mongoose.Schema({
-    sender: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
-    content: {
-        type: String,
-        trim: true,
-    },
-    chat: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Chat"
-    }
-}, {
-    timestamps: true
-});
+const messageModel = new mongoose.Schema<MessageProps>(
+	{
+		sender: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+		},
+		content: {
+			type: String,
+			trim: true,
+		},
+		chat: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Chat',
+		},
+	},
+	{
+		timestamps: true,
+	},
+);
 
-const Message = mongoose.model("Message", messageModel);
+const Message = mongoose.model<MessageProps>('Message', messageModel);
 
 module.exports = Message;
