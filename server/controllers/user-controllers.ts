@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import { LoginUserProps, UserProps } from '../types';
 import { generateToken } from '../utils/token';
-const User = require('../models/user-schema');
+import { User } from '../models/user-schema';
 
 export const registerUser = asyncHandler(
 	async (req: Request, res: Response) => {
@@ -46,6 +46,7 @@ export const authUser = asyncHandler(async (req: Request, res: Response) => {
 	const { email, password }: LoginUserProps = req.body;
 	const user = await User.findOne({ email });
 
+	// @ts-ignore
 	if (user && (await user.matchPassword(password))) {
 		res.json({
 			_id: user._id,

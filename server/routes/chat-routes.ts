@@ -1,9 +1,10 @@
 import express from 'express';
+import { accessChat } from '../controllers/chat-controllers';
 import { protect } from '../middlewares/auth-middleware';
 
 const router = express.Router();
 
-// router.route("/").post(protect, accessChat);
+router.route('/').post(protect, accessChat);
 // router.route("/").post(protect, accessChat);
 // router.route("/group").post(protect, createGroupChat);
 // router.route("/rename").put(protect, renameGroup);
