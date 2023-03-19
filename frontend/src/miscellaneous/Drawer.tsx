@@ -32,11 +32,11 @@ const SlideDrawer: React.FC = () => {
 	const navigate = useNavigate();
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const { user } = ChatState();
+	const { user, setSelectedChat, chats, setChats } = ChatState();
 	const [search, setSearch] = useState<string>('');
 	const [searchResults, setSearchResults] = useState<UserProps[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [loadingchat, setLoadingchat] = useState();
+	const [loadingchat, setLoadingchat] = useState<boolean>(false);
 
 	const logoutHandler = () => {
 		localStorage.removeItem('userInfo');
@@ -67,7 +67,30 @@ const SlideDrawer: React.FC = () => {
 		}
 	}
 
-	async function accessChat(userId: string) {}
+	async function accessChat(userId: string) {
+		try {
+			setLoadingchat(true);
+			const config: AxiosRequestConfig = {
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: `Bearer ${user.token}`,
+				},
+			};
+			const { data } = await axios.post('/api/chat', { userId }, config);
+			setSelectedChat(data);
+			setLoadingchat(false);
+			onClose();
+		} catch (error: any) {
+			toast({
+				title: 'Error Fetching the chat!',
+				description: error.message,
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+				position: 'bottom-left',
+			});
+		}
+	}
 
 	return (
 		<>
@@ -86,18 +109,20 @@ const SlideDrawer: React.FC = () => {
 					placement="bottom-end"
 				>
 					<Button
-						variant="ghost"
+						variant="solid"
+						backgroundColor={'gray.200'}
 						onClick={onOpen}
 					>
-						<IoSearchOutline />
+						<IoSearchOutline size={20} />
 						<Text
 							px="4"
 							display={{
 								base: 'none',
 								md: 'flex',
 							}}
+							fontWeight={500}
 						>
-							Search User
+							Search Users
 						</Text>
 					</Button>
 				</Tooltip>
@@ -106,7 +131,7 @@ const SlideDrawer: React.FC = () => {
 					fontSize="2xl"
 					fontWeight={'bold'}
 				>
-					MERN CHAT
+					MERN CHAT 💬
 				</Text>
 
 				<div>

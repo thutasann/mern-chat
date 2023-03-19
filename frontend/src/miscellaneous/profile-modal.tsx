@@ -44,7 +44,7 @@ const ProfileModal: FC<Props> = ({ user, children }) => {
 				<ModalOverlay backdropBlur={'lg'} />
 				<ModalContent>
 					<ModalHeader
-						fontSize={'40px'}
+						fontSize={'30px'}
 						display="flex"
 						fontWeight={700}
 						justifyContent={'center'}
@@ -70,8 +70,8 @@ const ProfileModal: FC<Props> = ({ user, children }) => {
 							display="flex"
 							gap={1}
 							fontSize={{
-								base: '20px',
-								md: '30px',
+								base: '15px',
+								md: '20px',
 							}}
 						>
 							Email: <Text fontWeight={600}>{user.email}</Text>

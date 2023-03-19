@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { InitialContextProps, UserProps } from '../types';
+import { ChatProps, InitialContextProps, UserProps } from '../types';
 
 interface Props {
 	children: React.ReactNode;
@@ -9,8 +9,10 @@ interface Props {
 const ChatContext = createContext<InitialContextProps | null>(null);
 
 export const ChatProvider = ({ children }: Props) => {
-	const [user, setUser] = useState<UserProps>();
 	const navigate = useNavigate();
+	const [user, setUser] = useState<UserProps | any>();
+	const [selectedChat, setSelectedChat] = useState<ChatProps | any>();
+	const [chats, setChats] = useState<ChatProps[]>([]);
 
 	useEffect(() => {
 		const userInfo: UserProps = JSON.parse(localStorage.getItem('userInfo')!);
@@ -26,6 +28,10 @@ export const ChatProvider = ({ children }: Props) => {
 			value={{
 				user,
 				setUser,
+				selectedChat,
+				setSelectedChat,
+				chats,
+				setChats,
 			}}
 		>
 			{children}
