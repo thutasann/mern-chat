@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import { LoginUserProps, UserProps } from '../types';
 import { generateToken } from '../utils/token';
-import { User } from '../models/user-schema';
+import { User } from '../models/user-model';
 
 export const registerUser = asyncHandler(
 	async (req: Request, res: Response) => {

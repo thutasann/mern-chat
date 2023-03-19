@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import { Chat } from '../models/chat-model';
-import { User } from '../models/user-schema';
+import { User } from '../models/user-model';
 
 /**
  * One to One chat
@@ -49,5 +49,19 @@ export const accessChat = asyncHandler(async (req: any, res: any) => {
 			res.status(400);
 			throw new Error(error.message);
 		}
+	}
+});
+
+export const fetchChats = asyncHandler(async (req: any, res) => {
+	try {
+		Chat.find({
+			users: {
+				$elemMatch: {
+					$eq: req.user._id,
+				},
+			},
+		}).then((result) => res.send(result));
+	} catch (error) {
+		console.error(error);
 	}
 });
