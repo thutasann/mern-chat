@@ -2,12 +2,20 @@ import {
 	Avatar,
 	Box,
 	Button,
+	Drawer,
+	DrawerBody,
+	DrawerContent,
+	DrawerHeader,
+	DrawerOverlay,
+	Input,
 	Menu,
 	MenuButton,
 	MenuItem,
 	MenuList,
 	Text,
 	Tooltip,
+	useDisclosure,
+	useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
@@ -15,12 +23,18 @@ import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { ChatState } from '../context/chat-provider';
 import ProfileModal from './profile-modal';
 import { useNavigate } from 'react-router-dom';
+import { UserProps } from '../types';
+import axios, { AxiosRequestConfig } from 'axios';
+import ChatLoading from '../components/chat/chat-loading';
+import UserList from '../components/chat/user-list';
 
-const Drawer: React.FC = () => {
+const SlideDrawer: React.FC = () => {
 	const navigate = useNavigate();
+	const toast = useToast();
+	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { user } = ChatState();
 	const [search, setSearch] = useState<string>('');
-	const [searchResults, setSearchResults] = useState<any[]>([]);
+	const [searchResults, setSearchResults] = useState<UserProps[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [loadingchat, setLoadingchat] = useState();
 
@@ -28,6 +42,32 @@ const Drawer: React.FC = () => {
 		localStorage.removeItem('userInfo');
 		navigate('/');
 	};
+
+	async function HandleSearch() {
+		try {
+			setLoading(true);
+			const config: AxiosRequestConfig = {
+				headers: {
+					Authorization: `Bearer ${user.token}`,
+				},
+			};
+			const { data } = await axios.get(`/api/user?search=${search}`, config);
+			setLoading(false);
+			setSearchResults(data);
+		} catch (error: any) {
+			console.error(error.message);
+			toast({
+				title: 'Error Occured!',
+				description: 'Failed to load Search Results',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+				position: 'bottom-left',
+			});
+		}
+	}
+
+	async function accessChat(userId: string) {}
 
 	return (
 		<>
@@ -45,7 +85,10 @@ const Drawer: React.FC = () => {
 					hasArrow
 					placement="bottom-end"
 				>
-					<Button variant="ghost">
+					<Button
+						variant="ghost"
+						onClick={onOpen}
+					>
 						<IoSearchOutline />
 						<Text
 							px="4"
@@ -96,8 +139,59 @@ const Drawer: React.FC = () => {
 					</Menu>
 				</div>
 			</Box>
+
+			<Drawer
+				placement="left"
+				onClose={onClose}
+				isOpen={isOpen}
+			>
+				<DrawerOverlay />
+				<DrawerContent>
+					<DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
+					<DrawerBody>
+						<Box
+							display={'flex'}
+							pb={2}
+						>
+							<Input
+								placeholder="Search by name or email"
+								mr={2}
+								value={search}
+								onChange={(e) => {
+									setSearch(e.target.value);
+								}}
+							/>
+							<Button
+								onClick={HandleSearch}
+								disabled={!search.length}
+								backgroundColor={search.length ? 'teal.600' : 'gray.300'}
+								_hover={{
+									backgroundColor: '#008B8B	',
+								}}
+								pointerEvents={search.length === 0 ? 'none' : 'revert'}
+								color={'white'}
+							>
+								<IoSearchOutline size={20} />
+							</Button>
+						</Box>
+						{loading ? (
+							<ChatLoading />
+						) : (
+							searchResults?.map((user, idx) => {
+								return (
+									<UserList
+										user={user}
+										key={idx}
+										handleFunction={() => accessChat(user._id)}
+									/>
+								);
+							})
+						)}
+					</DrawerBody>
+				</DrawerContent>
+			</Drawer>
 		</>
 	);
 };
 
-export default Drawer;
+export default SlideDrawer;

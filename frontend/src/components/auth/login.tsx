@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { Button, VStack, useToast } from '@chakra-ui/react';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
 			return;
 		}
 		try {
-			const config = {
+			const config: AxiosRequestConfig = {
 				headers: {
 					'Content-type': 'application/json',
 				},

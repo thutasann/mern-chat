@@ -1,6 +1,7 @@
 import React from 'react';
 
 export interface UserProps {
+	_id: string;
 	name: string;
 	email: string;
 	pic: string;

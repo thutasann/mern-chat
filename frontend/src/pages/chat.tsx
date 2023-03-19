@@ -3,14 +3,14 @@ import React from 'react';
 import ChatBox from '../components/chat/chat-box';
 import MyChats from '../components/chat/my-chats';
 import { ChatState } from '../context/chat-provider';
-import Drawer from '../miscellaneous/Drawer';
+import SlideDrawer from '../miscellaneous/Drawer';
 
 const ChatPage: React.FC = () => {
 	const { user } = ChatState();
 
 	return (
 		<div className="w-full">
-			{user && <Drawer />}
+			{user && <SlideDrawer />}
 			<Box
 				display="flex"
 				justifyContent="space-between"
