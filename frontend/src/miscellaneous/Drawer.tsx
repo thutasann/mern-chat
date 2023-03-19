@@ -13,13 +13,21 @@ import React, { useState } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { ChatState } from '../context/chat-provider';
+import ProfileModal from './profile-modal';
+import { useNavigate } from 'react-router-dom';
 
 const Drawer: React.FC = () => {
+	const navigate = useNavigate();
 	const { user } = ChatState();
 	const [search, setSearch] = useState<string>('');
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [loadingchat, setLoadingchat] = useState();
+
+	const logoutHandler = () => {
+		localStorage.removeItem('userInfo');
+		navigate('/');
+	};
 
 	return (
 		<>
@@ -80,8 +88,10 @@ const Drawer: React.FC = () => {
 							/>
 						</MenuButton>
 						<MenuList>
-							<MenuItem>My Profile</MenuItem>
-							<MenuItem>Logout</MenuItem>
+							<ProfileModal user={user}>
+								<MenuItem>My Profile</MenuItem>
+							</ProfileModal>
+							<MenuItem onClick={logoutHandler}>Logout</MenuItem>
 						</MenuList>
 					</Menu>
 				</div>
