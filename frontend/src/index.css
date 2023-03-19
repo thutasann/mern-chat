@@ -1,22 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap');
 
 .App {
-  min-height: 100vh;
-  display: flex;
-  background-image: url("./images/background-img.webp");
-  background-position: center;
-  background-size: cover;
+	min-height: 100vh;
+	display: flex;
+	background-image: url('./images/background-img.webp');
+	background-position: center;
+	background-size: cover;
+}
+
+.w-full {
+	width: 100%;
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+	width: 0px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(136, 136, 136, 0.281);
+	background: rgba(136, 136, 136, 0.281);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+	background: #555;
 }

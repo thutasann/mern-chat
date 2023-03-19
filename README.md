@@ -8,4 +8,4 @@ This is the Chat Application crafted with MERN Stack.
 - 🚀 Search Users
 - 🚀 One-One Chat
 - 🚀 Group Chat
-- 🚀 Add/Remove Users Chat
+- 🚀 Add/Remove Users

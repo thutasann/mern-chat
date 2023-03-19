@@ -9,6 +9,6 @@ export interface UserProps {
 }
 
 export interface InitialContextProps {
-	user: any;
+	user: UserProps | any;
 	setUser: React.Dispatch<React.SetStateAction<any>>;
 }

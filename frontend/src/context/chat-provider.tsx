@@ -34,5 +34,5 @@ export const ChatProvider = ({ children }: Props) => {
 };
 
 export const ChatState = () => {
-	return useContext(ChatContext);
+	return useContext(ChatContext) as InitialContextProps;
 };
