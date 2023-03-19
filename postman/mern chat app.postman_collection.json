@@ -1,0 +1,222 @@
+{
+	"variables": [],
+	"info": {
+		"name": "mern chat app",
+		"_postman_id": "2c332fd7-8532-4003-3e35-b6cf8445b372",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"description": "",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"url": "http://localhost:5000/api/user/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"hsuyeywel@gmail.com\",\n\t\"password\": \"12345\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Register User",
+					"request": {
+						"url": "http://localhost:5000/api/user/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"John\",\n\t\"email\": \"join@gmail.com\",\n\t\"password\": \"12345\",\n\t\"pic\": \"https://static.wikia.nocookie.net/john-wick8561/images/a/a4/1933170A-88E2-4E89-8038-6B4444F757B9.png/revision/latest?cb=20230213170413\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "chat",
+			"description": "",
+			"item": [
+				{
+					"name": "acces chat",
+					"request": {
+						"url": "http://localhost:5000/api/chat",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTBhNGU2OWU1NmFmYjI2MzkxYWUzOCIsImlhdCI6MTY3OTE2MTE4MiwiZXhwIjoxNjgxNzUzMTgyfQ.NKn8eqHA70NjRNMkBjWAj8pB-vsNfQ0KPw1FuPj0fFc",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\" : \"641129b3f6bd0550034cd998\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chat",
+					"request": {
+						"url": "http://localhost:5000/api/chat",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTBhNGU2OWU1NmFmYjI2MzkxYWUzOCIsImlhdCI6MTY3OTE2MTE4MiwiZXhwIjoxNjgxNzUzMTgyfQ.NKn8eqHA70NjRNMkBjWAj8pB-vsNfQ0KPw1FuPj0fFc",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Group Chat",
+					"request": {
+						"url": "http://localhost:5000/api/chat/group",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTBhNGU2OWU1NmFmYjI2MzkxYWUzOCIsImlhdCI6MTY3OTE2MTE4MiwiZXhwIjoxNjgxNzUzMTgyfQ.NKn8eqHA70NjRNMkBjWAj8pB-vsNfQ0KPw1FuPj0fFc",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Test Group Chat\",\n\t\"users\": \"[\\\"6410a4e69e56afb26391ae38\\\", \\\"641129b3f6bd0550034cd998\\\" ]\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"request": {
+						"url": "http://localhost:5000/api/user",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTBhNGU2OWU1NmFmYjI2MzkxYWUzOCIsImlhdCI6MTY3OTE2MTE4MiwiZXhwIjoxNjgxNzUzMTgyfQ.NKn8eqHA70NjRNMkBjWAj8pB-vsNfQ0KPw1FuPj0fFc",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Rename Group Chat",
+					"request": {
+						"url": "http://localhost:5000/api/chat/rename",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTBhNGU2OWU1NmFmYjI2MzkxYWUzOCIsImlhdCI6MTY3OTE2MTE4MiwiZXhwIjoxNjgxNzUzMTgyfQ.NKn8eqHA70NjRNMkBjWAj8pB-vsNfQ0KPw1FuPj0fFc",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"chatId\": \"6416b4d7b8293a5faf775aef\",\n\t\"chatName\": \"Updated group chat name\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove User From Group",
+					"request": {
+						"url": "http://localhost:5000/api/chat/groupremove",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTBhNGU2OWU1NmFmYjI2MzkxYWUzOCIsImlhdCI6MTY3OTE2MTE4MiwiZXhwIjoxNjgxNzUzMTgyfQ.NKn8eqHA70NjRNMkBjWAj8pB-vsNfQ0KPw1FuPj0fFc",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"chatId\" : \"6416b4d7b8293a5faf775aef\", \n\t\"userId\": \"6416bb3aa0513b6fc5713b8c\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add User to Group",
+					"request": {
+						"url": "http://localhost:5000/api/chat/groupadd",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTBhNGU2OWU1NmFmYjI2MzkxYWUzOCIsImlhdCI6MTY3OTE2MTE4MiwiZXhwIjoxNjgxNzUzMTgyfQ.NKn8eqHA70NjRNMkBjWAj8pB-vsNfQ0KPw1FuPj0fFc",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"chatId\" : \"6416bdb1e17ffdba86985d31\", \n\t\"userId\": \"6416bb3aa0513b6fc5713b8c\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
