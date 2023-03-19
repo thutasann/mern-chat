@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import { Chat } from '../models/chat-model';
 import { User } from '../models/user-model';
-import { UserProps } from '../types';
+import { ChatProps, UserProps } from '../types';
 
 /**
  * One to One chat
@@ -112,5 +112,28 @@ export const createGroupChat = asyncHandler(async (req: any, res: any) => {
 	} catch (error: any) {
 		res.status(400);
 		throw new Error(error.message);
+	}
+});
+
+export const renameGroupChat = asyncHandler(async (req, res) => {
+	const { chatId, chatName } = req.body;
+
+	const updatedChat = await Chat.findByIdAndUpdate<ChatProps>(
+		chatId,
+		{
+			chatName,
+		},
+		{
+			new: true,
+		},
+	)
+		.populate('users', '-password')
+		.populate('groupAdmin', '-password');
+
+	if (!updatedChat) {
+		res.status(404);
+		throw new Error('Chat Not Found');
+	} else {
+		res.json(updatedChat);
 	}
 });
