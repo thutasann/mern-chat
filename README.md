@@ -6,3 +6,5 @@ This is the Chat Application crafted with MERN Stack.
 
 - 🚀 Authentication
 - 🚀 Search Users
+- 🚀 One-One Chat
+- 🚀 Group Chat

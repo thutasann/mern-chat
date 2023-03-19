@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import { Chat } from '../models/chat-model';
 import { User } from '../models/user-model';
+import { UserProps } from '../types';
 
 /**
  * One to One chat
@@ -60,8 +61,56 @@ export const fetchChats = asyncHandler(async (req: any, res) => {
 					$eq: req.user._id,
 				},
 			},
-		}).then((result) => res.send(result));
+		})
+			.populate('users', '-password')
+			.populate('groupAdmin', '-password')
+			.populate('latestMessage')
+			.sort({
+				updatedAt: -1,
+			})
+			.then(async (results: any) => {
+				results = await User.populate(results, {
+					path: 'latestMessage.sender',
+					select: 'name pic email',
+				});
+				res.status(200).send(results);
+			});
 	} catch (error) {
+		res.status(400);
 		console.error(error);
+	}
+});
+
+export const createGroupChat = asyncHandler(async (req: any, res: any) => {
+	if (!req.body.users || !req.body.name) {
+		return res.status(400).send({
+			message: 'Please Fill all the Fields',
+		});
+	}
+	var users: UserProps[] = JSON.parse(req.body.users);
+
+	if (users.length < 2) {
+		return res
+			.status(400)
+			.send('More than 2 users are required to form a group chat');
+	}
+
+	users.push(req.user);
+
+	try {
+		const groupChat = await Chat.create({
+			chatName: req.body.name,
+			users: users,
+			isGroupChat: true,
+			groupAdmin: req.uesr,
+		});
+		const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
+			.populate('users', '-password')
+			.populate('groupAdmin', '-password');
+
+		res.status(200).json(fullGroupChat);
+	} catch (error: any) {
+		res.status(400);
+		throw new Error(error.message);
 	}
 });
