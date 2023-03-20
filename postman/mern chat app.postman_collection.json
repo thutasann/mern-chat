@@ -217,6 +217,54 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "messages",
+			"description": "",
+			"item": [
+				{
+					"name": "Send Message",
+					"request": {
+						"url": "http://localhost:5000/api/message",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTBhNGU2OWU1NmFmYjI2MzkxYWUzOCIsImlhdCI6MTY3OTE2MTE4MiwiZXhwIjoxNjgxNzUzMTgyfQ.NKn8eqHA70NjRNMkBjWAj8pB-vsNfQ0KPw1FuPj0fFc",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"This is Second Content\",\n\t\"chatId\" : \"6416bdb1e17ffdba86985d31\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch All Messages",
+					"request": {
+						"url": "http://localhost:5000/api/message/6416bdb1e17ffdba86985d31",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTBhNGU2OWU1NmFmYjI2MzkxYWUzOCIsImlhdCI6MTY3OTE2MTE4MiwiZXhwIjoxNjgxNzUzMTgyfQ.NKn8eqHA70NjRNMkBjWAj8pB-vsNfQ0KPw1FuPj0fFc",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

@@ -40,4 +40,20 @@ export const sendMessage = asyncHandler(async (req: any, res: any) => {
 	}
 });
 
-export const getAllMessages = asyncHandler(async (req, res) => {});
+/**
+ * Fetch All Messages
+ */
+export const getAllMessages = asyncHandler(async (req, res) => {
+	try {
+		const messages = await Message.find({
+			chat: req.params.chatId,
+		})
+			.populate('sender', 'name pic email')
+			.populate('chat');
+		res.json(messages);
+	} catch (error: any) {
+		console.error(error);
+		res.status(400);
+		throw new Error(error.message);
+	}
+});
