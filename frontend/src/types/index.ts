@@ -10,6 +10,7 @@ export interface UserProps {
 }
 
 export interface ChatProps {
+	_id: string;
 	chatName: string;
 	isGroupChat: boolean;
 	users: UserProps[];

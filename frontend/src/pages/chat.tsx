@@ -9,7 +9,7 @@ const ChatPage: React.FC = () => {
 	const { user } = ChatState();
 
 	return (
-		<div className="w-full">
+		<div className="w-full chat-bg">
 			{user && <SlideDrawer />}
 			<Box
 				display="flex"

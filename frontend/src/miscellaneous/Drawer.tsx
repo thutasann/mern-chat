@@ -12,6 +12,7 @@ import {
 	MenuButton,
 	MenuItem,
 	MenuList,
+	Spinner,
 	Text,
 	Tooltip,
 	useDisclosure,
@@ -31,8 +32,8 @@ import UserList from '../components/chat/user-list';
 const SlideDrawer: React.FC = () => {
 	const navigate = useNavigate();
 	const toast = useToast();
-	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { user, setSelectedChat, chats, setChats } = ChatState();
+	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [search, setSearch] = useState<string>('');
 	const [searchResults, setSearchResults] = useState<UserProps[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -77,6 +78,10 @@ const SlideDrawer: React.FC = () => {
 				},
 			};
 			const { data } = await axios.post('/api/chat', { userId }, config);
+
+			if (!chats.find((c) => c._id === data._id)) {
+				setChats([data, ...chats]);
+			}
 			setSelectedChat(data);
 			setLoadingchat(false);
 			onClose();
@@ -128,10 +133,10 @@ const SlideDrawer: React.FC = () => {
 				</Tooltip>
 
 				<Text
-					fontSize="2xl"
+					fontSize="22px"
 					fontWeight={'bold'}
 				>
-					MERN CHAT 💬
+					mern-chat 💬
 				</Text>
 
 				<div>
@@ -165,6 +170,7 @@ const SlideDrawer: React.FC = () => {
 				</div>
 			</Box>
 
+			{/* Drawer */}
 			<Drawer
 				placement="left"
 				onClose={onClose}
@@ -211,6 +217,12 @@ const SlideDrawer: React.FC = () => {
 									/>
 								);
 							})
+						)}
+						{loadingchat && (
+							<Spinner
+								ml="auto"
+								display="flex"
+							/>
 						)}
 					</DrawerBody>
 				</DrawerContent>

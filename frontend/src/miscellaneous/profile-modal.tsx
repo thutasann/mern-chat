@@ -64,6 +64,7 @@ const ProfileModal: FC<Props> = ({ user, children }) => {
 							src={user.pic}
 							alt={user.name}
 							loading="lazy"
+							border={'2px solid teal'}
 						/>
 						<Text
 							mt={3}

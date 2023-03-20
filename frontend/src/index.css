@@ -11,6 +11,13 @@
 	background-size: cover;
 }
 
+.chat-bg {
+	min-height: 100vh;
+	background-image: url('./images/background-img.webp');
+	background-position: center;
+	background-size: cover;
+}
+
 .w-full {
 	width: 100%;
 }
