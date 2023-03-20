@@ -24,3 +24,8 @@ export interface MessageProps {
 	content: string;
 	chat: ChatProps;
 }
+
+export interface SendMessagePayloadProps {
+	content: string;
+	chatId: string;
+}
