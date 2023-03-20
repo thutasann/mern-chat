@@ -1,15 +1,65 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, IconButton, Text } from '@chakra-ui/react';
-import React from 'react';
+import {
+	Box,
+	IconButton,
+	Spinner,
+	Text,
+	FormControl,
+	Input,
+	useToast,
+} from '@chakra-ui/react';
+import React, { useState } from 'react';
 import { ChatState } from '../../context/chat-provider';
 import { ChatBoxProps } from './chat-box';
-import { MdOutlineGroups2 } from 'react-icons/md';
 import { getFullSender, getSender } from '../../config/chat-logic';
 import ProfileModal from '../../miscellaneous/profile-modal';
 import UpdateGroupChat from './update-group-chat';
+import { MessageProps, SendMessagePayload } from '../../types';
+import axios, { AxiosRequestConfig } from 'axios';
 
 const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 	const { user, selectedChat, setSelectedChat } = ChatState();
+	const toast = useToast();
+	const [messages, setMessages] = useState<MessageProps[]>([]);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [newMessage, setNewMessage] = useState<string>('');
+
+	const sendMessage = async (e: KeyboardEvent | any) => {
+		if (e.key === 'Enter' && newMessage) {
+			try {
+				const config: AxiosRequestConfig = {
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+						'Content-Type': 'application/json',
+					},
+				};
+				setNewMessage('');
+				const { data } = await axios.post(
+					'/api/message',
+					{
+						content: newMessage,
+						chatId: selectedChat._id,
+					},
+					config,
+				);
+				setMessages([...messages, data]);
+			} catch (error) {
+				console.error(error);
+				toast({
+					title: 'Something went wrong!',
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'bottom',
+				});
+			}
+		}
+	};
+
+	const typingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.currentTarget.value;
+		setNewMessage(value);
+	};
 
 	return (
 		<>
@@ -66,7 +116,30 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 						borderRadius={'lg'}
 						overflowY="hidden"
 					>
-						{/* Messages Here */}
+						{loading ? (
+							<Spinner
+								size="xl"
+								w={19}
+								h={19}
+								alignSelf="center"
+								margin="auto"
+							/>
+						) : (
+							<FormControl
+								onKeyDown={sendMessage}
+								isRequired
+								mt={3}
+							>
+								<Input
+									variant="filled"
+									bg="#EFEFEF"
+									border="1px solid gray"
+									placeholder="Enter a message..."
+									onChange={typingHandler}
+									value={newMessage}
+								/>
+							</FormControl>
+						)}
 					</Box>
 				</>
 			) : (

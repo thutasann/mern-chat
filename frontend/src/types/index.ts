@@ -26,3 +26,14 @@ export interface InitialContextProps {
 	chats: ChatProps[];
 	setChats: React.Dispatch<React.SetStateAction<ChatProps[] | any[]>>;
 }
+
+export interface MessageProps {
+	sender: UserProps;
+	content: string;
+	chat: ChatProps;
+}
+
+export interface SendMessagePayload {
+	content: string;
+	chatId: string;
+}

@@ -10,3 +10,4 @@ This is the Chat Application crafted with MERN Stack.
 - 🚀 Group Chat
 - 🚀 Rename Group Chat
 - 🚀 Add/Remove Users
+- 🚀 Notifications

@@ -132,17 +132,10 @@ const SlideDrawer: React.FC = () => {
 							}}
 							fontWeight={500}
 						>
-							Search Users
+							Search
 						</Text>
 					</Button>
 				</Tooltip>
-
-				<Text
-					fontSize="22px"
-					fontWeight={'bold'}
-				>
-					mern-chat 💬
-				</Text>
 
 				<div>
 					<Menu>
