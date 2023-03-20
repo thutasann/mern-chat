@@ -6,6 +6,7 @@ import { ChatBoxProps } from './chat-box';
 import { MdOutlineGroups2 } from 'react-icons/md';
 import { getFullSender, getSender } from '../../config/chat-logic';
 import ProfileModal from '../../miscellaneous/profile-modal';
+import UpdateGroupChat from './update-group-chat';
 
 const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 	const { user, selectedChat, setSelectedChat } = ChatState();
@@ -46,15 +47,27 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 								<Text color={'gray.700'}>
 									{selectedChat.chatName.toUpperCase()}{' '}
 								</Text>
-								<MdOutlineGroups2
-									size={40}
-									style={{
-										color: 'gray',
-									}}
+								<UpdateGroupChat
+									fetchAgain={fetchAgain}
+									setFetchAgain={setFetchAgain}
 								/>
 							</>
 						)}
 					</Text>
+
+					<Box
+						display={'flex'}
+						flexDir="column"
+						justifyContent={'flex-end'}
+						p={3}
+						bg="#E8E8E8"
+						w="100%"
+						h="100%"
+						borderRadius={'lg'}
+						overflowY="hidden"
+					>
+						{/* Messages Here */}
+					</Box>
 				</>
 			) : (
 				<Box
