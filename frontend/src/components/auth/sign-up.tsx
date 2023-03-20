@@ -49,7 +49,6 @@ const SignUp: React.FC = () => {
 			})
 				.then((res) => res.json())
 				.then((data) => {
-					console.log('data', data);
 					setPic(data.url.toString());
 					setLoading(false);
 				})

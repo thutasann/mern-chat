@@ -53,7 +53,8 @@ const Login: React.FC = () => {
 			setLoading(false);
 			toast({
 				title: 'Something went wrong',
-				status: error.response.data.message,
+				description: error.response.data.message,
+				status: 'error',
 				duration: 5000,
 				isClosable: true,
 				position: 'bottom',

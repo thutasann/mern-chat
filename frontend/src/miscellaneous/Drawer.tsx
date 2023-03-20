@@ -31,6 +31,7 @@ import UserList from '../components/chat/user-list';
 
 const SlideDrawer: React.FC = () => {
 	const navigate = useNavigate();
+	const timer = React.useRef<NodeJS.Timeout>();
 	const toast = useToast();
 	const { user, setSelectedChat, chats, setChats } = ChatState();
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,7 +45,12 @@ const SlideDrawer: React.FC = () => {
 		navigate('/');
 	};
 
-	async function HandleSearch() {
+	async function HandleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+		const value = e.currentTarget.value;
+		clearTimeout(timer.current);
+
+		setSearch(value);
+
 		try {
 			setLoading(true);
 			const config: AxiosRequestConfig = {
@@ -52,7 +58,7 @@ const SlideDrawer: React.FC = () => {
 					Authorization: `Bearer ${user.token}`,
 				},
 			};
-			const { data } = await axios.get(`/api/user?search=${search}`, config);
+			const { data } = await axios.get(`/api/user?search=${value}`, config);
 			setLoading(false);
 			setSearchResults(data);
 		} catch (error: any) {
@@ -188,22 +194,8 @@ const SlideDrawer: React.FC = () => {
 								placeholder="Search by name or email"
 								mr={2}
 								value={search}
-								onChange={(e) => {
-									setSearch(e.target.value);
-								}}
+								onChange={HandleSearch}
 							/>
-							<Button
-								onClick={HandleSearch}
-								disabled={!search.length}
-								backgroundColor={search.length ? 'teal.600' : 'gray.300'}
-								_hover={{
-									backgroundColor: '#008B8B	',
-								}}
-								pointerEvents={search.length === 0 ? 'none' : 'revert'}
-								color={'white'}
-							>
-								<IoSearchOutline size={20} />
-							</Button>
 						</Box>
 						{loading ? (
 							<ChatLoading />

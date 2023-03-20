@@ -7,6 +7,7 @@ import { Button } from '@chakra-ui/button';
 import { AddIcon } from '@chakra-ui/icons';
 import ChatLoading from './chat-loading';
 import { getSender } from '../../config/chat-logic';
+import GroupChatModal from '../../miscellaneous/group-chat-modal';
 
 interface MyChatsProps {
 	fetchAgain?: any;
@@ -69,17 +70,19 @@ const MyChats: FC<MyChatsProps> = ({ fetchAgain }) => {
 				>
 					Chats
 				</Text>
-				<Button
-					display={'flex'}
-					fontSize={{
-						base: '17px',
-						md: '12px',
-						lg: '17px',
-					}}
-					rightIcon={<AddIcon />}
-				>
-					New Group Chat
-				</Button>
+				<GroupChatModal>
+					<Button
+						display={'flex'}
+						fontSize={{
+							base: '17px',
+							md: '12px',
+							lg: '17px',
+						}}
+						rightIcon={<AddIcon />}
+					>
+						New Group Chat
+					</Button>
+				</GroupChatModal>
 			</Box>
 			<Box
 				display={'flex'}
@@ -92,7 +95,7 @@ const MyChats: FC<MyChatsProps> = ({ fetchAgain }) => {
 				overflowY="hidden"
 				border={'1px solid lightGray'}
 			>
-				{chats.length > 0 ? (
+				{chats ? (
 					<Stack overflowY={'scroll'}>
 						{chats?.map((chat, idx) => (
 							<Box
