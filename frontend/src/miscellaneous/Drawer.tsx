@@ -111,8 +111,7 @@ const SlideDrawer: React.FC = () => {
 				alignItems="center"
 				bg="white"
 				w="100%"
-				p="5px 10px 5px 10px"
-				borderWidth={'5px'}
+				p="12px"
 			>
 				<Tooltip
 					label="Search Users to chat"

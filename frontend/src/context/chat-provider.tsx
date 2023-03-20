@@ -39,6 +39,10 @@ export const ChatProvider = ({ children }: Props) => {
 	);
 };
 
-export const ChatState = () => {
+/**
+ * Chat State
+ * @returns { InitialContextProps }
+ */
+export const ChatState = (): InitialContextProps => {
 	return useContext(ChatContext) as InitialContextProps;
 };

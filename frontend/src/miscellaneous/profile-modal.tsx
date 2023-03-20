@@ -18,7 +18,7 @@ import { UserProps } from '../types';
 
 interface Props {
 	user: UserProps;
-	children: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 const ProfileModal: FC<Props> = ({ user, children }) => {

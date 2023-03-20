@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&display=swap');
 * {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Noto Sans', sans-serif;
 }
 
 .App {
@@ -9,6 +9,11 @@
 	background-image: url('./images/background-img.webp');
 	background-position: center;
 	background-size: cover;
+}
+
+*::selection {
+	background-color: rgb(50, 174, 174);
+	color: white;
 }
 
 .chat-bg {

@@ -10,13 +10,14 @@ import { getSender } from '../../config/chat-logic';
 import GroupChatModal from '../../miscellaneous/group-chat-modal';
 
 interface MyChatsProps {
-	fetchAgain?: any;
+	fetchAgain: boolean;
 }
 
 const MyChats: FC<MyChatsProps> = ({ fetchAgain }) => {
 	const toast = useToast();
 	const [loggedUser, setLoggedUser] = useState<UserProps>();
 	const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
+	const [loading, setLoading] = useState<boolean>(false);
 
 	async function fetchChats() {
 		try {
@@ -25,8 +26,10 @@ const MyChats: FC<MyChatsProps> = ({ fetchAgain }) => {
 					Authorization: `Bearer ${user.token}`,
 				},
 			};
+			setLoading(true);
 			const { data } = await axios.get('/api/chat', config);
 			setChats(data);
+			setLoading(false);
 		} catch (error) {
 			toast({
 				title: 'Error Occured!',
@@ -95,7 +98,7 @@ const MyChats: FC<MyChatsProps> = ({ fetchAgain }) => {
 				overflowY="hidden"
 				border={'1px solid lightGray'}
 			>
-				{chats ? (
+				{chats && !loading ? (
 					<Stack overflowY={'scroll'}>
 						{chats?.map((chat, idx) => (
 							<Box
@@ -117,7 +120,7 @@ const MyChats: FC<MyChatsProps> = ({ fetchAgain }) => {
 						))}
 					</Stack>
 				) : (
-					<ChatLoading />
+					<>{loading && <ChatLoading />}</>
 				)}
 			</Box>
 		</Box>

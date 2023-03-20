@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import ChatBox from '../components/chat/chat-box';
 import MyChats from '../components/chat/my-chats';
 import { ChatState } from '../context/chat-provider';
@@ -7,6 +7,7 @@ import SlideDrawer from '../miscellaneous/Drawer';
 
 const ChatPage: React.FC = () => {
 	const { user } = ChatState();
+	const [fetchAgain, setFetchAgain] = useState<boolean>(false);
 
 	return (
 		<div className="w-full chat-bg">
@@ -18,8 +19,13 @@ const ChatPage: React.FC = () => {
 				h="91.5vh"
 				p="10px"
 			>
-				{user && <MyChats />}
-				{user && <ChatBox />}
+				{user && <MyChats fetchAgain={fetchAgain} />}
+				{user && (
+					<ChatBox
+						fetchAgain={fetchAgain}
+						setFetchAgain={setFetchAgain}
+					/>
+				)}
 			</Box>
 		</div>
 	);
