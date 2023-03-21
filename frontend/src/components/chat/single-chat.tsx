@@ -19,9 +19,20 @@ import axios, { AxiosRequestConfig } from 'axios';
 import ScrollableChat from '../messages/scrollable-chat';
 import io, { Socket } from 'socket.io-client';
 import { DEV_ENDPOINT, PROD_ENDPOINT } from '../../util/constants';
+import Lottie from 'react-lottie';
+import animationData from '../../lottie/animation.json';
 
 var socket: Socket;
 var selectedChatCompare: ChatProps;
+
+const defaultOptions = {
+	loop: true,
+	autoplay: true,
+	animationData: animationData,
+	rendererSettings: {
+		preserveAspectRatio: 'xMidYMid slice',
+	},
+};
 
 const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 	const { user, selectedChat, setSelectedChat } = ChatState();
@@ -30,12 +41,16 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [newMessage, setNewMessage] = useState<string>('');
 	const [socketConnected, setSocketConnected] = useState<boolean>(false);
+	const [typing, setTyping] = useState<boolean>(false);
+	const [isTyping, setIsTyping] = useState<boolean>(false);
 
 	// socket
 	useEffect(() => {
 		socket = io(PROD_ENDPOINT);
 		socket.emit<SocketNames>('setup', user);
-		socket.on<SocketNames>('connection', () => setSocketConnected(true));
+		socket.on<SocketNames>('connected', () => setSocketConnected(true));
+		socket.on<SocketNames>('typing', () => setIsTyping(true));
+		socket.on<SocketNames>('stopTyping', () => setIsTyping(false));
 	}, []);
 
 	// fetchMessages
@@ -94,6 +109,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 
 	const sendMessage = async (e: KeyboardEvent | any) => {
 		if (e.key === 'Enter' && newMessage) {
+			socket.emit<SocketNames>('stopTyping', selectedChat._id);
 			try {
 				const config: AxiosRequestConfig = {
 					baseURL: 'https://api-chat-v0tz.onrender.com',
@@ -129,6 +145,25 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 	const typingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.currentTarget.value;
 		setNewMessage(value);
+		if (!socketConnected) return;
+
+		if (!typing) {
+			setTyping(true);
+			socket.emit<SocketNames>('typing', selectedChat._id);
+		}
+
+		let lastTypingTime = new Date().getTime();
+		var timerLength: number = 3000;
+
+		setTimeout(() => {
+			var timeNow = new Date().getTime();
+			var timeDiff = timeNow - lastTypingTime;
+
+			if (timeDiff >= timerLength && typing) {
+				socket.emit<SocketNames>('stopTyping', selectedChat._id);
+				setTyping(false);
+			}
+		}, timerLength);
 	};
 
 	return (
@@ -206,6 +241,18 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 							isRequired
 							mt={3}
 						>
+							{isTyping ? (
+								<div>
+									<Lottie
+										options={defaultOptions}
+										width={70}
+										style={{
+											marginBottom: 15,
+											marginLeft: 0,
+										}}
+									/>
+								</div>
+							) : null}
 							<Input
 								variant="filled"
 								bg="#EFEFEF"

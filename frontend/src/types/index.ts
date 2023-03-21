@@ -41,7 +41,9 @@ export interface SendMessagePayload {
 
 export type SocketNames =
 	| 'setup'
-	| 'connection'
+	| 'connected'
 	| 'joinChat'
 	| 'messageReceived'
-	| 'newMessage';
+	| 'newMessage'
+	| 'typing'
+	| 'stopTyping';
