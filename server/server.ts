@@ -7,7 +7,13 @@ import messageRoutes from './routes/message-routes';
 import { ErrorHandler, NotFound } from './middlewares/error-middleware';
 import cors from 'cors';
 import { Server } from 'socket.io';
-import { ChatProps, SocketEmitNames, SocketNames, UserProps } from './types';
+import {
+	ChatProps,
+	MessageProps,
+	SocketEmitNames,
+	SocketNames,
+	UserProps,
+} from './types';
 
 dotenv.config();
 connectDB();
@@ -58,5 +64,17 @@ io.on('connection', (socket) => {
 	socket.on<SocketNames>('joinChat', (room: ChatProps) => {
 		socket.join(room._id);
 		console.log('User Joined Room: ' + room);
+	});
+
+	socket.on<SocketNames>('newMessage', (newMessageReceived: MessageProps) => {
+		var chat = newMessageReceived.chat;
+		if (!chat?.users) return console.log('chat.users not defined');
+
+		chat.users.forEach((user) => {
+			if (user._id === newMessageReceived.sender._id) return;
+			socket
+				.in(user._id)
+				.emit<SocketEmitNames>('messageReceived', newMessageReceived);
+		});
 	});
 });

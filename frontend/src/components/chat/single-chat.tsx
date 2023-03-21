@@ -14,14 +14,16 @@ import { ChatBoxProps } from './chat-box';
 import { getFullSender, getSender } from '../../config/chat-logic';
 import ProfileModal from '../../miscellaneous/profile-modal';
 import UpdateGroupChat from './update-group-chat';
-import { MessageProps, SocketNames } from '../../types';
+import { ChatProps, MessageProps, SocketNames } from '../../types';
 import axios, { AxiosRequestConfig } from 'axios';
 import ScrollableChat from '../messages/scrollable-chat';
-import io from 'socket.io-client';
-import { PROD_ENDPOINT } from '../../util/constants';
+import io, { Socket } from 'socket.io-client';
+import { DEV_ENDPOINT, PROD_ENDPOINT } from '../../util/constants';
+
+var socket: Socket;
+var selectedChatCompare: ChatProps;
 
 const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
-	var socket, selectedChatCompare;
 	const { user, selectedChat, setSelectedChat } = ChatState();
 	const toast = useToast();
 	const [messages, setMessages] = useState<MessageProps[]>([]);
@@ -29,15 +31,35 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 	const [newMessage, setNewMessage] = useState<string>('');
 	const [socketConnected, setSocketConnected] = useState<boolean>(false);
 
-	useEffect(() => {
-		fetchMessages();
-	}, [selectedChat]);
-
+	// socket
 	useEffect(() => {
 		socket = io(PROD_ENDPOINT);
 		socket.emit<SocketNames>('setup', user);
 		socket.on<SocketNames>('connection', () => setSocketConnected(true));
 	}, []);
+
+	// fetchMessages
+	useEffect(() => {
+		fetchMessages();
+		selectedChatCompare = selectedChat;
+	}, [selectedChat]);
+
+	// MessageReceived
+	useEffect(() => {
+		socket.on<SocketNames>(
+			'messageReceived',
+			(newMessageReceived: MessageProps) => {
+				if (
+					!selectedChatCompare ||
+					selectedChatCompare._id !== newMessageReceived.chat._id
+				) {
+					// give notification
+				} else {
+					setMessages([...messages, newMessageReceived]);
+				}
+			},
+		);
+	});
 
 	const fetchMessages = async () => {
 		if (!selectedChat) return;
@@ -54,8 +76,9 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 				config,
 			);
 			setMessages(data);
-			console.log('messages', messages);
 			setLoading(false);
+
+			socket.emit<SocketNames>('joinChat', selectedChat._id);
 		} catch (error) {
 			console.error(error);
 			toast({
@@ -88,6 +111,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 					},
 					config,
 				);
+				socket.emit<SocketNames>('newMessage', data);
 				setMessages([...messages, data]);
 			} catch (error) {
 				console.error(error);
@@ -111,6 +135,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 		<>
 			{selectedChat ? (
 				<>
+					{/* @ts-ignore */}
 					<Text
 						fontSize={{ base: '18px', md: '25px' }}
 						pb={3}
