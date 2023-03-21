@@ -51,7 +51,3 @@ Start the Client
   cd frontend
   yarn start
 ```
-
-## Crafted By
-
-- [@thutasann](https://thutasann.vercel.app/)
