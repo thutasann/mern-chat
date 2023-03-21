@@ -8,7 +8,7 @@ import {
 	Input,
 	useToast,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChatState } from '../../context/chat-provider';
 import { ChatBoxProps } from './chat-box';
 import { getFullSender, getSender } from '../../config/chat-logic';
@@ -23,6 +23,39 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 	const [messages, setMessages] = useState<MessageProps[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [newMessage, setNewMessage] = useState<string>('');
+
+	useEffect(() => {
+		fetchMessages();
+	}, [selectedChat]);
+
+	const fetchMessages = async () => {
+		if (!selectedChat) return;
+		try {
+			const config: AxiosRequestConfig = {
+				headers: {
+					Authorization: `Bearer ${user.token}`,
+				},
+			};
+			setLoading(true);
+			const { data } = await axios.get(
+				`/api/message/${selectedChat._id}`,
+				config,
+			);
+			setMessages(data);
+			console.log('messages', messages);
+			setLoading(false);
+		} catch (error) {
+			console.error(error);
+			toast({
+				title: 'Something went wrong in Fetching Messages!',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+				position: 'bottom',
+			});
+			setLoading(false);
+		}
+	};
 
 	const sendMessage = async (e: KeyboardEvent | any) => {
 		if (e.key === 'Enter' && newMessage) {
@@ -125,21 +158,22 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 								margin="auto"
 							/>
 						) : (
-							<FormControl
-								onKeyDown={sendMessage}
-								isRequired
-								mt={3}
-							>
-								<Input
-									variant="filled"
-									bg="#EFEFEF"
-									border="1px solid gray"
-									placeholder="Enter a message..."
-									onChange={typingHandler}
-									value={newMessage}
-								/>
-							</FormControl>
+							<div className="messages"></div>
 						)}
+						<FormControl
+							onKeyDown={sendMessage}
+							isRequired
+							mt={3}
+						>
+							<Input
+								variant="filled"
+								bg="#EFEFEF"
+								border="1px solid gray"
+								placeholder="Enter a message..."
+								onChange={typingHandler}
+								value={newMessage}
+							/>
+						</FormControl>
 					</Box>
 				</>
 			) : (
