@@ -33,6 +33,12 @@ export interface SendMessagePayloadProps {
 	chatId: string;
 }
 
-export type SocketNames = 'setup' | 'off' | 'joinChat' | 'newMessage';
+export type SocketNames =
+	| 'setup'
+	| 'off'
+	| 'joinChat'
+	| 'newMessage'
+	| 'typing'
+	| 'stopTyping';
 
 export type SocketEmitNames = 'connected' | 'messageReceived';
