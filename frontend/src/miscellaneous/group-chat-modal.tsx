@@ -49,6 +49,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
 		try {
 			setLoading(true);
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
@@ -106,6 +107,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({ children }) => {
 
 		try {
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},

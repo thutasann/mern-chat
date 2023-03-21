@@ -54,6 +54,7 @@ const SlideDrawer: React.FC = () => {
 		try {
 			setLoading(true);
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
@@ -78,6 +79,7 @@ const SlideDrawer: React.FC = () => {
 		try {
 			setLoadingchat(true);
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					'Content-type': 'application/json',
 					Authorization: `Bearer ${user.token}`,

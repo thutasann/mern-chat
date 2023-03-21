@@ -32,6 +32,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 		if (!selectedChat) return;
 		try {
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
@@ -61,6 +62,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 		if (e.key === 'Enter' && newMessage) {
 			try {
 				const config: AxiosRequestConfig = {
+					baseURL: 'https://api-chat-v0tz.onrender.com',
 					headers: {
 						Authorization: `Bearer ${user.token}`,
 						'Content-Type': 'application/json',

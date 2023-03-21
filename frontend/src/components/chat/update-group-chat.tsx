@@ -51,6 +51,7 @@ const UpdateGroupChat: React.FC<ChatBoxProps> = ({
 			setRenameLoading(true);
 
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
@@ -93,6 +94,7 @@ const UpdateGroupChat: React.FC<ChatBoxProps> = ({
 		try {
 			setLoading(true);
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
@@ -129,6 +131,7 @@ const UpdateGroupChat: React.FC<ChatBoxProps> = ({
 		try {
 			setLoading(true);
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
@@ -164,6 +167,7 @@ const UpdateGroupChat: React.FC<ChatBoxProps> = ({
 		try {
 			setLoading(true);
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},

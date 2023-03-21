@@ -99,6 +99,7 @@ const SignUp: React.FC = () => {
 
 		try {
 			const config: AxiosRequestConfig = {
+				baseURL: 'https://api-chat-v0tz.onrender.com',
 				headers: {
 					'Content-type': 'application/json',
 				},
