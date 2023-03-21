@@ -76,6 +76,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 		);
 	});
 
+	// Fetch Messages
 	const fetchMessages = async () => {
 		if (!selectedChat) return;
 		try {
@@ -107,6 +108,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 		}
 	};
 
+	// Send Message
 	const sendMessage = async (e: KeyboardEvent | any) => {
 		if (e.key === 'Enter' && newMessage) {
 			socket.emit<SocketNames>('stopTyping', selectedChat._id);
@@ -142,6 +144,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 		}
 	};
 
+	// Typing Handler
 	const typingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.currentTarget.value;
 		setNewMessage(value);
@@ -243,6 +246,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 						>
 							{isTyping ? (
 								<div>
+									{/* Typing Animation */}
 									<Lottie
 										options={defaultOptions}
 										width={70}

@@ -13,6 +13,7 @@ export const ChatProvider = ({ children }: Props) => {
 	const [user, setUser] = useState<UserProps | any>();
 	const [selectedChat, setSelectedChat] = useState<ChatProps | any>();
 	const [chats, setChats] = useState<ChatProps[]>([]);
+	const [notification, setNotification] = useState<any[]>([]);
 
 	useEffect(() => {
 		const userInfo: UserProps = JSON.parse(localStorage.getItem('userInfo')!);

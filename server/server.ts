@@ -56,24 +56,29 @@ const io: Server = new Server(server, {
 });
 
 io.on('connection', (socket) => {
+	// setup
 	socket.on<SocketNames>('setup', (userData: UserProps) => {
 		socket.join(userData._id);
 		socket.emit<SocketEmitNames>('connected');
 	});
 
+	// join chat
 	socket.on<SocketNames>('joinChat', (room: ChatProps) => {
 		socket.join(room._id);
 		console.log('User Joined Room: ' + room);
 	});
 
+	// typing
 	socket.on<SocketNames>('typing', (room: ChatProps) => {
 		socket.in(room._id).emit<SocketNames>('typing');
 	});
 
+	// stopTyping
 	socket.on<SocketNames>('stopTyping', (room: ChatProps) => {
 		socket.in(room._id).emit<SocketNames>('stopTyping');
 	});
 
+	// new Message
 	socket.on<SocketNames>('newMessage', (newMessageReceived: MessageProps) => {
 		var chat = newMessageReceived.chat;
 		if (!chat?.users) return console.log('chat.users not defined');
@@ -86,6 +91,7 @@ io.on('connection', (socket) => {
 		});
 	});
 
+	// socket Off
 	socket.off('setup', (userData: UserProps) => {
 		console.log('USER DISCONNECTED');
 		socket.leave(userData._id);
