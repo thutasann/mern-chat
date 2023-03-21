@@ -1,5 +1,6 @@
 import {
 	Avatar,
+	Badge,
 	Box,
 	Button,
 	Drawer,
@@ -28,12 +29,20 @@ import { UserProps } from '../types';
 import axios, { AxiosRequestConfig } from 'axios';
 import ChatLoading from '../components/chat/chat-loading';
 import UserList from '../components/chat/user-list';
+import { getSender } from '../config/chat-logic';
 
 const SlideDrawer: React.FC = () => {
 	const navigate = useNavigate();
 	const timer = React.useRef<NodeJS.Timeout>();
 	const toast = useToast();
-	const { user, setSelectedChat, chats, setChats } = ChatState();
+	const {
+		user,
+		setSelectedChat,
+		chats,
+		setChats,
+		notification,
+		setNotification,
+	} = ChatState();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [search, setSearch] = useState<string>('');
 	const [searchResults, setSearchResults] = useState<UserProps[]>([]);
@@ -142,11 +151,28 @@ const SlideDrawer: React.FC = () => {
 				<div>
 					<Menu>
 						<MenuButton p={1}>
+							<Badge colorScheme="red">{notification.length}</Badge>
 							<BellIcon
 								fontSize={'2xl'}
 								m={1}
 							/>
 						</MenuButton>
+						<MenuList pl={2}>
+							{!notification.length && 'No New Messages'}
+							{notification?.map((noti) => (
+								<MenuItem
+									key={noti._id}
+									onClick={() => {
+										setSelectedChat(noti.chat);
+										setNotification(notification.filter((n) => n !== noti));
+									}}
+								>
+									{noti.chat.isGroupChat
+										? `New Message in ${noti.chat.chatName}`
+										: `New Message From ${getSender(user, noti.chat.users)}`}
+								</MenuItem>
+							))}
+						</MenuList>
 					</Menu>
 					<Menu>
 						<MenuButton

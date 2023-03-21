@@ -35,7 +35,8 @@ const defaultOptions = {
 };
 
 const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
-	const { user, selectedChat, setSelectedChat } = ChatState();
+	const { user, selectedChat, setSelectedChat, notification, setNotification } =
+		ChatState();
 	const toast = useToast();
 	const [messages, setMessages] = useState<MessageProps[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -68,7 +69,10 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 					!selectedChatCompare ||
 					selectedChatCompare._id !== newMessageReceived.chat._id
 				) {
-					// give notification
+					if (!notification.includes(newMessageReceived)) {
+						setNotification([newMessageReceived, ...notification]);
+						setFetchAgain(!fetchAgain);
+					}
 				} else {
 					setMessages([...messages, newMessageReceived]);
 				}
@@ -173,7 +177,6 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 		<>
 			{selectedChat ? (
 				<>
-					{/* @ts-ignore */}
 					<Text
 						fontSize={{ base: '18px', md: '25px' }}
 						pb={3}

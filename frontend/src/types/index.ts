@@ -18,6 +18,11 @@ export interface ChatProps {
 	groupAdmin: any;
 }
 
+export interface NotificationProps {
+	_id: string;
+	chat: ChatProps;
+}
+
 export interface InitialContextProps {
 	user: UserProps;
 	setUser: React.Dispatch<React.SetStateAction<UserProps | any>>;
@@ -25,6 +30,10 @@ export interface InitialContextProps {
 	setSelectedChat: React.Dispatch<React.SetStateAction<ChatProps | any>>;
 	chats: ChatProps[];
 	setChats: React.Dispatch<React.SetStateAction<ChatProps[] | any[]>>;
+	notification: NotificationProps[];
+	setNotification: React.Dispatch<
+		React.SetStateAction<NotificationProps[] | any[]>
+	>;
 }
 
 export interface MessageProps {

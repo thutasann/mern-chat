@@ -93,7 +93,6 @@ io.on('connection', (socket) => {
 
 	// socket Off
 	socket.off('setup', (userData: UserProps) => {
-		console.log('USER DISCONNECTED');
 		socket.leave(userData._id);
 	});
 });

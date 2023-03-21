@@ -16,7 +16,6 @@ interface Props {
 
 const ScrollableChat: React.FC<Props> = ({ messages }) => {
 	const { user } = ChatState();
-	console.log('messages', messages);
 
 	return (
 		<ScrollableFeed>

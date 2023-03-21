@@ -33,6 +33,8 @@ export const ChatProvider = ({ children }: Props) => {
 				setSelectedChat,
 				chats,
 				setChats,
+				notification,
+				setNotification,
 			}}
 		>
 			{children}
