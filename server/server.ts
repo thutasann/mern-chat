@@ -6,6 +6,7 @@ import chatRoutes from './routes/chat-routes';
 import messageRoutes from './routes/message-routes';
 import { ErrorHandler, NotFound } from './middlewares/error-middleware';
 import cors from 'cors';
+import { Server, Socket } from 'socket.io';
 
 dotenv.config();
 connectDB();
@@ -31,6 +32,33 @@ app.use(ErrorHandler);
 
 // Server Listen
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
 	console.log(`Server is Running on PORT : ${PORT} 🚀`);
+});
+
+// const socket = require('socket.io')(server, {
+// 	pingTimeout: 60000,
+// 	cors: {
+// 		origin: [
+// 			'http://localhost:3000',
+// 			'http://localhost:3001',
+// 			'https://mern-t-chat.vercel.app',
+// 		],
+// 	},
+// });
+
+// Socket IO
+const io: Server = new Server(server, {
+	pingTimeout: 60000,
+	cors: {
+		origin: [
+			'http://localhost:3000',
+			'http://localhost:3001',
+			'https://mern-t-chat.vercel.app',
+		],
+	},
+});
+
+io.on('connection', (socket) => {
+	console.log('connected to socket.io' + socket);
 });

@@ -18,6 +18,8 @@ import { MessageProps } from '../../types';
 import axios, { AxiosRequestConfig } from 'axios';
 import ScrollableChat from '../messages/scrollable-chat';
 
+const ENDPOINT = 'https://api-chat-v0tz.onrender.com';
+
 const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 	const { user, selectedChat, setSelectedChat } = ChatState();
 	const toast = useToast();
