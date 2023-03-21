@@ -38,3 +38,5 @@ export interface SendMessagePayload {
 	content: string;
 	chatId: string;
 }
+
+export type SocketNames = 'setup' | 'connection';

@@ -1,4 +1,5 @@
 export interface UserProps {
+	_id: string;
 	name: string;
 	email: string;
 	password: string;
@@ -12,6 +13,7 @@ export interface LoginUserProps {
 }
 
 export interface ChatProps {
+	_id: string;
 	chatName: string;
 	isGroupChat: boolean;
 	users: UserProps[];
@@ -20,6 +22,7 @@ export interface ChatProps {
 }
 
 export interface MessageProps {
+	_id: string;
 	sender: UserProps;
 	content: string;
 	chat: ChatProps;
@@ -29,3 +32,7 @@ export interface SendMessagePayloadProps {
 	content: string;
 	chatId: string;
 }
+
+export type SocketNames = 'setup' | 'off' | 'joinChat';
+
+export type SocketEmitNames = 'connected';
