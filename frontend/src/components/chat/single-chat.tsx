@@ -14,8 +14,9 @@ import { ChatBoxProps } from './chat-box';
 import { getFullSender, getSender } from '../../config/chat-logic';
 import ProfileModal from '../../miscellaneous/profile-modal';
 import UpdateGroupChat from './update-group-chat';
-import { MessageProps, SendMessagePayload } from '../../types';
+import { MessageProps } from '../../types';
 import axios, { AxiosRequestConfig } from 'axios';
+import ScrollableChat from '../messages/scrollable-chat';
 
 const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 	const { user, selectedChat, setSelectedChat } = ChatState();
@@ -135,6 +136,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 								<UpdateGroupChat
 									fetchAgain={fetchAgain}
 									setFetchAgain={setFetchAgain}
+									fetchMessages={fetchMessages}
 								/>
 							</>
 						)}
@@ -160,7 +162,9 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 								margin="auto"
 							/>
 						) : (
-							<div className="messages"></div>
+							<div className="messages">
+								<ScrollableChat messages={messages} />
+							</div>
 						)}
 						<FormControl
 							onKeyDown={sendMessage}

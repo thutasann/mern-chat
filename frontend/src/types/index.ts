@@ -28,6 +28,7 @@ export interface InitialContextProps {
 }
 
 export interface MessageProps {
+	_id: string;
 	sender: UserProps;
 	content: string;
 	chat: ChatProps;

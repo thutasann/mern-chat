@@ -20,18 +20,20 @@ import {
 import { MdOutlineGroups2 } from 'react-icons/md';
 import { ChatState } from '../../context/chat-provider';
 import UserBadge from './user-badge';
-import { UserProps } from '../../types';
+import { MessageProps, UserProps } from '../../types';
 import axios, { AxiosRequestConfig } from 'axios';
 import UserList from './user-list';
 
 export interface ChatBoxProps {
 	fetchAgain: boolean;
 	setFetchAgain: React.Dispatch<React.SetStateAction<boolean>>;
+	fetchMessages: () => void;
 }
 
 const UpdateGroupChat: React.FC<ChatBoxProps> = ({
 	fetchAgain,
 	setFetchAgain,
+	fetchMessages,
 }) => {
 	const timer = React.useRef<NodeJS.Timeout>();
 	const toast = useToast();
@@ -66,6 +68,7 @@ const UpdateGroupChat: React.FC<ChatBoxProps> = ({
 			);
 			setSelectedChat(data);
 			setFetchAgain(!fetchAgain);
+			fetchMessages();
 			setRenameLoading(false);
 		} catch (error) {
 			console.error(error);
