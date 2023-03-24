@@ -1,4 +1,5 @@
 import {
+	Box,
 	Button,
 	Center,
 	FormControl,
@@ -30,8 +31,8 @@ const GamePage: React.FC = () => {
 	return (
 		<div>
 			{user && <SlideDrawer />}
-			<div>
-				<Center
+			<div className="gameWrapper">
+				<Box
 					bg="gray.200"
 					height="100vh"
 				>
@@ -42,10 +43,11 @@ const GamePage: React.FC = () => {
 						overflowY={'hidden'}
 						gap={10}
 					>
-						<div>
+						<Box mt={8}>
 							<Lottie
 								options={defaultOptions}
 								width={250}
+								isClickToPauseDisabled
 							/>
 							<Text
 								fontSize={23}
@@ -54,7 +56,7 @@ const GamePage: React.FC = () => {
 							>
 								TIC-TAC-TOE
 							</Text>
-						</div>
+						</Box>
 						<div>
 							<Link to="/chats">
 								<IconButton
@@ -96,7 +98,7 @@ const GamePage: React.FC = () => {
 							</FormControl>
 						</div>
 					</Stack>
-				</Center>
+				</Box>
 			</div>
 		</div>
 	);

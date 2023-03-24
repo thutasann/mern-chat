@@ -120,6 +120,7 @@ const SlideDrawer: React.FC = () => {
 		<>
 			<Box
 				position={'sticky'}
+				zIndex={9}
 				top={0}
 				display={'flex'}
 				justifyContent={'space-between'}
@@ -161,17 +162,30 @@ const SlideDrawer: React.FC = () => {
 							gap={2}
 						>
 							<IoGameControllerOutline size={20} />
-							Play Games
+							<Text
+								display={{
+									base: 'none',
+									md: 'flex',
+								}}
+							>
+								Play Games
+							</Text>
 						</Button>
 					</Link>
 				</div>
 				<div>
 					<Menu>
 						<MenuButton p={1}>
-							<Badge colorScheme="red">{notification.length}</Badge>
+							<Badge
+								colorScheme="red"
+								width={6}
+							>
+								{notification.length}
+							</Badge>
 							<BellIcon
-								fontSize={'2xl'}
+								fontSize={'3xl'}
 								m={1}
+								color="gray"
 							/>
 						</MenuButton>
 						<MenuList pl={2}>
