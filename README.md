@@ -2,6 +2,10 @@
 
 This is the Chat Application crafted with MERN Stack.
 
+[**Live Demo →**](https://mern-t-chat.vercel.app/)
+
+[![](/assets/demo.png)](https://mern-t-chat.vercel.app/)
+
 ## CORE FEATURES
 
 - 🚀 Authentication
@@ -12,6 +16,7 @@ This is the Chat Application crafted with MERN Stack.
 - 🚀 Add/Remove Users
 - 🚀 Notifications
 - 🚀 Real-Time Typing
+- 🚀 TIC-TAC-TOE Game
 
 ## Run Locally
 
