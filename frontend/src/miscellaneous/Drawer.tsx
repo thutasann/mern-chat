@@ -24,12 +24,13 @@ import { IoSearchOutline } from 'react-icons/io5';
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { ChatState } from '../context/chat-provider';
 import ProfileModal from './profile-modal';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserProps } from '../types';
 import axios, { AxiosRequestConfig } from 'axios';
 import ChatLoading from '../components/chat/chat-loading';
 import UserList from '../components/chat/user-list';
 import { getSender } from '../config/chat-logic';
+import { IoGameControllerOutline } from 'react-icons/io5';
 
 const SlideDrawer: React.FC = () => {
 	const navigate = useNavigate();
@@ -102,6 +103,7 @@ const SlideDrawer: React.FC = () => {
 			setSelectedChat(data);
 			setLoadingchat(false);
 			onClose();
+			navigate('/chats');
 		} catch (error: any) {
 			toast({
 				title: 'Error Fetching the chat!',
@@ -117,6 +119,8 @@ const SlideDrawer: React.FC = () => {
 	return (
 		<>
 			<Box
+				position={'sticky'}
+				top={0}
 				display={'flex'}
 				justifyContent={'space-between'}
 				alignItems="center"
@@ -124,30 +128,43 @@ const SlideDrawer: React.FC = () => {
 				w="100%"
 				p="12px"
 			>
-				<Tooltip
-					label="Search Users to chat"
-					hasArrow
-					placement="bottom-end"
-				>
-					<Button
-						variant="solid"
-						backgroundColor={'gray.200'}
-						onClick={onOpen}
+				<div>
+					<Tooltip
+						label="Search Users to chat"
+						hasArrow
+						placement="bottom-end"
 					>
-						<IoSearchOutline size={20} />
-						<Text
-							px="4"
-							display={{
-								base: 'none',
-								md: 'flex',
-							}}
-							fontWeight={500}
+						<Button
+							variant="solid"
+							backgroundColor={'gray.200'}
+							onClick={onOpen}
 						>
-							Search
-						</Text>
-					</Button>
-				</Tooltip>
+							<IoSearchOutline size={20} />
+							<Text
+								px="4"
+								display={{
+									base: 'none',
+									md: 'flex',
+								}}
+								fontWeight={500}
+							>
+								Search
+							</Text>
+						</Button>
+					</Tooltip>
 
+					<Link to="/games">
+						<Button
+							ml={4}
+							variant="solid"
+							colorScheme={'teal'}
+							gap={2}
+						>
+							<IoGameControllerOutline size={20} />
+							Play Games
+						</Button>
+					</Link>
+				</div>
 				<div>
 					<Menu>
 						<MenuButton p={1}>

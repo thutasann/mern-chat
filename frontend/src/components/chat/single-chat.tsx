@@ -249,7 +249,6 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 						>
 							{isTyping ? (
 								<div>
-									{/* Typing Animation */}
 									<Lottie
 										options={defaultOptions}
 										width={70}
