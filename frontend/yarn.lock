@@ -3818,6 +3818,11 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
+baroque-hooks@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/baroque-hooks/-/baroque-hooks-1.0.2.tgz#2be74e62dc572a9c8a8216f972e4c72ee4bf721c"
+  integrity sha512-L0KIWkmJH4FUUxEQQ6GfeFDanTfIv8ffW/YGWZBKmxmSU8CWnt9u4j3vYkfj8fBmZpmDO31pomfcesTXYiw7Og==
+
 batch@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
