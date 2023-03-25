@@ -39,6 +39,9 @@ export type SocketNames =
 	| 'joinChat'
 	| 'newMessage'
 	| 'typing'
-	| 'stopTyping';
+	| 'stopTyping'
+	| 'userJoined'
+	| 'whiteboardData'
+	| 'disconnect';
 
 export type SocketEmitNames = 'connected' | 'messageReceived';
