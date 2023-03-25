@@ -1,4 +1,5 @@
 import React from 'react';
+import { Socket } from 'socket.io-client';
 
 export interface UserProps {
 	_id: string;
@@ -63,4 +64,10 @@ export interface GamTypesBtns {
 	type: GameTypes;
 	name: string;
 	color: string;
+}
+
+export interface RoomProps {
+	uuid: () => string;
+	socket?: Socket;
+	setUser?: React.SetStateAction<string>;
 }
