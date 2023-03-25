@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { io } from 'socket.io-client';
+import CanvasPage from './pages/canvas-page';
 import ChatPage from './pages/chat';
 import GamePage from './pages/games';
 import HomePage from './pages/home';
+import NotFound from './pages/not-found';
 import { DataResponseTypes, RoomTypes, SocketNames } from './types';
-import { PROD_ENDPOINT } from './util/constants';
+import { DEV_ENDPOINT, PROD_ENDPOINT } from './util/constants';
 
-const server = PROD_ENDPOINT;
+const server = DEV_ENDPOINT;
 const connectionOptions = {
 	'force new connection': true,
 	reconnectionAttempt: 'Infinity',
@@ -72,6 +74,20 @@ const App = () => {
 							setUser={setUser}
 						/>
 					}
+				/>
+				<Route
+					path="/games/:roomId"
+					element={
+						<CanvasPage
+							user={user}
+							socket={socket}
+							users={users}
+						/>
+					}
+				/>
+				<Route
+					path="*"
+					element={<NotFound />}
 				/>
 			</Routes>
 		</>

@@ -120,9 +120,6 @@ const SlideDrawer: React.FC = () => {
 		<>
 			<Box
 				position={'sticky'}
-				maxWidth={1400}
-				ml="auto"
-				mr="auto"
 				zIndex={9}
 				top={0}
 				display={'flex'}

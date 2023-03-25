@@ -76,8 +76,8 @@ export interface GamTypesBtns {
 
 export interface RoomProps {
 	uuid: () => string;
-	socket?: Socket;
-	setUser?: any;
+	socket: Socket;
+	setUser: any;
 }
 
 export type RoomTypes = {
