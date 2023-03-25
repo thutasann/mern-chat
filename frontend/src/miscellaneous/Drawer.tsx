@@ -131,7 +131,7 @@ const SlideDrawer: React.FC = () => {
 			>
 				<div className="flex items-center gap-3">
 					<div>
-						<Link to="/">
+						<Link to="/chats">
 							<img
 								src="/logo.png"
 								width={50}

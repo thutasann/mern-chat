@@ -1,25 +1,15 @@
-import {
-	Box,
-	Center,
-	IconButton,
-	Stack,
-	Text,
-	Wrap,
-	WrapItem,
-} from '@chakra-ui/react';
+import { Box, Center, Stack, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Lottie from 'react-lottie';
 import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
 import tictacAnimation from '../lottie/game.json';
 import canvasDrawAnimation from '../lottie/canvas.json';
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';
 import { GameTypes, GamTypesBtns } from '../types';
-import { ToastContainer } from 'react-toastify';
 import Forms from '../components/canvas-forms/forms';
 import { uuid } from '../util';
 import TicTacForm from '../components/tic-tac/form';
+import { Socket } from 'socket.io-client';
 
 const gameTypes: GamTypesBtns[] = [
 	{
@@ -34,8 +24,13 @@ const gameTypes: GamTypesBtns[] = [
 	},
 ];
 
-const GamePage: React.FC = () => {
-	const { user } = ChatState();
+interface GamePageProps {
+	socket: Socket;
+	setUser: any;
+}
+
+const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
+	const { user: loggedInUser } = ChatState();
 	const [type, setType] = useState<GameTypes>('canvas');
 
 	const defaultOptions = {
@@ -49,9 +44,7 @@ const GamePage: React.FC = () => {
 
 	return (
 		<div>
-			{user && <SlideDrawer />}
-
-			<ToastContainer />
+			{loggedInUser && <SlideDrawer />}
 
 			<div className="gameWrapper">
 				<Box
@@ -87,6 +80,7 @@ const GamePage: React.FC = () => {
 						alignItems={'center'}
 						overflowY={'hidden'}
 					>
+						{/* Game Info */}
 						<Box>
 							<Lottie
 								options={defaultOptions}
@@ -101,12 +95,16 @@ const GamePage: React.FC = () => {
 								{type === 'tic' ? 'Tic Tac Toe (Beta)' : 'Canvas Drawing'}
 							</Text>
 						</Box>
-						<div>
-							{/* TIC TAC TOE */}
-							{type === 'tic' && <TicTacForm />}
 
-							{/* CANVAS */}
-							{type === 'canvas' && <Forms uuid={uuid} />}
+						<div>
+							{type === 'tic' && <TicTacForm />}
+							{type === 'canvas' && (
+								<Forms
+									uuid={uuid}
+									socket={socket}
+									setUser={setUser}
+								/>
+							)}
 						</div>
 					</Stack>
 				</Box>

@@ -47,7 +47,7 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 
 	// socket
 	useEffect(() => {
-		socket = io(DEV_ENDPOINT);
+		socket = io(PROD_ENDPOINT);
 		socket.emit<SocketNames>('setup', user);
 		socket.on<SocketNames>('connected', () => setSocketConnected(true));
 		socket.on<SocketNames>('typing', () => setIsTyping(true));
