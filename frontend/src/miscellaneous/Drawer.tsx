@@ -168,7 +168,7 @@ const SlideDrawer: React.FC = () => {
 
 						<Link to="/games">
 							<Button
-								ml={4}
+								ml={2}
 								variant="solid"
 								colorScheme={'teal'}
 								gap={2}

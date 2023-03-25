@@ -44,4 +44,10 @@ export type SocketNames =
 	| 'whiteboardData'
 	| 'disconnect';
 
-export type SocketEmitNames = 'connected' | 'messageReceived';
+export type SocketEmitNames =
+	| 'connected'
+	| 'messageReceived'
+	| 'userIsJoined'
+	| 'userJoinedMessageBoradcasted'
+	| 'allUsers'
+	| 'whiteboardDataResponse';
