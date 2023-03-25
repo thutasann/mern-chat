@@ -18,7 +18,7 @@ This is the Chat + Game Application crafted with MERN Stack & Socket.
 - 🚀 Notifications
 - 🚀 Real-Time Typing
 - 🚀 Canvas Drawing
-- 🚀 TIC-TAC-TOE Game
+- 🚀 TIC-TAC-TOE Game (Beta)
 
 ## Run Locally
 
