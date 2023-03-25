@@ -1,11 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
 
+@import './styles/atom.css';
+
 * {
 	font-family: 'DM Sans', sans-serif;
-}
-
-body {
-	overflow-y: hidden;
 }
 
 .App {

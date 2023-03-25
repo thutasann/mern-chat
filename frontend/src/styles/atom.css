@@ -1,0 +1,10 @@
+.gameTypeBtn {
+	border-radius: 20px;
+	color: white;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+.gameTypeBtn:hover {
+	opacity: 80%;
+}
