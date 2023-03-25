@@ -64,7 +64,8 @@ export type SocketNames =
 	| 'userJoinedMessageBoradcasted'
 	| 'allUsers'
 	| 'whiteboardDataResponse'
-	| 'userLeftMessageBroadcasted';
+	| 'userLeftMessageBroadcasted'
+	| 'userLeft';
 
 export type GameTypes = 'canvas' | 'tic';
 
@@ -92,3 +93,5 @@ export interface DataResponseTypes {
 	success: boolean;
 	users: RoomTypes[];
 }
+
+export type toolType = 'pencil';
