@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mainWrapper {
+	@apply flex flex-col items-center justify-center h-auto mt-5;
+}
+
+.toolBtnsContainer {
+	@apply flex flex-wrap justify-center items-center gap-7 px-3 text-[15px];
+}
+
+.tools {
+	@apply flex gap-1;
+}
+
+.tools div {
+	@apply text-slate-700 gap-1 flex rounded-md px-3 py-1 text-xl;
+}
+
+.rewindBtnWrapper {
+	@apply flex gap-2;
+}
+
+.rewindBtns {
+	@apply px-3 py-2 text-[#007bff] border border-[#007bff] rounded-md hover:text-white hover:bg-[#007bff] disabled:hover:bg-gray-400 disabled:border-gray-400 disabled:text-white;
+}
+
+.clearBtn {
+	@apply border-none text-white bg-red-500 hover:bg-red-700;
+}
+
+.whiteboardContainer {
+	@apply border border-gray-400 rounded-md w-[450px] md:w-[780px] lg:w-[800px] mx-auto mt-7 h-[500px];
+}
