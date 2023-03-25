@@ -52,7 +52,7 @@ const GamePage: React.FC = () => {
 
 			<div className="gameWrapper">
 				<Box
-					bg="gray.200"
+					bg="white"
 					height="100vh"
 				>
 					{/* Game Type Buttons */}
