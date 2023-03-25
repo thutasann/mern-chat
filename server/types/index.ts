@@ -50,4 +50,5 @@ export type SocketEmitNames =
 	| 'userIsJoined'
 	| 'userJoinedMessageBoradcasted'
 	| 'allUsers'
-	| 'whiteboardDataResponse';
+	| 'whiteboardDataResponse'
+	| 'userLeftMessageBroadcasted';

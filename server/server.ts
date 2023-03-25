@@ -15,7 +15,7 @@ import {
 	UserProps,
 } from './types';
 import { RoomTypes } from './types/canvas';
-import { addUser } from './utils/user';
+import { addUser, getUser, removeUser } from './utils/user';
 
 dotenv.config();
 connectDB();
@@ -146,5 +146,16 @@ io.on('connection', (socket) => {
 			.emit<SocketEmitNames>('whiteboardDataResponse', {
 				imgUrl: data,
 			});
+	});
+
+	// Disconnect
+	socket.on<SocketNames>('disconnect', () => {
+		const user = getUser(socket.id);
+		if (user) {
+			const removedUser = removeUser(socket.id);
+			socket.broadcast
+				.to(roomIdGlobal)
+				.emit<SocketEmitNames>('userLeftMessageBroadcasted', user.name);
+		}
 	});
 });
