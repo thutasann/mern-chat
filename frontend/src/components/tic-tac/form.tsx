@@ -40,6 +40,7 @@ const TicTacForm: React.FC = () => {
 					background={'gray'}
 					color="white"
 					ml={1}
+					borderLeftRadius={0}
 					mt={-1}
 					disabled
 					cursor={'not-allowed'}

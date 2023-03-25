@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { io } from 'socket.io-client';
+import CanvasPage from './pages/canvas-page';
 import ChatPage from './pages/chat';
 import GamePage from './pages/games';
 import HomePage from './pages/home';
+import NotFound from './pages/not-found';
 import { DataResponseTypes, RoomTypes, SocketNames } from './types';
-import { PROD_ENDPOINT } from './util/constants';
+import { DEV_ENDPOINT, PROD_ENDPOINT } from './util/constants';
 
 const server = PROD_ENDPOINT;
 const connectionOptions = {
@@ -27,7 +29,6 @@ const App = () => {
 		socket.on<SocketNames>('userIsJoined', (data: DataResponseTypes) => {
 			console.log('data', data);
 			if (data.success) {
-				console.log('userJoined');
 				setUsers(data.users);
 			} else {
 				console.log('userJoined error');
@@ -41,7 +42,6 @@ const App = () => {
 
 		// userJoined Message
 		socket.on<SocketNames>('userJoinedMessageBoradcasted', (data: string) => {
-			console.log('message', data);
 			toast.info(`${data} joined the room`);
 		});
 
@@ -49,7 +49,7 @@ const App = () => {
 		socket.on<SocketNames>('userLeftMessageBroadcasted', (data: string) => {
 			toast.warning(`${data} left the room`);
 		});
-	});
+	}, []);
 
 	return (
 		<>
@@ -72,6 +72,20 @@ const App = () => {
 							setUser={setUser}
 						/>
 					}
+				/>
+				<Route
+					path="/games/:roomId"
+					element={
+						<CanvasPage
+							user={user}
+							socket={socket}
+							users={users}
+						/>
+					}
+				/>
+				<Route
+					path="*"
+					element={<NotFound />}
 				/>
 			</Routes>
 		</>

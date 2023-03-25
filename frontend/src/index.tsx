@@ -4,6 +4,7 @@ import { ChatProvider } from './context/chat-provider';
 import App from './App';
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement,

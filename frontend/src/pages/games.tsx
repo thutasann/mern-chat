@@ -91,11 +91,13 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 								fontSize={23}
 								fontWeight={600}
 								textAlign="center"
+								className="text-slate-700"
 							>
 								{type === 'tic' ? 'Tic Tac Toe (Beta)' : 'Canvas Drawing'}
 							</Text>
 						</Box>
 
+						{/* Game Forms */}
 						<div>
 							{type === 'tic' && <TicTacForm />}
 							{type === 'canvas' && (
