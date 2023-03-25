@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RoomProps } from '../../types';
+import { copyToClipBoard } from '../../util';
 
 const CreateRoom: React.FC<RoomProps> = ({ uuid, socket, setUser }) => {
 	const navigate = useNavigate();
 	const [name, setName] = useState<string>('');
 	const [roomId, setRoomId] = useState(uuid());
+	const [copied, setCopied] = useState<boolean>(false);
+
+	const copyHandle = () => {
+		copyToClipBoard(roomId);
+		setCopied(true);
+		setTimeout(() => {
+			setCopied(false);
+		}, 2000);
+	};
 
 	return (
 		<div>
@@ -35,8 +45,9 @@ const CreateRoom: React.FC<RoomProps> = ({ uuid, socket, setUser }) => {
 					<button
 						className="btnCopy"
 						type="button"
+						onClick={copyHandle}
 					>
-						Copy
+						{copied ? 'copied!' : 'copy'}
 					</button>
 				</div>
 				<button

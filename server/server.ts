@@ -55,6 +55,9 @@ const io: Server = new Server(server, {
 	},
 });
 
+/**
+ * SOCKET CONNECTIONS
+ */
 io.on('connection', (socket) => {
 	// setup
 	socket.on<SocketNames>('setup', (userData: UserProps) => {
@@ -95,4 +98,6 @@ io.on('connection', (socket) => {
 	socket.off('setup', (userData: UserProps) => {
 		socket.leave(userData._id);
 	});
+
+	// Canvas Drawings --------
 });

@@ -90,7 +90,7 @@ const GamePage: React.FC = () => {
 						<Box>
 							<Lottie
 								options={defaultOptions}
-								width={type === 'tic' ? 250 : 300}
+								width={250}
 								isClickToPauseDisabled
 							/>
 							<Text
