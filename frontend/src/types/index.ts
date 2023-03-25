@@ -56,7 +56,15 @@ export type SocketNames =
 	| 'messageReceived'
 	| 'newMessage'
 	| 'typing'
-	| 'stopTyping';
+	| 'stopTyping'
+	| 'userJoined'
+	| 'whiteboardData'
+	| 'disconnect'
+	| 'userIsJoined'
+	| 'userJoinedMessageBoradcasted'
+	| 'allUsers'
+	| 'whiteboardDataResponse'
+	| 'userLeftMessageBroadcasted';
 
 export type GameTypes = 'canvas' | 'tic';
 
@@ -69,5 +77,18 @@ export interface GamTypesBtns {
 export interface RoomProps {
 	uuid: () => string;
 	socket?: Socket;
-	setUser?: React.SetStateAction<string>;
+	setUser?: any;
+}
+
+export type RoomTypes = {
+	name: string;
+	roomId: string;
+	userId: string;
+	host: boolean;
+	presenter: boolean;
+};
+
+export interface DataResponseTypes {
+	success: boolean;
+	users: RoomTypes[];
 }

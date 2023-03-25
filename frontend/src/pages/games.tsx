@@ -1,25 +1,27 @@
-import {
-	Box,
-	Center,
-	IconButton,
-	Stack,
-	Text,
-	Wrap,
-	WrapItem,
-} from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Box, Center, Stack, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
 import tictacAnimation from '../lottie/game.json';
 import canvasDrawAnimation from '../lottie/canvas.json';
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';
-import { GameTypes, GamTypesBtns } from '../types';
-import { ToastContainer } from 'react-toastify';
+import {
+	DataResponseTypes,
+	GameTypes,
+	GamTypesBtns,
+	RoomProps,
+	RoomTypes,
+	SocketNames,
+} from '../types';
+import { toast, ToastContainer } from 'react-toastify';
 import Forms from '../components/canvas-forms/forms';
 import { uuid } from '../util';
 import TicTacForm from '../components/tic-tac/form';
+import { PROD_ENDPOINT } from '../util/constants';
+import { io } from 'socket.io-client';
+import { Route, Routes } from 'react-router-dom';
+import CanvasPage from './canvas-page';
+import { Socket } from 'dgram';
 
 const gameTypes: GamTypesBtns[] = [
 	{
@@ -34,10 +36,23 @@ const gameTypes: GamTypesBtns[] = [
 	},
 ];
 
+const server = PROD_ENDPOINT;
+const connectionOptions = {
+	'force new connection': true,
+	reconnectionAttempt: 'Infinity',
+	timeout: 10000,
+	transports: ['websocket'],
+};
+
+const socket = io(server, connectionOptions);
+
 const GamePage: React.FC = () => {
-	const { user } = ChatState();
+	const { user: loggedInUser } = ChatState();
+	const [user, setUser] = useState(null);
+	const [users, setUsers] = useState<RoomTypes[]>([]);
 	const [type, setType] = useState<GameTypes>('canvas');
 
+	// lottie
 	const defaultOptions = {
 		loop: true,
 		autoplay: true,
@@ -47,9 +62,38 @@ const GamePage: React.FC = () => {
 		},
 	};
 
+	useEffect(() => {
+		// userIsJoined
+		socket.on<SocketNames>('userIsJoined', (data: DataResponseTypes) => {
+			console.log('data', data);
+			if (data.success) {
+				console.log('userJoined');
+				setUsers(data.users);
+			} else {
+				console.log('userJoined error');
+			}
+		});
+
+		// allUsers
+		socket.on<SocketNames>('allUsers', (data: any[]) => {
+			setUsers(data);
+		});
+
+		// userJoined Message
+		socket.on<SocketNames>('userJoinedMessageBoradcasted', (data: string) => {
+			console.log('message', data);
+			toast.info(`${data} joined the room`);
+		});
+
+		// userLeft Message
+		socket.on<SocketNames>('userLeftMessageBroadcasted', (data: string) => {
+			toast.warning(`${data} left the room`);
+		});
+	});
+
 	return (
 		<div>
-			{user && <SlideDrawer />}
+			{loggedInUser && <SlideDrawer />}
 
 			<ToastContainer />
 
@@ -102,11 +146,15 @@ const GamePage: React.FC = () => {
 							</Text>
 						</Box>
 						<div>
-							{/* TIC TAC TOE */}
 							{type === 'tic' && <TicTacForm />}
 
-							{/* CANVAS */}
-							{type === 'canvas' && <Forms uuid={uuid} />}
+							{type === 'canvas' && (
+								<Forms
+									uuid={uuid}
+									socket={socket}
+									setUser={setUser}
+								/>
+							)}
 						</div>
 					</Stack>
 				</Box>
