@@ -1,6 +1,57 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.formsWrapper {
+	@apply flex flex-col items-center mb-7 justify-center h-auto;
+}
+
+.cardWrapper {
+	@apply flex flex-col md:flex-row items-center justify-center gap-4;
+}
+
+.card {
+	@apply border border-gray-200 shadow-md flex flex-col items-center justify-start p-5 mt-4 rounded-md w-[370px] h-[300px] bg-opacity-25 backdrop-filter backdrop-blur-lg;
+}
+
+.card h2 {
+	@apply text-teal-600 font-[600] text-2xl mb-4;
+}
+
+.form {
+	@apply flex flex-col items-center mt-3 w-full;
+}
+.input {
+	@apply border border-gray-300 px-4 py-2 rounded-md w-full outline-0 hover:shadow-md focus:shadow-md transition-all duration-700 ease-in-out;
+}
+
+.inputGroup {
+	@apply mt-5 flex items-center w-full;
+}
+
+input:read-only {
+	@apply bg-gray-200  rounded-t-md rounded-r-none hover:shadow-none text-slate-800;
+}
+
+.btnGenerate {
+	@apply py-2 text-teal-500 border border-gray-400 p-3 text-[12px] h-[42px] hover:border-teal-500 font-bold;
+}
+
+.btnCopy {
+	@apply text-[12px] p-3 border border-gray-400 text-blue-500 h-[42px] rounded-t-md rounded-l-none rounded-r-md hover:border-blue-500 font-bold;
+}
+
+.actionBtns {
+	@apply mt-5 bg-slate-800 text-white w-full py-3 px-4 rounded-md transition-all duration-700 ease-in-out text-[16px] hover:bg-slate-700 font-[700];
+}
+
+.colorPicketInput {
+	@apply border border-slate-200 rounded-md;
+}
+
+button:disabled {
+	@apply bg-gray-400 cursor-not-allowed;
+}
+
+.joinersBtn {
+	@apply bg-teal-600 text-white p-2 rounded-md text-[14px] shadow-xl hover:shadow-sm transition-all duration-700 ease-in-out;
+}
 
 .mainWrapper {
 	@apply flex flex-col items-center justify-center h-auto mt-5;

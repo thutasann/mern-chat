@@ -1,10 +1,7 @@
 import {
 	Box,
-	Button,
 	Center,
-	FormControl,
 	IconButton,
-	Input,
 	Stack,
 	Text,
 	Wrap,
@@ -19,6 +16,10 @@ import canvasDrawAnimation from '../lottie/canvas.json';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import { GameTypes, GamTypesBtns } from '../types';
+import { ToastContainer } from 'react-toastify';
+import Forms from '../components/canvas-forms/forms';
+import { uuid } from '../util';
+import TicTacForm from '../components/tic-tac/form';
 
 const gameTypes: GamTypesBtns[] = [
 	{
@@ -49,6 +50,8 @@ const GamePage: React.FC = () => {
 	return (
 		<div>
 			{user && <SlideDrawer />}
+
+			<ToastContainer />
 
 			<div className="gameWrapper">
 				<Box
@@ -83,9 +86,8 @@ const GamePage: React.FC = () => {
 						flexDirection="column"
 						alignItems={'center'}
 						overflowY={'hidden'}
-						gap={10}
 					>
-						<Box mt={8}>
+						<Box>
 							<Lottie
 								options={defaultOptions}
 								width={type === 'tic' ? 250 : 300}
@@ -95,60 +97,16 @@ const GamePage: React.FC = () => {
 								fontSize={23}
 								fontWeight={600}
 								textAlign="center"
-								mt={4}
 							>
 								{type === 'tic' ? 'Tic Tac Toe (Beta)' : 'Canvas Drawing'}
 							</Text>
 						</Box>
 						<div>
-							<Link to="/chats">
-								<IconButton
-									icon={<ArrowBackIcon fontSize={20} />}
-									aria-label={'Back to Chat'}
-									color="white"
-									backgroundColor={'gray.500'}
-									_hover={{
-										opacity: 40,
-										backgroundColor: '#7E8EA7',
-									}}
-								/>
-							</Link>
-
 							{/* TIC TAC TOE */}
-							{type === 'tic' && (
-								<FormControl mt={4}>
-									<Input
-										placeholder="Enter your Name"
-										width={200}
-										color="gray.800"
-										borderColor="gray"
-										cursor={'not-allowed'}
-										readOnly
-										_hover={{
-											border: '1px solid teal',
-										}}
-										_focus={{
-											outline: 'none',
-											ring: 'none',
-											border: '1px solid teal',
-										}}
-									/>
-									<Button
-										variant="solid"
-										background={'gray'}
-										color="white"
-										ml={1}
-										mt={-1}
-										disabled
-										cursor={'not-allowed'}
-										_hover={{
-											backgroundColor: 'gray',
-										}}
-									>
-										Start Game
-									</Button>
-								</FormControl>
-							)}
+							{type === 'tic' && <TicTacForm />}
+
+							{/* CANVAS */}
+							{type === 'canvas' && <Forms uuid={uuid} />}
 						</div>
 					</Stack>
 				</Box>

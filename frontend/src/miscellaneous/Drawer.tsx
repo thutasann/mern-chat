@@ -129,50 +129,64 @@ const SlideDrawer: React.FC = () => {
 				w="100%"
 				p="12px"
 			>
-				<div>
-					<Tooltip
-						label="Search Users to chat"
-						hasArrow
-						placement="bottom-end"
-					>
-						<Button
-							variant="solid"
-							backgroundColor={'gray.200'}
-							onClick={onOpen}
-						>
-							<IoSearchOutline size={20} />
-							<Text
-								px="4"
-								display={{
-									base: 'none',
-									md: 'flex',
-								}}
-								fontWeight={500}
-							>
-								Search
-							</Text>
-						</Button>
-					</Tooltip>
+				<div className="flex items-center gap-3">
+					<div>
+						<Link to="/">
+							<img
+								src="/logo.png"
+								width={50}
+								height={50}
+								alt="mern chat"
+							/>
+						</Link>
+					</div>
 
-					<Link to="/games">
-						<Button
-							ml={4}
-							variant="solid"
-							colorScheme={'teal'}
-							gap={2}
+					<div>
+						<Tooltip
+							label="Search Users to chat"
+							hasArrow
+							placement="bottom-end"
 						>
-							<IoGameControllerOutline size={20} />
-							<Text
-								display={{
-									base: 'none',
-									md: 'flex',
-								}}
+							<Button
+								variant="solid"
+								backgroundColor={'gray.200'}
+								onClick={onOpen}
 							>
-								Play Games
-							</Text>
-						</Button>
-					</Link>
+								<IoSearchOutline size={20} />
+								<Text
+									px="4"
+									display={{
+										base: 'none',
+										md: 'flex',
+									}}
+									fontWeight={500}
+								>
+									Search
+								</Text>
+							</Button>
+						</Tooltip>
+
+						<Link to="/games">
+							<Button
+								ml={4}
+								variant="solid"
+								colorScheme={'teal'}
+								gap={2}
+							>
+								<IoGameControllerOutline size={20} />
+								<Text
+									display={{
+										base: 'none',
+										md: 'flex',
+									}}
+								>
+									Play Games
+								</Text>
+							</Button>
+						</Link>
+					</div>
 				</div>
+
 				<div>
 					<Menu>
 						<MenuButton p={1}>
