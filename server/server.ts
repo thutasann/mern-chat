@@ -14,6 +14,8 @@ import {
 	SocketNames,
 	UserProps,
 } from './types';
+import { RoomTypes } from './types/canvas';
+import { addUser } from './utils/user';
 
 dotenv.config();
 connectDB();
@@ -58,6 +60,9 @@ const io: Server = new Server(server, {
 /**
  * SOCKET CONNECTIONS
  */
+
+let roomIdGlobal, imageURLGlobal;
+
 io.on('connection', (socket) => {
 	// setup
 	socket.on<SocketNames>('setup', (userData: UserProps) => {
@@ -99,5 +104,47 @@ io.on('connection', (socket) => {
 		socket.leave(userData._id);
 	});
 
-	// Canvas Drawings --------
+	// userJoined (Canvas)
+	socket.on<SocketNames>('userJoined', (data: RoomTypes) => {
+		const { name, userId, roomId, host, presenter } = data;
+		roomIdGlobal = roomId;
+		socket.join(roomId);
+
+		const users = addUser({
+			name,
+			userId,
+			roomId,
+			host,
+			presenter,
+			socketId: socket.id,
+		});
+
+		// User Is Joined
+		socket.emit<SocketEmitNames>('userIsJoined', { success: true, users });
+
+		// user Joined message
+		socket.broadcast
+			.to(roomId)
+			.emit<SocketEmitNames>('userJoinedMessageBoradcasted', name);
+
+		// all joiners
+		socket.broadcast.to(roomId).emit<SocketEmitNames>('allUsers', users);
+
+		// white board data response
+		socket.broadcast
+			.to(roomId)
+			.emit<SocketEmitNames>('whiteboardDataResponse', {
+				imgUrl: imageURLGlobal,
+			});
+	});
+
+	// WhiteBoard data (Canvas)
+	socket.on<SocketNames>('whiteboardData', (data: any) => {
+		imageURLGlobal = data;
+		socket.broadcast
+			.to(roomIdGlobal)
+			.emit<SocketEmitNames>('whiteboardDataResponse', {
+				imgUrl: data,
+			});
+	});
 });

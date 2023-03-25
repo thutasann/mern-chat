@@ -4,7 +4,8 @@ This is the Chat + Game Application crafted with MERN Stack & Socket.
 
 [**Live Demo →**](https://mern-t-chat.vercel.app/)
 
-[![](/assets/demo.png)](https://mern-t-chat.vercel.app/)
+| ![Demo](/assets/demo.png) | ![Game](/assets/game.png) |
+| ------------------------- | ------------------------- |
 
 ## CORE FEATURES
 
