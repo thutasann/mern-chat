@@ -56,3 +56,11 @@ export type SocketNames =
 	| 'newMessage'
 	| 'typing'
 	| 'stopTyping';
+
+export type GameTypes = 'canvas' | 'tic';
+
+export interface GamTypesBtns {
+	type: GameTypes;
+	name: string;
+	color: string;
+}

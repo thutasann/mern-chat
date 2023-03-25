@@ -1,6 +1,6 @@
 # MERN CHAT APP 💬
 
-This is the Chat Application crafted with MERN Stack.
+This is the Chat + Game Application crafted with MERN Stack & Socket.
 
 [**Live Demo →**](https://mern-t-chat.vercel.app/)
 
@@ -16,6 +16,7 @@ This is the Chat Application crafted with MERN Stack.
 - 🚀 Add/Remove Users
 - 🚀 Notifications
 - 🚀 Real-Time Typing
+- 🚀 Canvas Drawing
 - 🚀 TIC-TAC-TOE Game
 
 ## Run Locally
