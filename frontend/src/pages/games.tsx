@@ -61,13 +61,13 @@ const GamePage: React.FC = () => {
 							{gameTypes.map((game) => (
 								<WrapItem key={game.type}>
 									<Center
-										w="190px"
-										h="60px"
+										w="150px"
+										h="50px"
 										bg={game.color}
 										className="gameTypeBtn"
 										onClick={() => setType(game.type)}
 										style={{
-											border: type === game.type ? '1px solid white' : '',
+											fontWeight: type === game.type ? 600 : 500,
 										}}
 									>
 										{game.name}

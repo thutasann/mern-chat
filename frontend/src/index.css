@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
-
 @import './styles/atom.css';
+@import './styles/whiteboard.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
 	font-family: 'DM Sans', sans-serif;
