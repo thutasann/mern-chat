@@ -10,7 +10,7 @@ import NotFound from './pages/not-found';
 import { DataResponseTypes, RoomTypes, SocketNames } from './types';
 import { DEV_ENDPOINT, PROD_ENDPOINT } from './util/constants';
 
-const server = DEV_ENDPOINT;
+const server = PROD_ENDPOINT;
 const connectionOptions = {
 	'force new connection': true,
 	reconnectionAttempt: 'Infinity',
@@ -29,7 +29,6 @@ const App = () => {
 		socket.on<SocketNames>('userIsJoined', (data: DataResponseTypes) => {
 			console.log('data', data);
 			if (data.success) {
-				console.log('userJoined');
 				setUsers(data.users);
 			} else {
 				console.log('userJoined error');
@@ -43,7 +42,6 @@ const App = () => {
 
 		// userJoined Message
 		socket.on<SocketNames>('userJoinedMessageBoradcasted', (data: string) => {
-			console.log('message', data);
 			toast.info(`${data} joined the room`);
 		});
 
@@ -51,7 +49,7 @@ const App = () => {
 		socket.on<SocketNames>('userLeftMessageBroadcasted', (data: string) => {
 			toast.warning(`${data} left the room`);
 		});
-	});
+	}, []);
 
 	return (
 		<>
