@@ -23,18 +23,32 @@ const CanvasPage: React.FC<CanvasPageProps> = ({ user, users, socket }) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	useEffect(() => {
-		socket.emit<SocketNames>('userLeft', user);
+		return () => {
+			socket.emit<SocketNames>('userLeft', user);
+		};
 	}, []);
 
 	const openModal = () => {
 		setIsOpen(true);
 	};
 
-	const undo = () => {};
+	const undo = () => {
+		setHistory((prev) => [...prev, elements[elements.length - 1]]);
+		setElements((prev) => prev.slice(0, prev.length - 1));
+	};
 
-	const redo = () => {};
+	const redo = () => {
+		setElements((prev) => [...prev, history[history.length - 1]]);
+		setHistory((prev) => prev.slice(0, prev.length - 1));
+	};
 
-	const clear = () => {};
+	const clear = () => {
+		const canvas = canvasRef.current;
+		const ctx: any = canvas?.getContext('2d');
+		ctx.fillRect = 'white';
+		ctx.clearRect(0, 0, canvasRef.current?.width, canvasRef.current?.height);
+		setElements([]);
+	};
 
 	return (
 		<div>

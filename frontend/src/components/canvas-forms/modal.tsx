@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { FaUserPlus } from 'react-icons/fa';
 
 type Props = {
 	isOpen: any;
@@ -61,11 +62,17 @@ function Modal({ isOpen, setIsOpen, users, user }: Props) {
 											{users?.map((u, index) => (
 												<li
 													key={index}
-													className="text-[15px] text-gray-800 my-3"
+													className="text-[15px] text-gray-800 my-3 flex items-center gap-3"
 												>
-													🤖 {u?.name}
-													<span className="font-bold ml-1">
-														{user && user?.userId === u?.userId && '(You)'}
+													<FaUserPlus
+														size={20}
+														color="gray"
+													/>{' '}
+													<span>
+														{u?.name}
+														<span className="font-bold ml-1">
+															{user && user?.userId === u?.userId && '(You)'}
+														</span>
 													</span>
 												</li>
 											))}
