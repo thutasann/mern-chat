@@ -33,10 +33,6 @@ input:read-only {
 	@apply text-[12px] p-3 border border-gray-400 text-blue-500 h-[42px] rounded-t-md rounded-l-none rounded-r-md hover:border-blue-500 font-bold;
 }
 
-.colorPicketInput {
-	@apply border border-slate-200 rounded-md;
-}
-
 button:disabled {
 	@apply bg-gray-400 cursor-not-allowed;
 }

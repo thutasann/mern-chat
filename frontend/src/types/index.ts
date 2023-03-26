@@ -94,4 +94,4 @@ export interface DataResponseTypes {
 	users: RoomTypes[];
 }
 
-export type toolType = 'pencil';
+export type toolType = string | 'pencil' | 'line' | 'rectangle' | '';
