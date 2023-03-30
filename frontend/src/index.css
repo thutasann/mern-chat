@@ -53,3 +53,7 @@
 	overflow-y: scroll;
 	scrollbar-width: none;
 }
+
+label {
+	@apply text-gray-600;
+}

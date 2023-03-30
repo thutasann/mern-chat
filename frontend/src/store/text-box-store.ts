@@ -3,7 +3,7 @@ import { textBoxSliceProps } from '../types';
 
 const initialState: textBoxSliceProps = {
 	height: 400,
-	width: 400,
+	width: 500,
 	B_color: 'white',
 	pencolor: 'black',
 	stroke: 2,
