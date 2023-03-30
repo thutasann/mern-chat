@@ -96,6 +96,7 @@ const SideBar: React.FC<SideBarProps> = ({ openModal, users }) => {
 							type="number"
 							value={initialStroke}
 							className="input"
+							placeholder="Enter Stroke width"
 							onChange={(e) => changeStrokeWidth(e.target.value)}
 						/>
 					</label>
