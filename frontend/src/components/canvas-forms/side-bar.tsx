@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { HiUserGroup } from 'react-icons/hi';
 import { BiDownload } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@chakra-ui/react';
+import { Tooltip, useToast } from '@chakra-ui/react';
 import { useAppSelector } from '../../store/hook';
 import { useAppDispatch } from '../../store/hook';
 import { actions } from '../../store/text-box-store';
@@ -21,10 +21,6 @@ const SideBar: React.FC<SideBarProps> = ({ openModal, users }) => {
 	const initialColor = useAppSelector((state) => state.canvas.B_color);
 	const initialStroke = useAppSelector((state) => state.canvas.stroke);
 	const current = useAppSelector((state) => state.canvas.canvaVal);
-
-	function changeColor(val: any) {
-		dispatch(actions.setColor(val));
-	}
 
 	function changePenColor(val: any) {
 		dispatch(actions.setPencolor(val));
@@ -76,15 +72,21 @@ const SideBar: React.FC<SideBarProps> = ({ openModal, users }) => {
 				</div>
 
 				<div>
-					<button
-						className="joinersBtn mt-3 bg-transparent border border-teal-500 group"
-						onClick={() => handleDownload(current)}
+					<Tooltip
+						label="Download"
+						hasArrow
+						placement="bottom-end"
 					>
-						<BiDownload
-							size={17}
-							className="text-teal-500 group-hover:text-white duration-700 transition-all"
-						/>
-					</button>
+						<button
+							className="joinersBtn mt-3 bg-transparent border border-teal-500 group"
+							onClick={() => handleDownload(current)}
+						>
+							<BiDownload
+								size={19}
+								className="text-teal-500 group-hover:text-white duration-700 transition-all"
+							/>
+						</button>
+					</Tooltip>
 				</div>
 			</div>
 
@@ -100,16 +102,6 @@ const SideBar: React.FC<SideBarProps> = ({ openModal, users }) => {
 							onChange={(e) => changeStrokeWidth(e.target.value)}
 						/>
 					</label>
-				</div>
-
-				<div className="flex items-center gap-2">
-					<label>Background Color: </label>
-					<input
-						className="colorPicketInput"
-						type="color"
-						value={initialColor}
-						onChange={(e) => changeColor(e.target.value)}
-					/>
 				</div>
 
 				<div>

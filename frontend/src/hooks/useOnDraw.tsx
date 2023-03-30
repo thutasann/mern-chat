@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hook';
 import { actions } from '../store/text-box-store';
 import io, { Socket } from 'socket.io-client';
@@ -9,6 +9,7 @@ var socket: Socket;
 
 const useOnDraw = () => {
 	var isDrawing: boolean = false;
+	const [clear, setClear] = useState<boolean>(false);
 	const canvasRef = useRef<any>(null);
 	const dispatch = useAppDispatch();
 	const mousePressed = useRef(false);
@@ -36,6 +37,15 @@ const useOnDraw = () => {
 		initMouseMoveListener();
 		initMouseDownListener();
 		initMouseUpListener();
+	}
+
+	// Clear Canvas
+	function handleClearCanvas() {
+		setClear(true);
+		const canvas = canvasRef.current;
+		const ctx = canvas.getContext('2d');
+		ctx.fillRect = 'white';
+		ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 	}
 
 	// Init MouseDownListener
@@ -66,7 +76,7 @@ const useOnDraw = () => {
 			ctx.current = canvasRef.current.getContext('2d');
 			drawLine(data[0], data[1], data[2], data[3]);
 		});
-	}, []);
+	}, [clear]);
 
 	// Init MouseMoveListener
 	function initMouseMoveListener() {
@@ -120,7 +130,7 @@ const useOnDraw = () => {
 		} else return null;
 	}
 
-	return setCanvasRef;
+	return { setCanvasRef, handleClearCanvas };
 };
 
 export default useOnDraw;
