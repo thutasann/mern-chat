@@ -95,3 +95,12 @@ export interface DataResponseTypes {
 }
 
 export type toolType = string | 'pencil' | 'line' | 'rectangle' | '';
+
+export interface textBoxSliceProps {
+	height: number;
+	width: number;
+	B_color: 'white' | string;
+	pencolor: 'black' | string;
+	stroke: 2;
+	canvaVal: null | any;
+}

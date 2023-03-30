@@ -1,15 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { textBoxSliceProps } from '../types';
+
+const initialState: textBoxSliceProps = {
+	height: 400,
+	width: 400,
+	B_color: 'white',
+	pencolor: 'black',
+	stroke: 2,
+	canvaVal: null,
+};
 
 const textboxSlice = createSlice({
 	name: 'textbox',
-	initialState: {
-		height: 400,
-		width: 400,
-		B_color: 'white',
-		pencolor: 'black',
-		stroke: 2,
-		canvaVal: null,
-	},
+	initialState,
 	reducers: {
 		setHeight(state, action) {
 			state.height = action.payload;

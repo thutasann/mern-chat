@@ -39,7 +39,7 @@ const CanvasPage: React.FC<CanvasPageProps> = ({ user, users, socket }) => {
 					users={users}
 					user={user}
 				/>
-				<div className="mt-4 flex flex-col md:flex-row items-center gap-0 md:gap-3 relative">
+				<div className="flex flex-col md:flex-row items-center gap-0 md:gap-3 relative">
 					<SideBar
 						openModal={openModal}
 						users={users}
