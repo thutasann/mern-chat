@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import Modal from '../components/canvas-forms/modal';
+import SideBar from '../components/canvas-forms/side-bar';
 import WhiteBoard from '../components/canvas-forms/whiteboard';
 import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
-import { RoomTypes, SocketNames, toolType } from '../types';
+import { RoomTypes, SocketNames } from '../types';
 
 interface CanvasPageProps {
 	user: RoomTypes;
@@ -32,20 +33,20 @@ const CanvasPage: React.FC<CanvasPageProps> = ({ user, users, socket }) => {
 			<div className="mainWrapper">
 				<h1 className="font-semibold text-2xl uppercase">Canvas Drawing</h1>
 
-				<button
-					className="joinersBtn mt-3"
-					onClick={openModal}
-				>
-					Joiners : {users?.length || 0}
-				</button>
 				<Modal
 					isOpen={isOpen}
 					setIsOpen={setIsOpen}
 					users={users}
 					user={user}
 				/>
-				<div className="whiteboardContainer mb-7">
-					<WhiteBoard />
+				<div className="mt-4 flex flex-col md:flex-row items-center gap-0 md:gap-3 relative">
+					<SideBar
+						openModal={openModal}
+						users={users}
+					/>
+					<div className="whiteboardContainer mb-7">
+						<WhiteBoard />
+					</div>
 				</div>
 			</div>
 		</div>
