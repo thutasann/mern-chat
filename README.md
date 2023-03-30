@@ -7,6 +7,8 @@ This is the Chat + Game Application crafted with MERN Stack & Socket.
 | ![Demo](/assets/demo.png) | ![Game](/assets/game.png) |
 | ------------------------- | ------------------------- |
 
+![Canvas Drawing](/assets/canvas.png)
+
 ## CORE FEATURES
 
 - 🚀 Authentication

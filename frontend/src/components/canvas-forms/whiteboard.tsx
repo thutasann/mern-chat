@@ -4,18 +4,19 @@ import { useAppSelector } from '../../store/hook';
 
 const WhiteBoard: React.FC = () => {
 	const Bcolor = useAppSelector((state) => state.canvas.B_color);
-	const setCanvasRef = useOnDraw();
+	const { setCanvasRef, handleClearCanvas } = useOnDraw();
+
 	return (
-		<>
+		<div className="relative">
 			<canvas
-				width={600}
+				width={790}
 				height={500}
 				style={{
 					backgroundColor: Bcolor,
 				}}
 				ref={setCanvasRef}
 			/>
-		</>
+		</div>
 	);
 };
 
