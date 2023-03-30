@@ -44,7 +44,7 @@ const CanvasPage: React.FC<CanvasPageProps> = ({ user, users, socket }) => {
 						openModal={openModal}
 						users={users}
 					/>
-					<div className="whiteboardContainer mb-7">
+					<div className="whiteboardContainer  mb-7">
 						<WhiteBoard />
 					</div>
 				</div>
