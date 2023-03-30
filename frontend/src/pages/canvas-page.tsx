@@ -14,12 +14,6 @@ interface CanvasPageProps {
 
 const CanvasPage: React.FC<CanvasPageProps> = ({ user, users, socket }) => {
 	const { user: loggedInUser } = ChatState();
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const ctxRef = useRef<any>(null);
-	const [tool, setTool] = useState<toolType>('pencil');
-	const [color, setColor] = useState<string>('black');
-	const [elements, setElements] = useState<any[]>([]);
-	const [history, setHistory] = useState<any[]>([]);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -32,29 +26,12 @@ const CanvasPage: React.FC<CanvasPageProps> = ({ user, users, socket }) => {
 		setIsOpen(true);
 	};
 
-	const undo = () => {
-		setHistory((prev) => [...prev, elements[elements.length - 1]]);
-		setElements((prev) => prev.slice(0, prev.length - 1));
-	};
-
-	const redo = () => {
-		setElements((prev) => [...prev, history[history.length - 1]]);
-		setHistory((prev) => prev.slice(0, prev.length - 1));
-	};
-
-	const clear = () => {
-		const canvas = canvasRef.current;
-		const ctx: any = canvas?.getContext('2d');
-		ctx.fillRect = 'white';
-		ctx.clearRect(0, 0, canvasRef.current?.width, canvasRef.current?.height);
-		setElements([]);
-	};
-
 	return (
 		<div>
 			{loggedInUser && <SlideDrawer />}
 			<div className="mainWrapper">
 				<h1 className="font-semibold text-2xl uppercase">Canvas Drawing</h1>
+
 				<button
 					className="joinersBtn mt-3"
 					onClick={openModal}
@@ -67,99 +44,8 @@ const CanvasPage: React.FC<CanvasPageProps> = ({ user, users, socket }) => {
 					users={users}
 					user={user}
 				/>
-				{user?.presenter && (
-					<div className="toolBtnsContainer mt-5">
-						{/* color picker */}
-						<div className="flex items-center gap-2">
-							<label htmlFor="color">Select Color: </label>
-							<input
-								type="color"
-								id="color"
-								className="colorPicketInput"
-								value={color}
-								onChange={(e) => setColor(e.target.value)}
-							/>
-						</div>
-
-						{/* tools */}
-						<div className="tools">
-							<div>
-								<label htmlFor="pencil">Pencil</label>
-								<input
-									type="radio"
-									name="tool"
-									checked={tool === 'pencil'}
-									className="radio"
-									value="pencil"
-									id="pencil"
-									onChange={(e) => setTool(e.target.value)}
-								/>
-							</div>
-							<div>
-								<label htmlFor="line">Line</label>
-								<input
-									type="radio"
-									name="tool"
-									checked={tool === 'line'}
-									className="radio"
-									value="line"
-									id="line"
-									onChange={(e) => setTool(e.target.value)}
-								/>
-							</div>
-							<div>
-								<label htmlFor="rectangle">Rectangle</label>
-								<input
-									type="radio"
-									name="tool"
-									checked={tool === 'rectangle'}
-									className="radio"
-									value="rectangle"
-									onChange={(e) => setTool(e.target.value)}
-								/>
-							</div>
-						</div>
-
-						{/* Rewind Btn Wrapper */}
-						<div className="rewindBtnWrapper">
-							<button
-								className="rewindBtns bg-[#007bff] text-white hover:bg-opacity-90"
-								disabled={elements.length === 0}
-								onClick={() => undo()}
-							>
-								Undo
-							</button>
-							<button
-								className="rewindBtns"
-								disabled={history.length < 1}
-								onClick={() => redo()}
-							>
-								Redo
-							</button>
-						</div>
-
-						{/* clear btn */}
-						<div className="clear">
-							<button
-								className="rewindBtns clearBtn"
-								onClick={clear}
-							>
-								Clear Canvas
-							</button>
-						</div>
-					</div>
-				)}
 				<div className="whiteboardContainer mb-7">
-					<WhiteBoard
-						canvasRef={canvasRef}
-						ctxRef={ctxRef}
-						elements={elements}
-						setElements={setElements}
-						tool={tool}
-						color={color}
-						user={user}
-						socket={socket}
-					/>
+					<WhiteBoard />
 				</div>
 			</div>
 		</div>
