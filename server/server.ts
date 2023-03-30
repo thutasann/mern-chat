@@ -148,6 +148,11 @@ io.on('connection', (socket) => {
 			});
 	});
 
+	// Draw
+	socket.on<SocketNames>('draw', (data: any) => {
+		socket.broadcast.emit<SocketEmitNames>('isDraw', data);
+	});
+
 	// Disconnect
 	socket.on<SocketNames>('disconnect', () => {
 		const user = getUser(socket.id);

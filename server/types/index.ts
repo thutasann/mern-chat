@@ -42,7 +42,8 @@ export type SocketNames =
 	| 'stopTyping'
 	| 'userJoined'
 	| 'whiteboardData'
-	| 'disconnect';
+	| 'disconnect'
+	| 'draw';
 
 export type SocketEmitNames =
 	| 'connected'
@@ -51,4 +52,5 @@ export type SocketEmitNames =
 	| 'userJoinedMessageBoradcasted'
 	| 'allUsers'
 	| 'whiteboardDataResponse'
-	| 'userLeftMessageBroadcasted';
+	| 'userLeftMessageBroadcasted'
+	| 'isDraw';
