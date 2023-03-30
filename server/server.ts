@@ -129,26 +129,9 @@ io.on('connection', (socket) => {
 
 		// all joiners
 		socket.broadcast.to(roomId).emit<SocketEmitNames>('allUsers', users);
-
-		// white board data response
-		socket.broadcast
-			.to(roomId)
-			.emit<SocketEmitNames>('whiteboardDataResponse', {
-				imgUrl: imageURLGlobal,
-			});
 	});
 
-	// WhiteBoard data (Canvas)
-	socket.on<SocketNames>('whiteboardData', (data: any) => {
-		imageURLGlobal = data;
-		socket.broadcast
-			.to(roomIdGlobal)
-			.emit<SocketEmitNames>('whiteboardDataResponse', {
-				imgUrl: data,
-			});
-	});
-
-	// Draw
+	// Draw (Canvas)
 	socket.on<SocketNames>('draw', (data: any) => {
 		socket.broadcast.emit<SocketEmitNames>('isDraw', data);
 	});
