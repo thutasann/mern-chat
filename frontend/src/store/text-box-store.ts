@@ -2,8 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { textBoxSliceProps } from '../types';
 
 const initialState: textBoxSliceProps = {
-	height: 400,
-	width: 500,
 	B_color: 'white',
 	pencolor: 'black',
 	stroke: 2,
@@ -14,12 +12,6 @@ const textboxSlice = createSlice({
 	name: 'textbox',
 	initialState,
 	reducers: {
-		setHeight(state, action) {
-			state.height = action.payload;
-		},
-		setWidth(state, action) {
-			state.width = action.payload;
-		},
 		setColor(state, action) {
 			state.B_color = action.payload;
 		},

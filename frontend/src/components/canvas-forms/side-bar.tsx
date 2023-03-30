@@ -18,19 +18,9 @@ const SideBar: React.FC<SideBarProps> = ({ openModal, users }) => {
 	const dispatch = useAppDispatch();
 	const toast = useToast();
 	const [selectedPenColor, setSelectedPenColor] = useState('');
-	const initialHeight = useAppSelector((state) => state.canvas.height);
-	const initialWidth = useAppSelector((state) => state.canvas.width);
 	const initialColor = useAppSelector((state) => state.canvas.B_color);
 	const initialStroke = useAppSelector((state) => state.canvas.stroke);
 	const current = useAppSelector((state) => state.canvas.canvaVal);
-
-	function changeHeight(val: any) {
-		dispatch(actions.setHeight(val));
-	}
-
-	function changeWidth(val: any) {
-		dispatch(actions.setWidth(val));
-	}
 
 	function changeColor(val: any) {
 		dispatch(actions.setColor(val));
@@ -100,26 +90,6 @@ const SideBar: React.FC<SideBarProps> = ({ openModal, users }) => {
 
 			<div className="mt-5 flex flex-col gap-4">
 				<div>
-					<label>Height:</label>
-					<input
-						type="number"
-						value={initialHeight}
-						className="input mt-1"
-						onChange={(e) => changeHeight(e.target.value)}
-					/>
-				</div>
-
-				<div>
-					<label>Width:</label>
-					<input
-						type="number"
-						value={initialWidth}
-						className="input mt-1"
-						onChange={(e) => changeWidth(e.target.value)}
-					/>
-				</div>
-
-				<div>
 					<label>
 						Stroke width:
 						<input
@@ -132,7 +102,7 @@ const SideBar: React.FC<SideBarProps> = ({ openModal, users }) => {
 				</div>
 
 				<div className="flex items-center gap-2">
-					<label>Background Color:</label>
+					<label>Background Color: </label>
 					<input
 						className="colorPicketInput"
 						type="color"
