@@ -65,7 +65,9 @@ export type SocketNames =
 	| 'allUsers'
 	| 'whiteboardDataResponse'
 	| 'userLeftMessageBroadcasted'
-	| 'userLeft';
+	| 'userLeft'
+	| 'isDraw'
+	| 'draw';
 
 export type GameTypes = 'canvas' | 'tic';
 
