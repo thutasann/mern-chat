@@ -52,3 +52,23 @@ export type SocketEmitNames =
 	| 'allUsers'
 	| 'userLeftMessageBroadcasted'
 	| 'isDraw';
+
+export interface TicUsers {
+	socketId: string;
+	roomId: string;
+	id?: string;
+}
+
+export interface TicGameUser {
+	userId: any;
+	username: any;
+	moves: any[];
+	winCount: number;
+	inGame: boolean;
+}
+
+export interface TicGameDetails {
+	room: any;
+	user1: TicGameUser;
+	user2: TicGameUser;
+}
