@@ -102,3 +102,12 @@ export interface textBoxSliceProps {
 	stroke: 2;
 	canvaVal: null | any;
 }
+
+export interface TicUserProps {
+	user: any;
+}
+
+export type TicRoomTypesProps = {
+	type: 'create' | 'join';
+	text: string;
+}[];

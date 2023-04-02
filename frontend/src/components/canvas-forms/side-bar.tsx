@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Tooltip, useToast } from '@chakra-ui/react';
 import { useAppSelector } from '../../store/hook';
 import { useAppDispatch } from '../../store/hook';
-import { actions } from '../../store/text-box-store';
+import { actions } from '../../store/slices/text-box-store';
 import { colors } from '../../util/constants';
 
 interface SideBarProps {

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import textboxSlice from './text-box-store';
+import textboxSlice from './slices/text-box-store';
+import { ticUserReducer } from './slices/tic-user';
 
 const Store = configureStore({
 	reducer: {
 		canvas: textboxSlice.reducer,
+		ticUser: ticUserReducer,
 	},
 });
 

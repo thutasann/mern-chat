@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hook';
-import { actions } from '../store/text-box-store';
+import { actions } from '../store/slices/text-box-store';
 import io, { Socket } from 'socket.io-client';
 import { PROD_ENDPOINT } from '../util/constants';
 import { SocketNames } from '../types';
