@@ -8,7 +8,7 @@ let gameDetails: TicGameDetails[] = [];
  * @param socketId
  * @param roomId
  */
-export function addUser(socketId: string, roomId: string) {
+export function AddUser(socketId: string, roomId: string) {
 	users.push({
 		socketId,
 		roomId,
@@ -20,7 +20,7 @@ export function addUser(socketId: string, roomId: string) {
  * @param id
  * @returns
  */
-export function getCurrentUser(id: string) {
+export function GetCurrentUser(id: string) {
 	return users.find((user) => user.id === id);
 }
 
@@ -29,7 +29,7 @@ export function getCurrentUser(id: string) {
  * @param id
  * @returns
  */
-export function userLeave(id: string) {
+export function UserLeave(id: string) {
 	const index = users.findIndex((user) => user.id === id);
 	if (index !== -1) {
 		return users.splice(index, 1)[0];
@@ -43,7 +43,7 @@ export function userLeave(id: string) {
  * @param username
  * @returns
  */
-function newGame(room: any, userId: any, username: any) {
+export function NewGame(room: any, userId: any, username: any) {
 	let isRoomExist = gameDetails.find((item) => item.room === room);
 	if (!isRoomExist) {
 		const newGameDetail: TicGameDetails = {
@@ -80,11 +80,11 @@ function newGame(room: any, userId: any, username: any) {
  * @param room
  * @returns
  */
-function getGameDetail(room: any) {
+export function GetGameDetail(room: any) {
 	return gameDetails.find((item) => item.room === room);
 }
 
-export const winPatterns = [
+export const WinPatterns = [
 	[1, 2, 3],
 	[4, 5, 6],
 	[7, 8, 9],
@@ -102,7 +102,7 @@ export const winPatterns = [
  * @returns
  */
 export function CheckWin(room: any, userId: any) {
-	let gameDetail = getGameDetail(room)!;
+	let gameDetail = GetGameDetail(room)!;
 	let user;
 	let curr_user_moves: any;
 	let winCount;
@@ -118,8 +118,8 @@ export function CheckWin(room: any, userId: any) {
 	let pattern: any;
 	let isWin;
 
-	for (let i = 0; i < winPatterns.length; i++) {
-		let win_pattern = winPatterns[i];
+	for (let i = 0; i < WinPatterns.length; i++) {
+		let win_pattern = WinPatterns[i];
 		isWin = true;
 		for (let j = 0; j < win_pattern.length; j++) {
 			if (!curr_user_moves.includes(win_pattern[j])) {

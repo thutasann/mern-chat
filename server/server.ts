@@ -9,13 +9,24 @@ import cors from 'cors';
 import { Server } from 'socket.io';
 import {
 	ChatProps,
+	JoinRoomPayload,
 	MessageProps,
+	RoomUser,
 	SocketEmitNames,
 	SocketNames,
+	TicTacSockets,
 	UserProps,
 } from './types';
 import { RoomTypes } from './types/canvas';
-import { addUser, getUser, removeUser } from './utils/user';
+import { addUser } from './utils/user';
+import {
+	AddUser,
+	NewGame,
+	GetGameDetail,
+	CheckWin,
+	RemoveRoom,
+	UserLeft,
+} from './utils/tictactoe';
 
 dotenv.config();
 connectDB();
@@ -61,7 +72,12 @@ const io: Server = new Server(server, {
  * SOCKET CONNECTIONS
  */
 
-let roomIdGlobal, imageURLGlobal;
+let roomIdGlobal;
+
+interface lol {
+	move: any;
+	userId: any;
+}
 
 io.on('connection', (socket) => {
 	// setup
@@ -136,14 +152,154 @@ io.on('connection', (socket) => {
 		socket.broadcast.emit<SocketEmitNames>('isDraw', data);
 	});
 
-	// Disconnect
-	socket.on<SocketNames>('disconnect', () => {
-		const user = getUser(socket.id);
-		if (user) {
-			const removedUser = removeUser(socket.id);
-			socket.broadcast
-				.to(roomIdGlobal)
-				.emit<SocketEmitNames>('userLeftMessageBroadcasted', user.name);
+	// Join Room (TicTacToe)
+	socket.on<TicTacSockets>('joinRoom', (payload: JoinRoomPayload) => {
+		AddUser(socket.id, payload.roomId);
+
+		const user: RoomUser = {
+			socketId: socket.id,
+			username: payload.username,
+			roomId: payload.roomId,
+		};
+
+		NewGame(payload.roomId, payload.userId, payload.username);
+
+		socket.join(user.roomId);
+
+		socket.emit<TicTacSockets>('message', 'Welcome to MERN-Tic');
+	});
+
+	// Join Existing Room (TicTacToe)
+	socket.on<TicTacSockets>('joinExistingRoom', (payload: JoinRoomPayload) => {
+		AddUser(socket.id, payload.roomId);
+
+		const user: RoomUser = {
+			socketId: socket.id,
+			username: payload.username,
+			roomId: payload.roomId,
+		};
+
+		const roomExists = GetGameDetail(payload.roomId);
+
+		if (!roomExists) {
+			socket.emit<TicTacSockets>('message', {
+				error: 'Room does not exist',
+			});
+			return;
 		}
+
+		if (!NewGame(payload.roomId, payload.userId, payload.username)) {
+			socket.emit<TicTacSockets>('message', {
+				error: 'Room is Full',
+			});
+			return;
+		}
+
+		socket.join(user.roomId);
+
+		socket.emit<TicTacSockets>('message', 'Welcome to Mern TIC');
+
+		socket
+			.to(payload.roomId)
+			.emit<TicTacSockets>('userJoined', `${payload.username} joined the game`);
+
+		return;
+	});
+
+	// Users Entered (TicTacToe)
+	socket.on<TicTacSockets>('usersEntered', (payload: JoinRoomPayload) => {
+		const current_game = GetGameDetail(payload.roomId);
+
+		if (!current_game) {
+			return;
+		}
+
+		if (current_game.user1.userId === payload.userId) {
+			current_game.user1.inGame = true;
+		} else if (current_game.user2.userId === payload.userId) {
+			current_game.user2.inGame = true;
+		}
+
+		if (current_game.user1.inGame && current_game.user2.inGame) {
+			io.in(payload.roomId).emit<TicTacSockets>('usersEntered', {
+				user1: current_game.user1,
+				user2: current_game.user2,
+			});
+		}
+	});
+
+	// Move (TicTacToe)
+	socket.on<TicTacSockets>('move', (payload: JoinRoomPayload) => {
+		const current_room = GetGameDetail(payload.roomId)!;
+		let current_username;
+		let moveCount;
+
+		if (!current_room?.user1.userId || !current_room.user2.userId) {
+			io.in(payload.roomId).emit<TicTacSockets>('userLeave', {});
+		}
+
+		if (current_room?.user1.userId === payload.userId) {
+			current_room.user1.moves.push(payload.move);
+			moveCount = current_room.user1.moves.length;
+			current_username = current_room.user1.username;
+		} else {
+			current_room?.user2.moves.push(payload.move);
+			moveCount = current_room?.user2.moves.length;
+			current_username = current_room?.user2.username;
+		}
+
+		io.in(payload.roomId).emit<TicTacSockets>('move', {
+			move: payload.move,
+			userId: payload.userId,
+		});
+
+		if (moveCount >= 3) {
+			const { isWin, winCount, pattern } = CheckWin(
+				payload.roomId,
+				payload.userId,
+			);
+
+			if (isWin) {
+				io.in(payload.roomId).emit<TicTacSockets>('win', {
+					userId: payload.userId,
+					username: current_username,
+					pattern,
+				});
+				return;
+			}
+
+			if (
+				current_room.user1.moves.length + current_room.user2.moves.length >=
+				9
+			) {
+				io.in(payload.roomId).emit<TicTacSockets>('draw', {
+					roomId: payload.roomId,
+				});
+				return;
+			}
+		}
+	});
+
+	// Rematch (TicTacToe)
+	socket.on<TicTacSockets>('reMatch', (payload: JoinRoomPayload) => {
+		let currGameDetail = GetGameDetail(payload.roomId)!;
+		currGameDetail.user1.moves = [];
+		currGameDetail.user2.moves = [];
+
+		io.in(payload.roomId).emit<TicTacSockets>('reMatch', {
+			currGameDetail,
+		});
+	});
+
+	// Remove Room (TicTacToe)
+	socket.on<TicTacSockets>('removeRoom', (payload: JoinRoomPayload) => {
+		io.in(payload.roomId).emit('removeRoom', 'remove');
+		RemoveRoom(payload.roomId);
+	});
+
+	// Disconnect
+	socket.on<TicTacSockets>('disconnect', () => {
+		const roomId = UserLeft(socket.id)!;
+		io.in(roomId).emit<TicTacSockets>('userLeave', { roomId });
 	});
 });
