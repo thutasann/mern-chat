@@ -114,3 +114,18 @@ export type TicRoomTypesProps = {
 	type: 'create' | 'join';
 	text: string;
 }[];
+
+export type TicTacSockets =
+	| 'joinRoom'
+	| 'joinExistingRoom'
+	| 'usersEntered'
+	| 'move'
+	| 'reMatch'
+	| 'removeRoom'
+	| 'disconnectRoom'
+	| 'message'
+	| 'userJoined'
+	| 'userLeave'
+	| 'win'
+	| 'draw'
+	| 'disconnect';

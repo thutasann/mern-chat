@@ -1,17 +1,20 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { CreateRoomSVG } from '../illustrations';
 import { nanoid } from 'nanoid';
 import { useAppSelector } from '../../store/hook';
 import { Button, FormControl, Input } from '@chakra-ui/react';
+import { Socket } from 'socket.io-client';
+import { TicTacSockets } from '../../types';
 
 type Props = {
 	createModal: any;
 	setCreateModal: any;
+	socket: Socket;
 };
 const roomId: string = nanoid(7);
 
-function CreateModal({ createModal, setCreateModal }: Props) {
+function CreateModal({ createModal, setCreateModal, socket }: Props) {
 	const { userName, userId } = useAppSelector((state) => state.ticUser.user);
 	const [copyBtnValue, setCopyBtnValue] = useState<string>('Copy');
 	const [copied, setCopied] = useState<boolean>(false);
@@ -31,6 +34,12 @@ function CreateModal({ createModal, setCreateModal }: Props) {
 			setCopied(false);
 		}, 3000);
 	}
+
+	useEffect(() => {
+		socket.emit<TicTacSockets>('joinRoom', {
+			username: userName,
+		});
+	});
 
 	return (
 		<div>

@@ -8,6 +8,7 @@ import { CreateRoomSVG, JoinRoomSVG } from '../illustrations';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import CreateModal from './create-modal';
 import JoinModal from './join-modal';
+import { Socket } from 'socket.io-client';
 
 const roomTypebtns: TicRoomTypesProps = [
 	{
@@ -20,7 +21,11 @@ const roomTypebtns: TicRoomTypesProps = [
 	},
 ];
 
-const TicTacForm: React.FC = () => {
+interface TicTacFormProps {
+	socket: Socket;
+}
+
+const TicTacForm: React.FC<TicTacFormProps> = ({ socket }) => {
 	const userId: string = nanoid(5);
 	const toast = useToast();
 	const dispatch = useAppDispatch();
@@ -124,10 +129,12 @@ const TicTacForm: React.FC = () => {
 			<CreateModal
 				createModal={createModal}
 				setCreateModal={setCreateModal}
+				socket={socket}
 			/>
 			<JoinModal
 				joinModal={joinModal}
 				setJoinModal={setJoinModal}
+				socket={socket}
 			/>
 		</>
 	);

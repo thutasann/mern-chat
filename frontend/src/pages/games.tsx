@@ -99,7 +99,7 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 
 						{/* Game Forms */}
 						<div>
-							{type === 'tic' && <TicTacForm />}
+							{type === 'tic' && <TicTacForm socket={socket} />}
 							{type === 'canvas' && (
 								<Forms
 									uuid={uuid}
