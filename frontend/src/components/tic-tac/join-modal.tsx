@@ -61,6 +61,8 @@ function JoinModal({ joinModal, setJoinModal }: Props) {
 										<FormControl
 											width="auto"
 											mt={3}
+											display="flex"
+											alignItems="center"
 										>
 											<Input
 												placeholder="Room ID"
@@ -83,7 +85,6 @@ function JoinModal({ joinModal, setJoinModal }: Props) {
 												color="white"
 												ml={1}
 												borderLeftRadius={0}
-												mt={-1}
 												_hover={{
 													backgroundColor: 'teal',
 												}}
