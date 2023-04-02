@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { textBoxSliceProps } from '../types';
+import { textBoxSliceProps } from '../../types';
 
 const initialState: textBoxSliceProps = {
 	B_color: 'white',
