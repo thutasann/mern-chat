@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { JoinRoomSVG } from '../illustrations';
+import { Button, FormControl, Input } from '@chakra-ui/react';
 
 type Props = {
 	joinModal: any;
@@ -51,12 +52,45 @@ function JoinModal({ joinModal, setJoinModal }: Props) {
 									<Dialog.Title
 										as="h3"
 										className="flex items-center justify-center 
-                                        space-x-2 text-[18px]  leading-6 text-gray-700 font-bold"
+                                        space-x-2 text-[21px]  leading-6 text-gray-700 font-bold"
 									>
 										Join Room
 									</Dialog.Title>
 									<div className="mt-5 flex flex-col items-center">
 										<JoinRoomSVG />
+										<FormControl
+											width="auto"
+											mt={3}
+										>
+											<Input
+												placeholder="Room ID"
+												width={120}
+												color="gray.800"
+												borderColor="gray"
+												roundedRight={0}
+												_hover={{
+													border: '1px solid gray',
+												}}
+												_focus={{
+													outline: 'none',
+													ring: 'none',
+													border: '1px solid gray',
+												}}
+											/>
+											<Button
+												variant="solid"
+												background={'teal.600'}
+												color="white"
+												ml={1}
+												borderLeftRadius={0}
+												mt={-1}
+												_hover={{
+													backgroundColor: 'teal',
+												}}
+											>
+												Join
+											</Button>
+										</FormControl>
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>

@@ -82,6 +82,7 @@ const TicTacForm: React.FC = () => {
 					</Button>
 				</FormControl>
 			) : null}
+
 			{show ? (
 				<Stack my={4}>
 					<button
@@ -116,6 +117,7 @@ const TicTacForm: React.FC = () => {
 					</div>
 				</Stack>
 			) : null}
+
 			<CreateModal
 				createModal={createModal}
 				setCreateModal={setCreateModal}
