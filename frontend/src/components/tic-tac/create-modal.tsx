@@ -77,7 +77,11 @@ function CreateModal({ createModal, setCreateModal }: Props) {
 									</Dialog.Title>
 									<div className="flex relative  flex-col items-center justify-center">
 										<CreateRoomSVG />
-										<FormControl width="auto">
+										<FormControl
+											width="auto"
+											display="flex"
+											alignItems="center"
+										>
 											<Input
 												placeholder="Enter your Name"
 												width={120}
@@ -102,7 +106,6 @@ function CreateModal({ createModal, setCreateModal }: Props) {
 												color="white"
 												ml={1}
 												borderLeftRadius={0}
-												mt={-1}
 												_hover={{
 													backgroundColor: 'teal',
 												}}

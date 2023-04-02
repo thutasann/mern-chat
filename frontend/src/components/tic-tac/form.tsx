@@ -48,7 +48,11 @@ const TicTacForm: React.FC = () => {
 	return (
 		<>
 			{!show ? (
-				<FormControl mt={4}>
+				<FormControl
+					mt={4}
+					display="flex"
+					alignItems="center"
+				>
 					<Input
 						placeholder="Enter your Name"
 						width={200}
@@ -72,7 +76,6 @@ const TicTacForm: React.FC = () => {
 						color="white"
 						ml={1}
 						borderLeftRadius={0}
-						mt={-1}
 						onClick={HandleClick}
 						_hover={{
 							backgroundColor: 'teal',
