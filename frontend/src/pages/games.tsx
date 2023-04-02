@@ -93,7 +93,7 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 								textAlign="center"
 								className="text-slate-700"
 							>
-								{type === 'tic' ? 'Tic Tac Toe (Beta)' : 'Canvas Drawing'}
+								{type === 'tic' ? 'Tic Tac Toe' : 'Canvas Drawing'}
 							</Text>
 						</Box>
 
