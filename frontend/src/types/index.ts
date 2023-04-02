@@ -104,7 +104,10 @@ export interface textBoxSliceProps {
 }
 
 export interface TicUserProps {
-	user: any;
+	user: {
+		userName: string;
+		userId: string;
+	};
 }
 
 export type TicRoomTypesProps = {
