@@ -106,3 +106,8 @@ export interface textBoxSliceProps {
 export interface TicUserProps {
 	user: any;
 }
+
+export type TicRoomTypesProps = {
+	type: 'create' | 'join';
+	text: string;
+}[];
