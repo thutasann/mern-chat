@@ -1,7 +1,25 @@
 import { Button, FormControl, Input } from '@chakra-ui/react';
-import React from 'react';
+import { nanoid } from 'nanoid';
+import React, { useState } from 'react';
+import { addUser } from '../../store/actions/tic-actions';
+import { useAppDispatch } from '../../store/hook';
 
 const TicTacForm: React.FC = () => {
+	const userId: string = nanoid(5);
+	const dispatch = useAppDispatch();
+	const [userName, setUserName] = useState<string>('');
+	const [show, setShow] = useState<boolean>(false);
+	const [error, setError] = useState<string>('');
+
+	function HandleClick() {
+		if (userName === '') {
+			setError('Please Enter your Name');
+			return;
+		}
+		dispatch(addUser(userName, userId));
+		setShow(true);
+	}
+
 	return (
 		<>
 			<FormControl mt={4}>
@@ -11,6 +29,8 @@ const TicTacForm: React.FC = () => {
 					color="gray.800"
 					borderColor="gray"
 					roundedRight={0}
+					value={userName}
+					onChange={(e) => setUserName(e.target.value)}
 					_hover={{
 						border: '1px solid teal',
 					}}

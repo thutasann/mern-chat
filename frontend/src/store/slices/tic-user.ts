@@ -5,15 +5,8 @@ const initialState: TicUserProps = {
 	user: {},
 };
 
-const TicUserSlice = createSlice({
-	name: 'ticUser',
-	initialState,
-	reducers: {
-		AddUser: (state, action) => {
-			state.user = action.payload;
-		},
+export const ticUserReducer = createReducer(initialState, {
+	AddUser: (state, action) => {
+		state.user = action.payload;
 	},
 });
-
-export const actions = TicUserSlice.actions;
-export default TicUserSlice;
