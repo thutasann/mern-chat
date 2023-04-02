@@ -6,6 +6,8 @@ import { useAppDispatch } from '../../store/hook';
 import { TicRoomTypesProps } from '../../types';
 import { CreateRoomSVG, JoinRoomSVG } from '../illustrations';
 import { IoArrowBackOutline } from 'react-icons/io5';
+import CreateModal from './create-modal';
+import JoinModal from './join-modal';
 
 const roomTypebtns: TicRoomTypesProps = [
 	{
@@ -24,6 +26,9 @@ const TicTacForm: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const [userName, setUserName] = useState<string>('');
 	const [show, setShow] = useState<boolean>(false);
+	const [activeBtn, setActiveBtn] = useState('');
+	const [createModal, setCreateModal] = useState<boolean>(false);
+	const [joinModal, setJoinModal] = useState<boolean>(false);
 
 	function HandleClick() {
 		if (userName === '') {
@@ -77,19 +82,30 @@ const TicTacForm: React.FC = () => {
 					</Button>
 				</FormControl>
 			) : null}
-
 			{show ? (
 				<Stack my={4}>
 					<button
-						className="bg-slate-500 text-white rounded-md px-3 py-2 text-base hover:bg-slate-600 w-[40px]"
+						className="bg-slate-600 text-white rounded-md px-3 py-2 text-base hover:bg-slate-500 w-[40px]"
 						onClick={() => setShow(false)}
 					>
 						<IoArrowBackOutline size={17} />
 					</button>
 					<div className="flex flex-col md:flex-row items-center gap-2 cursor-pointer">
 						{roomTypebtns.map((type, idx) => (
-							<div key={idx}>
-								<div className="ticBtns group">
+							<div
+								key={idx}
+								onClick={() => {
+									setActiveBtn(type.type);
+									type.type === 'create'
+										? setCreateModal(true)
+										: setJoinModal(true);
+								}}
+							>
+								<div
+									className={`ticBtns group ${
+										activeBtn === type.type && 'bg-slate-600 text-white'
+									}`}
+								>
 									{type.type === 'create' ? <CreateRoomSVG /> : <JoinRoomSVG />}
 									<h3 className="font-[700] text-xl group-hover:text-white">
 										{type.text}
@@ -100,6 +116,14 @@ const TicTacForm: React.FC = () => {
 					</div>
 				</Stack>
 			) : null}
+			<CreateModal
+				createModal={createModal}
+				setCreateModal={setCreateModal}
+			/>
+			<JoinModal
+				joinModal={joinModal}
+				setJoinModal={setJoinModal}
+			/>
 		</>
 	);
 };

@@ -7,7 +7,7 @@
 }
 
 .card {
-	@apply border border-gray-200 shadow-md flex flex-col items-center justify-start p-5 mt-4 rounded-md w-[370px] h-[300px] bg-opacity-25 backdrop-filter backdrop-blur-lg;
+	@apply border border-gray-200 shadow-md flex flex-col items-center justify-start p-5 mt-4 rounded-md w-[360px] md:w-[370px] h-[300px] bg-opacity-25 backdrop-filter backdrop-blur-lg;
 }
 
 .card h2 {
@@ -90,5 +90,5 @@ button:disabled {
 }
 
 .ticBtns {
-	@apply flex flex-col gap-2 items-center border border-slate-600 hover:bg-slate-600 p-7 rounded-md  transition-all duration-500 ease-in-out shadow-md;
+	@apply flex flex-col gap-2 items-center border border-slate-600 hover:shadow-md	hover:bg-slate-600 p-7 rounded-md  transition-all duration-500 ease-in-out;
 }
