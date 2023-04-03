@@ -86,7 +86,7 @@ const App = () => {
 				/>
 				<Route
 					path="/tic-tac-toe/:roomId"
-					element={<TicTacToePage />}
+					element={<TicTacToePage socket={socket} />}
 				/>
 				<Route
 					path="*"

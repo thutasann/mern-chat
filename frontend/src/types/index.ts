@@ -129,3 +129,8 @@ export type TicTacSockets =
 	| 'win'
 	| 'draw'
 	| 'disconnect';
+
+export interface MoveProps {
+	move: number;
+	myMove: boolean;
+}
