@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { CreateRoomSVG } from '../illustrations';
 import { nanoid } from 'nanoid';
@@ -6,6 +6,8 @@ import { useAppSelector } from '../../store/hook';
 import { Button, FormControl, Input } from '@chakra-ui/react';
 import { Socket } from 'socket.io-client';
 import { TicTacSockets } from '../../types';
+import { useNavigate } from 'react-router-dom';
+import { BsFillClipboardFill, BsFillClipboardCheckFill } from 'react-icons/bs';
 
 type Props = {
 	createModal: any;
@@ -15,8 +17,8 @@ type Props = {
 const roomId: string = nanoid(7);
 
 function CreateModal({ createModal, setCreateModal, socket }: Props) {
+	const navigate = useNavigate();
 	const { userName, userId } = useAppSelector((state) => state.ticUser.user);
-	const [copyBtnValue, setCopyBtnValue] = useState<string>('Copy');
 	const [copied, setCopied] = useState<boolean>(false);
 
 	const closeModal = () => {
@@ -25,12 +27,8 @@ function CreateModal({ createModal, setCreateModal, socket }: Props) {
 
 	function copyText() {
 		navigator.clipboard.writeText(roomId);
-
-		setCopyBtnValue('Copied!');
 		setCopied(true);
-
 		setInterval(() => {
-			setCopyBtnValue('Copy');
 			setCopied(false);
 		}, 3000);
 	}
@@ -38,6 +36,17 @@ function CreateModal({ createModal, setCreateModal, socket }: Props) {
 	useEffect(() => {
 		socket.emit<TicTacSockets>('joinRoom', {
 			username: userName,
+			userId,
+			roomId,
+		});
+	}, [socket]);
+
+	useEffect(() => {
+		socket.on<TicTacSockets>('message', (payload) => {
+			console.log('payload', payload);
+		});
+		socket.on<TicTacSockets>('message', (message) => {
+			console.log('message', message);
 		});
 	});
 
@@ -114,18 +123,26 @@ function CreateModal({ createModal, setCreateModal, socket }: Props) {
 												background={'teal.600'}
 												color="white"
 												ml={1}
+												fontSize={16}
 												borderLeftRadius={0}
 												_hover={{
 													backgroundColor: 'teal',
 												}}
 												onClick={copyText}
 											>
-												{copyBtnValue}
+												{copied ? (
+													<BsFillClipboardCheckFill size={20} />
+												) : (
+													<BsFillClipboardFill size={20} />
+												)}
 											</Button>
 										</FormControl>
 										<button
+											onClick={() => {
+												navigate(`/tic-tac-toe/${roomId}`);
+											}}
 											type="submit"
-											className="mt-2 w-[200px] bg-slate-600 text-white py-3 px-4 rounded-md transition-all duration-700 ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
+											className="mt-2 w-[180px] bg-slate-600 text-white py-3 px-4 rounded-md transition-all duration-700 ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
 										>
 											Create Room
 										</button>

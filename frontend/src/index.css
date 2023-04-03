@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 @import './styles/atom.css';
 @import './styles/whiteboard.css';
 
@@ -7,7 +7,7 @@
 @tailwind utilities;
 
 * {
-	font-family: 'DM Sans', sans-serif;
+	font-family: 'Poppins', sans-serif;
 }
 
 .App {
