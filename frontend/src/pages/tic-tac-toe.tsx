@@ -11,6 +11,16 @@ import {
 	WinPayloadProps,
 } from '../types';
 import { moves } from '../util/constants';
+import {
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+	PopoverHeader,
+	PopoverBody,
+	PopoverArrow,
+	PopoverCloseButton,
+} from '@chakra-ui/react';
+import { BsFillInfoCircleFill } from 'react-icons/bs';
 
 interface TicTacToePageProps {
 	socket: Socket;
@@ -177,7 +187,49 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 		socket.emit<TicTacSockets>('reMatch', { roomId });
 	}
 
-	return <div>{loggedInUser && <SlideDrawer />}</div>;
+	return (
+		<div>
+			{loggedInUser && <SlideDrawer />}
+			<div className="mainWrapper">
+				<div className="flex items-center gap-2 mb-3">
+					<h1 className="font-semibold text-2xl uppercase">Tic Tac Toe</h1>
+					<Popover>
+						<PopoverTrigger>
+							<button>
+								<BsFillInfoCircleFill
+									size={20}
+									className="text-gray-700 hover:text-gray-600"
+								/>
+							</button>
+						</PopoverTrigger>
+						<PopoverContent>
+							<PopoverArrow />
+							<PopoverCloseButton />
+							<PopoverHeader fontWeight={600}>Room Info!</PopoverHeader>
+							<PopoverBody>
+								<div className="mb-2">
+									<span className="font-bold">RoomID : </span>{' '}
+									<span>{roomId}</span>{' '}
+								</div>
+								<p className="text-[14px] font-[500]">
+									You are now arrving at <br /> the Tic-Tac-Toe Game Room.
+								</p>
+							</PopoverBody>
+						</PopoverContent>
+					</Popover>
+				</div>
+				<div className="flex items-center gap-3 mt-4">
+					<div className="score bg-gradient-to-tr from-teal-400 to-teal-600">
+						<p>You</p> <h3>{myScore}</h3>
+					</div>
+					<h3 className="vsText">VS</h3>
+					<div className="score bg-gradient-to-r from-rose-400 to-red-500">
+						<p>{oponentName || 'Oponent'} </p> <h3>{oponentScore}</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default TicTacToePage;

@@ -1,0 +1,15 @@
+.score {
+	@apply flex flex-col items-center w-[140px] gap-1 px-4 py-3 rounded-md text-white shadow-md;
+}
+
+.score p {
+	@apply text-lg font-[600];
+}
+
+.score > h3 {
+	@apply text-5xl font-[700];
+}
+
+.vsText {
+	@apply font-extrabold text-transparent text-2xl bg-clip-text bg-gradient-to-r from-slate-900 to-slate-600;
+}
