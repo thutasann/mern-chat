@@ -7,6 +7,7 @@ import ChatPage from './pages/chat';
 import GamePage from './pages/games';
 import HomePage from './pages/home';
 import NotFound from './pages/not-found';
+import TicTacToePage from './pages/tic-tac-toe';
 import { DataResponseTypes, RoomTypes, SocketNames } from './types';
 import { DEV_ENDPOINT, PROD_ENDPOINT } from './util/constants';
 
@@ -82,6 +83,10 @@ const App = () => {
 							users={users}
 						/>
 					}
+				/>
+				<Route
+					path="/tic-tac-toe/:roomId"
+					element={<TicTacToePage socket={socket} />}
 				/>
 				<Route
 					path="*"

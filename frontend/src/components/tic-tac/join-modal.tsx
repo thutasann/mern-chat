@@ -2,13 +2,15 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { JoinRoomSVG } from '../illustrations';
 import { Button, FormControl, Input } from '@chakra-ui/react';
+import { Socket } from 'socket.io-client';
 
 type Props = {
 	joinModal: any;
 	setJoinModal: any;
+	socket: Socket;
 };
 
-function JoinModal({ joinModal, setJoinModal }: Props) {
+function JoinModal({ joinModal, setJoinModal, socket }: Props) {
 	const closeModal = () => {
 		setJoinModal(false);
 	};

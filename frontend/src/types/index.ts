@@ -114,3 +114,63 @@ export type TicRoomTypesProps = {
 	type: 'create' | 'join';
 	text: string;
 }[];
+
+export type TicTacSockets =
+	| 'joinRoom'
+	| 'joinExistingRoom'
+	| 'usersEntered'
+	| 'move'
+	| 'reMatch'
+	| 'removeRoom'
+	| 'disconnectRoom'
+	| 'message'
+	| 'userJoined'
+	| 'userLeave'
+	| 'win'
+	| 'draw'
+	| 'disconnect';
+
+export interface MoveProps {
+	move: number;
+	myMove: boolean;
+	userId?: string;
+}
+
+export interface TicUsers {
+	socketId: string;
+	roomId: string;
+	id?: string;
+}
+
+export interface TicGameUser {
+	userId: any;
+	username: any;
+	moves: any[];
+	winCount: number;
+	inGame: boolean;
+}
+
+export interface TicGameDetails {
+	room: any;
+	user1: TicGameUser;
+	user2: TicGameUser;
+}
+
+export interface JoinRoomPayload {
+	username: string;
+	userId: string;
+	roomId: string;
+	move: any;
+}
+
+export interface RoomUser {
+	socketId: any;
+	username: string;
+	roomId: string;
+}
+
+export interface WinPayloadProps {
+	pattern: any;
+	userId: string;
+	username: string;
+}
