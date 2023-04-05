@@ -205,10 +205,15 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 				/>
 
 				{winner && winner !== 'Draw !' && winner.length > 0 ? (
-					<div>
-						<h3>{winner}</h3>
-						<div className={`line p${winPattern}`}></div>
-					</div>
+					<Alert
+						status="info"
+						width={460}
+						mt={7}
+						rounded="md"
+					>
+						<AlertIcon />
+						<AlertTitle> {winner}</AlertTitle>
+					</Alert>
 				) : null}
 
 				{userTurn ? (
