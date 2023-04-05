@@ -39,28 +39,3 @@
 .wait {
 	@apply h-[440px] w-[480px] absolute top-[40%]  cursor-not-allowed;
 }
-
-.line {
-	background-color: green;
-	box-shadow: 0px 0px 10px green;
-	border-radius: 50px;
-	position: absolute;
-	transform: translateY(-50%);
-	height: 0.3rem;
-	width: 0;
-	animation: grow 0.3s linear forwards;
-	z-index: 2;
-}
-
-@keyframes grow {
-	to {
-		width: 90%;
-	}
-}
-
-.game-end {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-evenly;
-}

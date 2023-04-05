@@ -9,6 +9,7 @@ import { IoArrowBackOutline } from 'react-icons/io5';
 import CreateModal from './create-modal';
 import JoinModal from './join-modal';
 import { Socket } from 'socket.io-client';
+import { ChatState } from '../../context/chat-provider';
 
 const roomTypebtns: TicRoomTypesProps = [
 	{
@@ -26,10 +27,11 @@ interface TicTacFormProps {
 }
 
 const TicTacForm: React.FC<TicTacFormProps> = ({ socket }) => {
+	const { user } = ChatState();
 	const userId: string = nanoid(5);
 	const toast = useToast();
 	const dispatch = useAppDispatch();
-	const [userName, setUserName] = useState<string>('');
+	const [userName, setUserName] = useState<string>(user.name);
 	const [show, setShow] = useState<boolean>(false);
 	const [activeBtn, setActiveBtn] = useState('');
 	const [createModal, setCreateModal] = useState<boolean>(false);
@@ -64,6 +66,7 @@ const TicTacForm: React.FC<TicTacFormProps> = ({ socket }) => {
 						color="gray.800"
 						borderColor="gray"
 						roundedRight={0}
+						spellCheck={false}
 						value={userName}
 						onChange={(e) => setUserName(e.target.value)}
 						_hover={{

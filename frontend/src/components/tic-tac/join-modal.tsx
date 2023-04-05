@@ -1,8 +1,11 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { JoinRoomSVG } from '../illustrations';
-import { Button, FormControl, Input } from '@chakra-ui/react';
+import { Button, FormControl, Input, useToast } from '@chakra-ui/react';
 import { Socket } from 'socket.io-client';
+import { useAppSelector } from '../../store/hook';
+import { TicTacSockets } from '../../types';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
 	joinModal: any;
@@ -11,6 +14,48 @@ type Props = {
 };
 
 function JoinModal({ joinModal, setJoinModal, socket }: Props) {
+	const { userName, userId } = useAppSelector((state) => state.ticUser.user);
+	const toast = useToast();
+	const navigate = useNavigate();
+	const [joined, setJoined] = useState<boolean>(false);
+	const [roomId, setRoomId] = useState<string>('');
+
+	const hanndleClick = () => {
+		if (roomId.length === 0) {
+			toast({
+				title: `Please Enter RoomID`,
+				status: 'warning',
+				duration: 5000,
+				isClosable: true,
+				position: 'bottom',
+			});
+		}
+		socket.emit<TicTacSockets>('joinExistingRoom', {
+			username: userName,
+			userId,
+			roomId,
+		});
+	};
+
+	useEffect(() => {
+		if (!userId) {
+			navigate('/games');
+		}
+		socket.on<TicTacSockets>('message', (payload) => {
+			if (payload.error) {
+				toast({
+					title: `${payload.error || 'Something went Wrong'}`,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'bottom',
+				});
+			} else {
+				setJoined(true);
+			}
+		});
+	}, [userId]);
+
 	const closeModal = () => {
 		setJoinModal(false);
 	};
@@ -72,6 +117,8 @@ function JoinModal({ joinModal, setJoinModal, socket }: Props) {
 												color="gray.800"
 												borderColor="gray"
 												roundedRight={0}
+												value={roomId}
+												onChange={(e) => setRoomId(e.target.value)}
 												_hover={{
 													border: '1px solid gray',
 												}}
@@ -82,6 +129,8 @@ function JoinModal({ joinModal, setJoinModal, socket }: Props) {
 												}}
 											/>
 											<Button
+												onClick={hanndleClick}
+												disabled={joined}
 												variant="solid"
 												background={'teal.600'}
 												color="white"
@@ -91,9 +140,20 @@ function JoinModal({ joinModal, setJoinModal, socket }: Props) {
 													backgroundColor: 'teal',
 												}}
 											>
-												Join
+												{joined ? 'Joined' : 'join'}
 											</Button>
 										</FormControl>
+										{joined ? (
+											<button
+												onClick={() => {
+													navigate(`/tic-tac-toe/${roomId}`);
+												}}
+												type="submit"
+												className="mt-2 w-[215px] bg-slate-600 text-white py-3 px-4 rounded-md transition-all duration-700 ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
+											>
+												Play Game
+											</button>
+										) : null}
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>

@@ -14,7 +14,7 @@ import { Socket } from 'socket.io-client';
 const gameTypes: GamTypesBtns[] = [
 	{
 		type: 'canvas',
-		name: 'Canvas Draw',
+		name: 'Canvas',
 		color: 'teal.200',
 	},
 	{

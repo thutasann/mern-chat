@@ -90,7 +90,7 @@ const App = () => {
 				/>
 				<Route
 					path="*"
-					element={<NotFound />}
+					element={<ChatPage />}
 				/>
 			</Routes>
 		</>
