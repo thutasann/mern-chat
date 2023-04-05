@@ -225,12 +225,24 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 					>
 						<AlertIcon />
 						<AlertTitle className="animate-pulse">
-							{loadingValue ? loadingValue : 'Waiting for oponent response!'}
+							Waiting for oponent response!
 						</AlertTitle>
 					</Alert>
 				) : null}
 
-				{userTurn && loadingValue ? <div className="wait"></div> : null}
+				{loading ? (
+					<Alert
+						status="info"
+						width={460}
+						mt={7}
+						rounded="md"
+					>
+						<AlertIcon />
+						<AlertTitle className="animate-pulse">{loadingValue}</AlertTitle>
+					</Alert>
+				) : null}
+
+				{userTurn && loadingValue ? <div className="wait" /> : null}
 
 				<div className="grid-container">
 					{/* Move 1 */}
