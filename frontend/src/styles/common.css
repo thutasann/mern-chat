@@ -1,0 +1,55 @@
+.p0 {
+	top: 52%;
+	left: 6%;
+	transform: rotate(0deg);
+}
+
+.p1 {
+	top: 69%;
+	left: 6%;
+	transform: rotate(0deg);
+}
+
+.p2 {
+	top: 86%;
+	left: 6%;
+	transform: rotate(0deg);
+}
+
+.p3 {
+	top: 70%;
+	left: -27%;
+	transform: rotate(90deg);
+}
+
+.p4 {
+	top: 70%;
+	left: 5%;
+	transform: rotate(90deg);
+}
+
+.p5 {
+	top: 70%;
+	left: 37%;
+	transform: rotate(90deg);
+}
+
+.p6 {
+	top: 70%;
+	left: 5%;
+	transform: rotate(45deg);
+}
+
+.p7 {
+	top: 70%;
+	left: 5%;
+	transform: rotate(135deg);
+}
+
+.bottom {
+	border-bottom: 2px solid #61dafb;
+}
+
+.right {
+	border-right: 2px solid #61dafb;
+}
