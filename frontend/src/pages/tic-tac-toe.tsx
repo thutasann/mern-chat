@@ -13,13 +13,7 @@ import {
 	WinPayloadProps,
 } from '../types';
 import { moves } from '../util/constants';
-import {
-	Alert,
-	AlertIcon,
-	AlertTitle,
-	AlertDescription,
-	useToast,
-} from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle, useToast } from '@chakra-ui/react';
 
 interface TicTacToePageProps {
 	socket: Socket;
@@ -62,8 +56,8 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	useEffect(() => {
 		window.onbeforeunload = function () {
 			window.setTimeout(function () {
-				window.location.href = '/';
-				socket.emit<TicTacSockets>('removeRoom');
+				navigate('/games');
+				socket.emit<TicTacSockets>('removeRoom', { roomId });
 			}, 0);
 			window.onbeforeunload = null;
 		};
@@ -72,7 +66,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 		window.addEventListener('popstate', function () {
 			window.history.pushState(null, document.title, this.window.location.href);
 		});
-	});
+	}, []);
 
 	// User Entered
 	useEffect(() => {
@@ -87,6 +81,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 		socket
 			.off<TicTacSockets>('usersEntered')
 			.on<TicTacSockets>('usersEntered', (data: TicGameDetails) => {
+				console.log('usersEntered Data =>', data);
 				if (data.user1.userId !== user.userId) {
 					setOponentName(data.user1.username);
 				} else {
@@ -114,13 +109,14 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 		});
 
 		socket.on<TicTacSockets>('win', (payload: WinPayloadProps) => {
+			console.log('WINNER WINNER WINNER => ', payload);
 			setWinPattern(payload.pattern);
 			setGameEnd(true);
 			if (payload.userId === user.userId) {
 				setWinner('You Won!');
 				setMyScroe(myScore + 1);
 			} else {
-				setWinner(`The winner is ${payload.username}`);
+				setWinner(`You lost!, ${payload.username} won!`);
 				setOponentScore(oponentScore + 1);
 			}
 			setWinnerId(payload.userId);
@@ -133,7 +129,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 			setUserTurn(false);
 			setLoadingValue('');
 		});
-	});
+	}, []);
 
 	// Rematch / RemoveRoom
 	useEffect(() => {
@@ -147,7 +143,8 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 			setGameEnd(false);
 		});
 
-		socket.on<TicTacSockets>('removeRoom', () => {
+		socket.on<TicTacSockets>('removeRoom', (payload) => {
+			console.log('removeRoom', payload);
 			setUserJoined(false);
 			setLeaveRoom(true);
 		});
@@ -156,7 +153,8 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	// UserLeave
 	useEffect(() => {
 		socket.on<TicTacSockets>('userLeave', (payload: any) => {
-			console.log('userLeave', payload);
+			console.log('userLeave =>', payload);
+			setLoadingValue('');
 			toast({
 				title: `${oponentName} left the game`,
 				status: 'warning',
@@ -167,7 +165,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 			setLoading(true);
 			setUserJoined(false);
 		});
-	});
+	}, []);
 
 	function handleClose() {
 		socket.emit<TicTacSockets>('removeRoom', { roomId });
@@ -176,7 +174,9 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	}
 
 	function handleMoveClick(m: number) {
-		if (loading && !userJoined) return;
+		if (loading && !userJoined) {
+			return;
+		}
 		socket.emit<TicTacSockets>('move', {
 			move: m,
 			roomId,
@@ -224,11 +224,13 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						rounded="md"
 					>
 						<AlertIcon />
-						<AlertTitle>Waiting for oponent response!</AlertTitle>
+						<AlertTitle className="animate-pulse">
+							{loadingValue ? loadingValue : 'Waiting for oponent response!'}
+						</AlertTitle>
 					</Alert>
 				) : null}
 
-				{userTurn ? <div className="wait"></div> : null}
+				{userTurn && loadingValue ? <div className="wait"></div> : null}
 
 				<div className="grid-container">
 					{/* Move 1 */}
@@ -312,7 +314,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 								: `grid-item bottom`
 						}
 					>
-						{moves[6].move !== -1 ? (moves[6].myMove ? '0' : 'X6') : null}
+						{moves[6].move !== -1 ? (moves[6].myMove ? '0' : 'X') : null}
 					</div>
 
 					{/* Move 7 */}
@@ -356,19 +358,21 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 					</div>
 				</div>
 
-				<div className="flex items-center gap-3 mt-7">
-					<form onSubmit={handleClose}>
-						<button className="closeBtn">Close</button>
-					</form>
-					{!leaveRoom ? (
-						<button
-							onClick={handlePlayAgain}
-							className="playAgain"
-						>
-							Play Again
-						</button>
-					) : null}
-				</div>
+				{gameEnd ? (
+					<div className="flex items-center gap-3 my-7">
+						<form onSubmit={handleClose}>
+							<button className="closeBtn">Close</button>
+						</form>
+						{!leaveRoom ? (
+							<button
+								onClick={handlePlayAgain}
+								className="playAgain"
+							>
+								Play Again
+							</button>
+						) : null}
+					</div>
+				) : null}
 			</div>
 		</div>
 	);
