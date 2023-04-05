@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
+import TicHeader from '../components/tic-tac/tic-header';
+import TicScore from '../components/tic-tac/tic-score';
 import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
 import { useAppSelector } from '../store/hook';
@@ -11,6 +13,13 @@ import {
 	WinPayloadProps,
 } from '../types';
 import { moves } from '../util/constants';
+import {
+	Alert,
+	AlertIcon,
+	AlertTitle,
+	AlertDescription,
+	useToast,
+} from '@chakra-ui/react';
 
 interface TicTacToePageProps {
 	socket: Socket;
@@ -19,9 +28,10 @@ interface TicTacToePageProps {
 const loadingText: string = 'waiting for another player...';
 
 const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
+	const navigate = useNavigate();
+	const toast = useToast();
 	const { user: loggedInUser } = ChatState();
 	const { user } = useAppSelector((state) => state.ticUser);
-	console.log('user', user);
 	const params = useParams<{ roomId?: string }>();
 
 	const [roomId, setRoomId] = useState<string>('');
@@ -147,8 +157,13 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	useEffect(() => {
 		socket.on<TicTacSockets>('userLeave', (payload: any) => {
 			console.log('userLeave', payload);
-			setLoadingValue('');
-			setLoadingValue(`${oponentName} left the game`);
+			toast({
+				title: `${oponentName} left the game`,
+				status: 'warning',
+				duration: 5000,
+				isClosable: true,
+				position: 'bottom',
+			});
 			setLoading(true);
 			setUserJoined(false);
 		});
@@ -156,10 +171,11 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 
 	function handleClose() {
 		socket.emit<TicTacSockets>('removeRoom', { roomId });
+		navigate('/games');
 		return true;
 	}
 
-	function handleMoveClick(m: any) {
+	function handleMoveClick(m: number) {
 		if (loading && !userJoined) return;
 		socket.emit<TicTacSockets>('move', {
 			move: m,
@@ -177,7 +193,180 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 		socket.emit<TicTacSockets>('reMatch', { roomId });
 	}
 
-	return <div>{loggedInUser && <SlideDrawer />}</div>;
+	return (
+		<div>
+			{loggedInUser && <SlideDrawer />}
+			<div className="mainWrapper">
+				<TicHeader roomId={roomId} />
+				<TicScore
+					myScore={myScore}
+					oponentName={oponentName}
+					oponentScore={oponentScore}
+				/>
+
+				{winner && winner !== 'Draw !' && winner.length > 0 ? (
+					<div>
+						<h3>{winner}</h3>
+						<div className={`line p${winPattern}`}></div>
+					</div>
+				) : null}
+
+				{userTurn ? (
+					<Alert
+						status="info"
+						width={460}
+						mt={7}
+						rounded="md"
+					>
+						<AlertIcon />
+						<AlertTitle>Waiting for oponent response!</AlertTitle>
+					</Alert>
+				) : null}
+
+				{userTurn ? <div className="wait"></div> : null}
+
+				<div className="grid-container">
+					{/* Move 1 */}
+					<div
+						onClick={() => {
+							moves[1].move === -1 && !winner && handleMoveClick(1);
+						}}
+						className={
+							moves[1].move === -1
+								? `grid-item-hover grid-item bottom right`
+								: `grid-item bottom right`
+						}
+					>
+						{moves[1].move !== -1 ? (moves[1].myMove ? '0' : 'X') : null}
+					</div>
+
+					{/* Move 2 */}
+					<div
+						onClick={() => {
+							moves[2].move === -1 && !winner && handleMoveClick(2);
+						}}
+						className={
+							moves[2].move === -1
+								? `grid-item-hover grid-item bottom right`
+								: 'grid-item bottom right'
+						}
+					>
+						{moves[2].move !== -1 ? (moves[2].myMove ? '0' : 'X') : null}
+					</div>
+
+					{/* Move 3 */}
+					<div
+						onClick={() => {
+							moves[3].move === -1 && !winner && handleMoveClick(3);
+						}}
+						className={
+							moves[3].move === -1
+								? `grid-item-hover grid-item bottom`
+								: ` grid-item bottom`
+						}
+					>
+						{moves[3].move !== -1 ? (moves[3].myMove ? '0' : 'X') : null}
+					</div>
+
+					{/* Move 4 */}
+					<div
+						onClick={() => {
+							moves[4].move === -1 && !winner && handleMoveClick(4);
+						}}
+						className={
+							moves[4].move === -1
+								? `grid-item-hover grid-item bottom right`
+								: `grid-item bottom right`
+						}
+					>
+						{moves[4].move !== -1 ? (moves[4].myMove ? '0' : 'X') : null}
+					</div>
+
+					{/* Move 5 */}
+					<div
+						onClick={() => {
+							moves[5].move === -1 && !winner && handleMoveClick(5);
+						}}
+						className={
+							moves[5].move === -1
+								? `grid-item-hover grid-item bottom right`
+								: `grid-item bottom right`
+						}
+					>
+						{moves[5].move === -1 ? (moves[5].myMove ? '0' : 'X') : null}
+					</div>
+
+					{/* Move 6 */}
+					<div
+						onClick={() => {
+							moves[6].move === -1 && !winner && handleMoveClick(6);
+						}}
+						className={
+							moves[6].move === -1
+								? `grid-item-hover grid-item bottom`
+								: `grid-item bottom`
+						}
+					>
+						{moves[6].move !== -1 ? (moves[6].myMove ? '0' : 'X6') : null}
+					</div>
+
+					{/* Move 7 */}
+					<div
+						onClick={() => {
+							moves[7].move === -1 && !winner && handleMoveClick(7);
+						}}
+						className={
+							moves[7].move === -1
+								? `grid-item-hover grid-item right`
+								: `grid-item right`
+						}
+					>
+						{moves[7].move !== -1 ? (moves[7].myMove ? '0' : 'X') : null}
+					</div>
+
+					{/* Move 8 */}
+					<div
+						onClick={() => {
+							moves[8].move === -1 && !winner && handleMoveClick(8);
+						}}
+						className={
+							moves[8].move === -1
+								? `grid-item-hover grid-item right`
+								: `grid-item right`
+						}
+					>
+						{moves[8].move !== -1 ? (moves[8].myMove ? '0' : 'X') : null}
+					</div>
+
+					{/* Move 9 */}
+					<div
+						onClick={() => {
+							moves[9].move === -1 && !winner && handleMoveClick(8);
+						}}
+						className={
+							moves[9].move === -1 ? `grid-item-hover grid-item` : `grid-item`
+						}
+					>
+						{moves[9].move !== -1 ? (moves[9].myMove ? '0' : 'X') : null}
+					</div>
+				</div>
+
+				<div className="flex items-center gap-3 mt-7">
+					<form onSubmit={handleClose}>
+						<button className="closeBtn">Close</button>
+					</form>
+					{!leaveRoom ? (
+						<button
+							onClick={handlePlayAgain}
+							className="playAgain"
+						>
+							Play Again
+						</button>
+					) : null}
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default TicTacToePage;
