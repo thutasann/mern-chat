@@ -1,7 +1,7 @@
 import { TicGameDetails, TicUsers } from '../types';
 
-let users: TicUsers[] = [];
-let gameDetails: TicGameDetails[] = [];
+const users: TicUsers[] = [];
+const gameDetails: TicGameDetails[] = [];
 
 /**
  * Add User
@@ -45,8 +45,10 @@ export function UserLeave(id: string) {
  */
 export function NewGame(room: any, userId: any, username: any) {
 	let isRoomExist = gameDetails.find((item) => item.room === room);
+	console.log('isRoomExist', isRoomExist);
 	if (!isRoomExist) {
-		const newGameDetail: TicGameDetails = {
+		let newGameDetail: TicGameDetails;
+		newGameDetail = {
 			room,
 			user1: {
 				userId,
@@ -84,7 +86,10 @@ export function GetGameDetail(room: any) {
 	return gameDetails.find((item) => item.room === room);
 }
 
-export const WinPatterns = [
+/**
+ * WinPatterns
+ */
+export const WinPatterns: any[] = [
 	[1, 2, 3],
 	[4, 5, 6],
 	[7, 8, 9],
@@ -107,12 +112,12 @@ export function CheckWin(room: any, userId: any) {
 	let curr_user_moves: any;
 	let winCount;
 
-	if (gameDetail?.user1.userId == userId) {
+	if (gameDetail.user1.userId == userId) {
 		user = 1;
-		curr_user_moves = gameDetail?.user1.moves;
+		curr_user_moves = gameDetail.user1.moves;
 	} else {
 		user = 2;
-		curr_user_moves = gameDetail?.user2.moves;
+		curr_user_moves = gameDetail.user2.moves;
 	}
 
 	let pattern: any;
@@ -129,7 +134,7 @@ export function CheckWin(room: any, userId: any) {
 		if (isWin) {
 			pattern = i;
 			if (user === 1) {
-				gameDetail.user1.winCount = gameDetail?.user1.winCount + 1;
+				gameDetail.user1.winCount = gameDetail.user1.winCount + 1;
 				winCount = gameDetail.user1.winCount;
 			} else {
 				gameDetail.user2.winCount = gameDetail.user2.winCount + 1;

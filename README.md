@@ -4,10 +4,18 @@ This is the Chat + Game Application crafted with MERN Stack & Socket.
 
 [**Live Demo →**](https://mern-t-chat.vercel.app/)
 
+## Onboarding and Games Screen
+
 | ![Demo](/assets/demo.png) | ![Game](/assets/game.png) |
 | ------------------------- | ------------------------- |
 
+## Canvas Drawing
+
 ![Canvas Drawing](/assets/canvas.png)
+
+## Tic-Tac-Toe Game
+
+![TicTacToe Game](/assets/tic-tac-toe.png)
 
 ## CORE FEATURES
 
