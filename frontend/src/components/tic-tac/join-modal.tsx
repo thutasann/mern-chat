@@ -38,10 +38,15 @@ function JoinModal({ joinModal, setJoinModal, socket }: Props) {
 	};
 
 	useEffect(() => {
+		setJoined(false);
 		if (!userId) {
 			navigate('/games');
 		}
 		socket.on<TicTacSockets>('message', (payload) => {
+			console.log('payload', payload);
+			if (payload === 'Welcome to Mern TIC') {
+				setJoined(true);
+			}
 			if (payload.error) {
 				toast({
 					title: `${payload.error || 'Something went Wrong'}`,
@@ -50,11 +55,9 @@ function JoinModal({ joinModal, setJoinModal, socket }: Props) {
 					isClosable: true,
 					position: 'bottom',
 				});
-			} else {
-				setJoined(true);
 			}
 		});
-	}, [userId]);
+	}, [userId, socket]);
 
 	const closeModal = () => {
 		setJoinModal(false);
