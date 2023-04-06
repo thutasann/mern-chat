@@ -34,7 +34,6 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	const [userJoined, setUserJoined] = useState<boolean>(false);
 	const [userTurn, setUserTurn] = useState<boolean>(false);
 	const [oponentName, setOponentName] = useState<string>('');
-	console.log('oponentName', oponentName);
 	const [move, setMove] = useState<MoveProps>({
 		move: 0,
 		myMove: false,
@@ -57,7 +56,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	function handleMoveClick(m: number) {
 		if (loading && !userJoined) {
 			toast({
-				title: `cannot click!`,
+				title: `Cannot Click Right Now!`,
 				status: 'error',
 				duration: 5000,
 				isClosable: true,
@@ -128,6 +127,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	// Move / Win / Draw
 	useEffect(() => {
 		socket.on<TicTacSockets>('move', (payload: MoveProps) => {
+			console.log('move payload =>', payload);
 			setMove({
 				move: payload.move,
 				myMove: payload.userId === user.userId,
@@ -143,7 +143,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 		});
 
 		socket.on<TicTacSockets>('win', (payload: WinPayloadProps) => {
-			console.log('WINNER WINNER WINNER => ', payload);
+			console.log('win payload =>', payload);
 			setWinPattern(payload.pattern);
 			setGameEnd(true);
 			if (payload.userId === user.userId) {
@@ -173,12 +173,13 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 				m.myMove = false;
 			});
 			setWinner('');
+
 			setUserTurn(user.userId !== winnerId);
 			setGameEnd(false);
 		});
 
 		socket.on<TicTacSockets>('removeRoom', (payload) => {
-			console.log('removeRoom', payload);
+			console.log('removeRoom =>', payload);
 			setUserJoined(false);
 			setLeaveRoom(true);
 		});
@@ -191,7 +192,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 			if (Object.keys(payload).length) {
 				setLoadingValue('');
 				toast({
-					title: `${oponentName} left the game`,
+					title: `${oponentName || 'Oponent'} left the game`,
 					status: 'warning',
 					duration: 5000,
 					isClosable: true,
