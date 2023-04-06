@@ -19,8 +19,6 @@ interface TicTacToePageProps {
 	socket: Socket;
 }
 
-const loadingText: string = 'waiting for another player...';
-
 const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	const navigate = useNavigate();
 	const toast = useToast();
@@ -30,10 +28,13 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 
 	const [roomId, setRoomId] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
-	const [loadingValue, setLoadingValue] = useState<string>(loadingText);
+	const [loadingValue, setLoadingValue] = useState<string>(
+		'waiting for another player...',
+	);
 	const [userJoined, setUserJoined] = useState<boolean>(false);
 	const [userTurn, setUserTurn] = useState<boolean>(false);
 	const [oponentName, setOponentName] = useState<string>('');
+	console.log('oponentName', oponentName);
 	const [move, setMove] = useState<MoveProps>({
 		move: 0,
 		myMove: false,
@@ -46,6 +47,62 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	const [leaveRoom, setLeaveRoom] = useState<boolean>(false);
 	const [myScore, setMyScroe] = useState<number>(0);
 	const [oponentScore, setOponentScore] = useState<number>(0);
+
+	function handleClose() {
+		socket.emit<TicTacSockets>('removeRoom', { roomId });
+		navigate('/games');
+		return true;
+	}
+
+	function handleMoveClick(m: number) {
+		if (loading && !userJoined) {
+			toast({
+				title: `cannot click!`,
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+				position: 'bottom',
+			});
+			return;
+		}
+		socket.emit<TicTacSockets>('move', {
+			move: m,
+			roomId,
+			userId: user.userId,
+		});
+
+		moves[m].move = 1;
+		moves[m].myMove = true;
+
+		setUserTurn(true);
+	}
+
+	function handlePlayAgain() {
+		socket.emit<TicTacSockets>('reMatch', { roomId });
+	}
+
+	// User Entered
+	useEffect(() => {
+		if (!user) {
+			navigate('/games');
+		}
+		socket.emit<TicTacSockets>('usersEntered', {
+			roomId: params.roomId,
+			userId: user.userId,
+		});
+
+		socket
+			.off<TicTacSockets>('usersEntered')
+			.on<TicTacSockets>('usersEntered', (data: TicGameDetails) => {
+				console.log('usersEntered Data =>', data);
+				if (data.user1.userId !== user.userId) {
+					setOponentName(data.user1.username);
+				} else {
+					setOponentName(data.user2.username);
+				}
+				setLoading(false);
+			});
+	}, [socket, user, params.roomId]);
 
 	// Setting RoomID
 	useEffect(() => {
@@ -67,29 +124,6 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 			window.history.pushState(null, document.title, this.window.location.href);
 		});
 	}, []);
-
-	// User Entered
-	useEffect(() => {
-		if (!user) {
-			window.location.href = '/games';
-		}
-		socket.emit<TicTacSockets>('usersEntered', {
-			roomId: params.roomId,
-			userId: user.userId,
-		});
-
-		socket
-			.off<TicTacSockets>('usersEntered')
-			.on<TicTacSockets>('usersEntered', (data: TicGameDetails) => {
-				console.log('usersEntered Data =>', data);
-				if (data.user1.userId !== user.userId) {
-					setOponentName(data.user1.username);
-				} else {
-					setOponentName(data.user2.username);
-				}
-				setLoading(false);
-			});
-	}, [socket, user, params.roomId]);
 
 	// Move / Win / Draw
 	useEffect(() => {
@@ -154,44 +188,20 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	useEffect(() => {
 		socket.on<TicTacSockets>('userLeave', (payload: any) => {
 			console.log('userLeave =>', payload);
-			setLoadingValue('');
-			toast({
-				title: `${oponentName} left the game`,
-				status: 'warning',
-				duration: 5000,
-				isClosable: true,
-				position: 'bottom',
-			});
-			setLoading(true);
-			setUserJoined(false);
+			if (Object.keys(payload).length) {
+				setLoadingValue('');
+				toast({
+					title: `${oponentName} left the game`,
+					status: 'warning',
+					duration: 5000,
+					isClosable: true,
+					position: 'bottom',
+				});
+				setLoading(false);
+				setUserJoined(false);
+			}
 		});
-	}, []);
-
-	function handleClose() {
-		socket.emit<TicTacSockets>('removeRoom', { roomId });
-		navigate('/games');
-		return true;
-	}
-
-	function handleMoveClick(m: number) {
-		if (loading && !userJoined) {
-			return;
-		}
-		socket.emit<TicTacSockets>('move', {
-			move: m,
-			roomId,
-			userId: user.userId,
-		});
-
-		moves[m].move = 1;
-		moves[m].myMove = true;
-
-		setUserTurn(true);
-	}
-
-	function handlePlayAgain() {
-		socket.emit<TicTacSockets>('reMatch', { roomId });
-	}
+	});
 
 	return (
 		<div>
@@ -238,12 +248,15 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						rounded="md"
 					>
 						<AlertIcon />
-						<AlertTitle className="animate-pulse">{loadingValue || "This is loading value"}</AlertTitle>
+						<AlertTitle className="animate-pulse">
+							{loadingValue || 'This is loading value'}
+						</AlertTitle>
 					</Alert>
 				) : null}
 
 				{userTurn && loadingValue ? <div className="wait" /> : null}
 
+				{/* Game Container */}
 				<div className="grid-container">
 					<div
 						onClick={

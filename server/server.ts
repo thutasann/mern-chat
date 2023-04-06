@@ -229,12 +229,12 @@ io.on('connection', (socket) => {
 	});
 
 	// Move (TicTacToe)
-	socket.on<TicTacSockets>('move', (payload: JoinRoomPayload) => {
+	socket.on<TicTacSockets>('move', async (payload: JoinRoomPayload) => {
 		const current_room = GetGameDetail(payload.roomId)!;
 		let current_username;
 		let moveCount;
 
-		if (!current_room?.user1.userId || !current_room.user2.userId) {
+		if (!current_room.user1.userId || !current_room.user2.userId) {
 			io.in(payload.roomId).emit<TicTacSockets>('userLeave', {});
 		}
 
