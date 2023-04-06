@@ -10,6 +10,7 @@ const initialState: TicUserProps = {
 
 export const ticUserReducer = createReducer(initialState, {
 	AddUser: (state, action) => {
+		console.log('action.payload', action.payload);
 		state.user = action.payload;
 	},
 });

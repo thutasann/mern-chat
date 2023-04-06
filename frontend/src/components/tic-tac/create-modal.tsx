@@ -42,12 +42,8 @@ function CreateModal({ createModal, setCreateModal, socket }: Props) {
 	}, [socket]);
 
 	useEffect(() => {
-		socket.on<TicTacSockets>('message', (payload) => {
-			console.log('payload', payload);
-		});
-		socket.on<TicTacSockets>('message', (message) => {
-			console.log('message', message);
-		});
+		socket.on<TicTacSockets>('message', (payload) => {});
+		socket.on<TicTacSockets>('message', (message) => {});
 	});
 
 	return (
