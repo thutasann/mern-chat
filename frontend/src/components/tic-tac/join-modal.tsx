@@ -135,12 +135,13 @@ function JoinModal({ joinModal, setJoinModal, socket }: Props) {
 												onClick={hanndleClick}
 												disabled={joined}
 												variant="solid"
-												background={'teal.600'}
+												background={joined ? 'gray.600' : 'teal.600'}
 												color="white"
+												cursor={joined ? 'not-allowed' : 'pointer'}
 												ml={1}
 												borderLeftRadius={0}
 												_hover={{
-													backgroundColor: 'teal',
+													backgroundColor: joined ? '' : 'teal',
 												}}
 											>
 												{joined ? 'Joined' : 'join'}

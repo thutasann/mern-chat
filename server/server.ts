@@ -208,6 +208,7 @@ io.on('connection', (socket) => {
 
 	// Users Entered (TicTacToe)
 	socket.on<TicTacSockets>('usersEntered', (payload: JoinRoomPayload) => {
+		console.log('Users Entered');
 		const current_game = GetGameDetail(payload.roomId);
 
 		if (!current_game) {
@@ -269,7 +270,7 @@ io.on('connection', (socket) => {
 			}
 
 			if (
-				current_room.user1.moves.length + current_room.user2.moves.length >=
+				current_room?.user1.moves.length + current_room.user2.moves.length >=
 				9
 			) {
 				io.in(payload.roomId).emit<TicTacSockets>('draw', {
