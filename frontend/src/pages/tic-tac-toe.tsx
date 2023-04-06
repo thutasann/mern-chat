@@ -238,18 +238,19 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						rounded="md"
 					>
 						<AlertIcon />
-						<AlertTitle className="animate-pulse">{loadingValue}</AlertTitle>
+						<AlertTitle className="animate-pulse">{loadingValue || "This is loading value"}</AlertTitle>
 					</Alert>
 				) : null}
 
 				{userTurn && loadingValue ? <div className="wait" /> : null}
 
 				<div className="grid-container">
-					{/* Move 1 */}
 					<div
-						onClick={() => {
-							moves[1].move === -1 && !winner && handleMoveClick(1);
-						}}
+						onClick={
+							moves[1].move === -1 && !winner
+								? () => handleMoveClick(1)
+								: () => {}
+						}
 						className={
 							moves[1].move === -1
 								? `grid-item-hover grid-item bottom right`
@@ -259,11 +260,12 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						{moves[1].move !== -1 ? (moves[1].myMove ? '0' : 'X') : null}
 					</div>
 
-					{/* Move 2 */}
 					<div
-						onClick={() => {
-							moves[2].move === -1 && !winner && handleMoveClick(2);
-						}}
+						onClick={
+							moves[2].move === -1 && !winner
+								? () => handleMoveClick(2)
+								: () => {}
+						}
 						className={
 							moves[2].move === -1
 								? `grid-item-hover grid-item bottom right`
@@ -273,11 +275,12 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						{moves[2].move !== -1 ? (moves[2].myMove ? '0' : 'X') : null}
 					</div>
 
-					{/* Move 3 */}
 					<div
-						onClick={() => {
-							moves[3].move === -1 && !winner && handleMoveClick(3);
-						}}
+						onClick={
+							moves[3].move === -1 && !winner
+								? () => handleMoveClick(3)
+								: () => {}
+						}
 						className={
 							moves[3].move === -1
 								? `grid-item-hover grid-item bottom`
@@ -287,11 +290,12 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						{moves[3].move !== -1 ? (moves[3].myMove ? '0' : 'X') : null}
 					</div>
 
-					{/* Move 4 */}
 					<div
-						onClick={() => {
-							moves[4].move === -1 && !winner && handleMoveClick(4);
-						}}
+						onClick={
+							moves[4].move === -1 && !winner
+								? () => handleMoveClick(4)
+								: () => {}
+						}
 						className={
 							moves[4].move === -1
 								? `grid-item-hover grid-item bottom right`
@@ -301,25 +305,27 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						{moves[4].move !== -1 ? (moves[4].myMove ? '0' : 'X') : null}
 					</div>
 
-					{/* Move 5 */}
 					<div
-						onClick={() => {
-							moves[5].move === -1 && !winner && handleMoveClick(5);
-						}}
+						onClick={
+							moves[5].move === -1 && !winner
+								? () => handleMoveClick(5)
+								: () => {}
+						}
 						className={
 							moves[5].move === -1
 								? `grid-item-hover grid-item bottom right`
 								: `grid-item bottom right`
 						}
 					>
-						{moves[5].move === -1 ? (moves[5].myMove ? '0' : 'X') : null}
+						{moves[5].move !== -1 ? (moves[5].myMove ? '0' : 'X') : null}
 					</div>
 
-					{/* Move 6 */}
 					<div
-						onClick={() => {
-							moves[6].move === -1 && !winner && handleMoveClick(6);
-						}}
+						onClick={
+							moves[6].move === -1 && !winner
+								? () => handleMoveClick(6)
+								: () => {}
+						}
 						className={
 							moves[6].move === -1
 								? `grid-item-hover grid-item bottom`
@@ -329,11 +335,12 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						{moves[6].move !== -1 ? (moves[6].myMove ? '0' : 'X') : null}
 					</div>
 
-					{/* Move 7 */}
 					<div
-						onClick={() => {
-							moves[7].move === -1 && !winner && handleMoveClick(7);
-						}}
+						onClick={
+							moves[7].move === -1 && !winner
+								? () => handleMoveClick(7)
+								: () => {}
+						}
 						className={
 							moves[7].move === -1
 								? `grid-item-hover grid-item right`
@@ -343,11 +350,12 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						{moves[7].move !== -1 ? (moves[7].myMove ? '0' : 'X') : null}
 					</div>
 
-					{/* Move 8 */}
 					<div
-						onClick={() => {
-							moves[8].move === -1 && !winner && handleMoveClick(8);
-						}}
+						onClick={
+							moves[8].move === -1 && !winner
+								? () => handleMoveClick(8)
+								: () => {}
+						}
 						className={
 							moves[8].move === -1
 								? `grid-item-hover grid-item right`
@@ -357,11 +365,12 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 						{moves[8].move !== -1 ? (moves[8].myMove ? '0' : 'X') : null}
 					</div>
 
-					{/* Move 9 */}
 					<div
-						onClick={() => {
-							moves[9].move === -1 && !winner && handleMoveClick(8);
-						}}
+						onClick={
+							moves[9].move === -1 && !winner
+								? () => handleMoveClick(9)
+								: () => {}
+						}
 						className={
 							moves[9].move === -1 ? `grid-item-hover grid-item` : `grid-item`
 						}
