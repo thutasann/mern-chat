@@ -11,6 +11,7 @@ const TicScore: React.FC<ITicScore> = ({
 	oponentName,
 	oponentScore,
 }) => {
+	console.log('oponentName', oponentName);
 	return (
 		<div className="flex items-center gap-5 mt-4">
 			<div className="score bg-gradient-to-tr from-teal-400 to-teal-600">

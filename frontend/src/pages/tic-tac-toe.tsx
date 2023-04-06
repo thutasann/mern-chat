@@ -31,6 +31,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 	const [loadingValue, setLoadingValue] = useState<string>(
 		'waiting for another player...',
 	);
+	console.log('loadingValue', loadingValue);
 	const [userJoined, setUserJoined] = useState<boolean>(false);
 	const [userTurn, setUserTurn] = useState<boolean>(false);
 	const [oponentName, setOponentName] = useState<string>('');
@@ -82,6 +83,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 
 	// User Entered
 	useEffect(() => {
+		setLoadingValue('waiting for another player...');
 		if (!user) {
 			navigate('/games');
 		}
@@ -94,6 +96,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 			.off<TicTacSockets>('usersEntered')
 			.on<TicTacSockets>('usersEntered', (data: TicGameDetails) => {
 				console.log('usersEntered Data =>', data);
+				setLoadingValue('');
 				if (data.user1.userId !== user.userId) {
 					setOponentName(data.user1.username);
 				} else {
@@ -198,11 +201,11 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 					isClosable: true,
 					position: 'bottom',
 				});
-				setLoading(false);
+				setLoading(true);
 				setUserJoined(false);
 			}
 		});
-	});
+	}, []);
 
 	return (
 		<div>
@@ -227,6 +230,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 					</Alert>
 				) : null}
 
+				{/* waiting another oponent */}
 				{userTurn ? (
 					<Alert
 						status="info"
@@ -241,6 +245,7 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 					</Alert>
 				) : null}
 
+				{/* Loading Value */}
 				{loading ? (
 					<Alert
 						status="info"
@@ -255,7 +260,10 @@ const TicTacToePage: React.FC<TicTacToePageProps> = ({ socket }) => {
 					</Alert>
 				) : null}
 
-				{userTurn && loadingValue ? <div className="wait" /> : null}
+				{/* cursor not allowed */}
+				{(userTurn && loadingValue) || loading || gameEnd ? (
+					<div className="wait" />
+				) : null}
 
 				{/* Game Container */}
 				<div className="grid-container">
