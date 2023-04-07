@@ -27,6 +27,8 @@ import {
 	RemoveRoom,
 	UserLeft,
 } from './utils/tictactoe';
+import { TypeRaceGame } from './models/type-race-game/player-model';
+import { getQuoteData } from './utils/quotable-api';
 
 dotenv.config();
 connectDB();
