@@ -11,6 +11,7 @@ import Forms from '../components/canvas-forms/forms';
 import { uuid } from '../util';
 import TicTacForm from '../components/tic-tac/form';
 import { Socket } from 'socket.io-client';
+import TypeRaceForm from '../components/tic-tac/type-race-form';
 
 const gameTypes: GamTypesBtns[] = [
 	{
@@ -19,14 +20,14 @@ const gameTypes: GamTypesBtns[] = [
 		color: 'teal.200',
 	},
 	{
+		type: 'type-race',
+		name: 'Typing Race',
+		color: 'blue.300',
+	},
+	{
 		type: 'tic',
 		name: 'Tic Tac Toe',
 		color: 'red.200',
-	},
-	{
-		type: 'type-race',
-		name: 'Type Race',
-		color: 'blue.300',
 	},
 ];
 
@@ -75,7 +76,7 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 						{gameTypes.map((game) => (
 							<Center
 								key={game.type}
-								w="125px"
+								w="140px"
 								h="50px"
 								bg={game.color}
 								className="gameTypeBtn"
@@ -113,7 +114,7 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 									? 'Tic Tac Toe'
 									: type === 'canvas'
 									? 'Canvas Drawing'
-									: 'Type Race'}
+									: 'Typing Race'}
 							</Text>
 						</Box>
 
@@ -127,6 +128,7 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 									setUser={setUser}
 								/>
 							)}
+							{type === 'type-race' && <TypeRaceForm />}
 						</div>
 					</Stack>
 				</Box>

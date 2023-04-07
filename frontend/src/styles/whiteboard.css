@@ -22,7 +22,7 @@
 }
 
 .inputGroup {
-	@apply mt-5 flex items-center w-full;
+	@apply mt-3 flex items-center w-full;
 }
 
 input:read-only {
