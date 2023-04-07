@@ -1,13 +1,5 @@
 .gameTypeBtn {
-	border-radius: 12px;
-	color: white;
-	font-size: 18px;
-	cursor: pointer;
-	transition: all 0.2s ease-in-out;
-}
-
-.gameTypeBtn:hover {
-	opacity: 80%;
+	@apply rounded-[9px] text-white text-[14px] md:text-[18px] cursor-pointer transition-all duration-[0.2s] ease-in-out hover:opacity-80 mx-2;
 }
 
 .form {

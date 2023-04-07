@@ -63,24 +63,29 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 					height="100vh"
 				>
 					{/* Game Type Buttons */}
-					<Center>
-						<Wrap mt={4}>
-							{gameTypes.map((game) => (
-								<WrapItem key={game.type}>
-									<Center
-										w="150px"
-										h="50px"
-										bg={game.color}
-										className="gameTypeBtn"
-										onClick={() => setType(game.type)}
-										fontWeight={type === game.type ? '800' : 'medium'}
-									>
-										{game.name}
-									</Center>
-								</WrapItem>
-							))}
-						</Wrap>
-					</Center>
+					<Box
+						mt={4}
+						display="flex"
+						rowGap={3}
+						flexDir="row"
+						flexWrap="wrap"
+						alignItems="center"
+						justifyContent="center"
+					>
+						{gameTypes.map((game) => (
+							<Center
+								key={game.type}
+								w="125px"
+								h="50px"
+								bg={game.color}
+								className="gameTypeBtn"
+								onClick={() => setType(game.type)}
+								fontWeight={type === game.type ? '800' : 'medium'}
+							>
+								{game.name}
+							</Center>
+						))}
+					</Box>
 
 					{/* Game Form */}
 					<Stack
