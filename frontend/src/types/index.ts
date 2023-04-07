@@ -67,7 +67,7 @@ export type SocketNames =
 	| 'isDraw'
 	| 'draw';
 
-export type GameTypes = 'canvas' | 'tic';
+export type GameTypes = 'canvas' | 'tic' | 'type-race';
 
 export interface GamTypesBtns {
 	type: GameTypes;

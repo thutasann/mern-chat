@@ -5,6 +5,7 @@ import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
 import tictacAnimation from '../lottie/game.json';
 import canvasDrawAnimation from '../lottie/canvas.json';
+import typeAnimation from '../lottie/type.json';
 import { GameTypes, GamTypesBtns } from '../types';
 import Forms from '../components/canvas-forms/forms';
 import { uuid } from '../util';
@@ -22,6 +23,11 @@ const gameTypes: GamTypesBtns[] = [
 		name: 'Tic Tac Toe',
 		color: 'red.200',
 	},
+	{
+		type: 'type-race',
+		name: 'Type Race',
+		color: 'blue.300',
+	},
 ];
 
 interface GamePageProps {
@@ -36,7 +42,12 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 	const defaultOptions = {
 		loop: true,
 		autoplay: true,
-		animationData: type === 'tic' ? tictacAnimation : canvasDrawAnimation,
+		animationData:
+			type === 'tic'
+				? tictacAnimation
+				: type === 'canvas'
+				? canvasDrawAnimation
+				: typeAnimation,
 		rendererSettings: {
 			preserveAspectRatio: 'xMidYMid slice',
 		},
@@ -62,9 +73,7 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 										bg={game.color}
 										className="gameTypeBtn"
 										onClick={() => setType(game.type)}
-										style={{
-											fontWeight: type === game.type ? 600 : 500,
-										}}
+										fontWeight={type === game.type ? '800' : 'medium'}
 									>
 										{game.name}
 									</Center>
@@ -75,6 +84,7 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 
 					{/* Game Form */}
 					<Stack
+						mt={6}
 						display={'flex'}
 						flexDirection="column"
 						alignItems={'center'}
@@ -88,12 +98,17 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 								isClickToPauseDisabled
 							/>
 							<Text
+								mt={6}
 								fontSize={23}
 								fontWeight={600}
 								textAlign="center"
 								className="text-slate-700"
 							>
-								{type === 'tic' ? 'Tic Tac Toe' : 'Canvas Drawing'}
+								{type === 'tic'
+									? 'Tic Tac Toe'
+									: type === 'canvas'
+									? 'Canvas Drawing'
+									: 'Type Race'}
 							</Text>
 						</Box>
 
