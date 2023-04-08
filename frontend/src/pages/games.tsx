@@ -128,7 +128,7 @@ const GamePage: React.FC<GamePageProps> = ({ socket, setUser }) => {
 									setUser={setUser}
 								/>
 							)}
-							{type === 'type-race' && <TypeRaceForm />}
+							{type === 'type-race' && <TypeRaceForm socket={socket} />}
 						</div>
 					</Stack>
 				</Box>

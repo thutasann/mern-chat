@@ -76,11 +76,6 @@ const io: Server = new Server(server, {
 
 let roomIdGlobal;
 
-interface lol {
-	move: any;
-	userId: any;
-}
-
 io.on('connection', (socket) => {
 	// setup
 	socket.on<SocketNames>('setup', (userData: UserProps) => {

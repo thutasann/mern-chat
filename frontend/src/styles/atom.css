@@ -30,7 +30,7 @@ button:disabled {
 }
 
 .chooseRoom {
-	@apply mt-5  text-white hover:text-white w-full py-3 px-4 rounded-full transition-all duration-300 ease-out text-[16px] hover:bg-slate-700 border border-slate-800 font-[700];
+	@apply mt-5  text-white hover:text-white w-full py-3 px-4 rounded-full transition-all duration-300 ease-out text-[16px] hover:bg-slate-700 hover:border-slate-700 border border-slate-800 font-[700];
 }
 
 .joinersBtn {

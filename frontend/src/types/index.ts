@@ -130,6 +130,8 @@ export type TicTacSockets =
 	| 'draw'
 	| 'disconnect';
 
+export type TypeRaceSockets = 'create-game';
+
 export interface MoveProps {
 	move: number;
 	myMove: boolean;

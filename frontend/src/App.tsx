@@ -9,7 +9,7 @@ import HomePage from './pages/home';
 import NotFound from './pages/not-found';
 import TicTacToePage from './pages/tic-tac-toe';
 import { DataResponseTypes, RoomTypes, SocketNames } from './types';
-import { DEV_ENDPOINT, PROD_ENDPOINT } from './util/constants';
+import { PROD_ENDPOINT } from './util/constants';
 
 const server = PROD_ENDPOINT;
 const connectionOptions = {
@@ -90,7 +90,7 @@ const App = () => {
 				/>
 				<Route
 					path="*"
-					element={<ChatPage />}
+					element={<NotFound />}
 				/>
 			</Routes>
 		</>
