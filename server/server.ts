@@ -17,7 +17,7 @@ import {
 	TicTacSockets,
 	UserProps,
 } from './types';
-import { RoomTypes } from './types/canvas';
+import { PlayerProps, RoomTypes, TypeRaceSockets } from './types/canvas';
 import { addUser } from './utils/user';
 import {
 	AddUser,
@@ -293,6 +293,28 @@ io.on('connection', (socket) => {
 	socket.on<TicTacSockets>('removeRoom', (payload: JoinRoomPayload) => {
 		io.in(payload.roomId).emit('removeRoom', 'remove');
 		RemoveRoom(payload.roomId);
+	});
+
+	// Create Game (Type Race)
+	socket.on<TypeRaceSockets>('create-game', async (nickName: string) => {
+		try {
+			const quotableData = await getQuoteData();
+			let game = new TypeRaceGame();
+			game.words = quotableData;
+			let player: PlayerProps = {
+				socketId: socket.id,
+				isPartyLeader: true,
+				nickName,
+			};
+			game.players.push(player);
+			game = await game.save();
+
+			const gameID = game._id.toString();
+			socket.join(gameID);
+			io.to(gameID).emit<TypeRaceSockets>('update-game', game);
+		} catch (error) {
+			console.log('Create Game Error => ', error);
+		}
 	});
 
 	// Disconnect

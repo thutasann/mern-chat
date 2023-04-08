@@ -12,10 +12,10 @@ export type RoomTypes = {
 };
 
 export type PlayerProps = {
-	currentWordIndex: number;
+	currentWordIndex?: number;
 	socketId: string;
 	isPartyLeader: boolean;
-	WPM: number;
+	WPM?: number;
 	nickName: string;
 };
 
@@ -35,3 +35,5 @@ export type RandomQuotesProps = {
 	length: number;
 	tags: string[];
 };
+
+export type TypeRaceSockets = 'create-game' | 'update-game';

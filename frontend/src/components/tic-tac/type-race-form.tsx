@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { ChatState } from '../../context/chat-provider';
-import { TypeRaceSockets } from '../../types';
+import { TypeRaceGameProps, TypeRaceSockets } from '../../types';
 
 type room = 'Create' | 'Join';
 
@@ -10,16 +11,44 @@ interface TypeRaceFormProps {
 }
 
 const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
+	const navigate = useNavigate();
 	const { user } = ChatState();
+	const [gameState, setGameState] = useState<TypeRaceGameProps>({
+		_id: '',
+		isOpen: false,
+		players: [],
+		words: [],
+	});
 	const [form, setForm] = useState<room>('Create');
-	const [userName, setUserName] = useState<string>(user.name);
+	const [nickName, setNickName] = useState<string>(user.name);
 	const [roomId, setRoomId] = useState<string>('');
+	console.log('gameState', gameState);
+
+	// Setting Game State
+	useEffect(() => {
+		socket.on<TypeRaceSockets>('update-game', (game: TypeRaceGameProps) => {
+			console.log('TypeRace Update Game State =>', game);
+			setGameState(game);
+		});
+		return () => {
+			socket.removeAllListeners();
+		};
+	}, []);
+
+	// Navigating to Type-Race Page
+	useEffect(() => {
+		if (gameState._id !== '') {
+			navigate(`/type-race/${gameState._id}`);
+		}
+	}, [gameState._id]);
 
 	// Handle Create Game
-	const HandleCreateForm = () => {
-		socket.emit<TypeRaceSockets>('create-game', userName);
+	const HandleCreateForm = (e: FormEvent) => {
+		e.preventDefault();
+		socket.emit<TypeRaceSockets>('create-game', nickName);
 	};
 
+	// Handle Join Game
 	const HandleJoinForm = () => {};
 
 	return (
@@ -52,8 +81,8 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 						<input
 							className="input"
 							placeholder="Enter Your Name"
-							value={userName}
-							onChange={(e) => setUserName(e.target.value)}
+							value={nickName}
+							onChange={(e) => setNickName(e.target.value)}
 							spellCheck={false}
 						/>
 						<button
@@ -75,8 +104,8 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 						<input
 							className="input"
 							placeholder="Enter Your Name"
-							value={userName}
-							onChange={(e) => setUserName(e.target.value)}
+							value={nickName}
+							onChange={(e) => setNickName(e.target.value)}
 							spellCheck={false}
 						/>
 						<input

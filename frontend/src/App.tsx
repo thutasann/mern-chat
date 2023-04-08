@@ -8,8 +8,9 @@ import GamePage from './pages/games';
 import HomePage from './pages/home';
 import NotFound from './pages/not-found';
 import TicTacToePage from './pages/tic-tac-toe';
+import TypeRacePage from './pages/type-race-page';
 import { DataResponseTypes, RoomTypes, SocketNames } from './types';
-import { PROD_ENDPOINT } from './util/constants';
+import { DEV_ENDPOINT, PROD_ENDPOINT } from './util/constants';
 
 const server = PROD_ENDPOINT;
 const connectionOptions = {
@@ -87,6 +88,10 @@ const App = () => {
 				<Route
 					path="/tic-tac-toe/:roomId"
 					element={<TicTacToePage socket={socket} />}
+				/>
+				<Route
+					path="/type-race/:gameId"
+					element={<TypeRacePage socket={socket} />}
 				/>
 				<Route
 					path="*"
