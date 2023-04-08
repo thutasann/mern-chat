@@ -1,15 +1,55 @@
-import { Box, Button, FormControl, Input } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Socket } from 'socket.io-client';
 import { ChatState } from '../../context/chat-provider';
+import { TypeRaceGameProps, TypeRaceSockets } from '../../types';
 
 type room = 'Create' | 'Join';
 
-const TypeRaceForm = () => {
+interface TypeRaceFormProps {
+	socket: Socket;
+}
+
+const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
+	const navigate = useNavigate();
 	const { user } = ChatState();
+	const [gameState, setGameState] = useState<TypeRaceGameProps>({
+		_id: '',
+		isOpen: false,
+		players: [],
+		words: [],
+	});
 	const [form, setForm] = useState<room>('Create');
-	const [userName, setUserName] = useState<string>(user.name);
+	const [nickName, setNickName] = useState<string>(user.name);
 	const [roomId, setRoomId] = useState<string>('');
-	const HandleClick = () => {};
+	console.log('gameState', gameState);
+
+	// Setting Game State
+	useEffect(() => {
+		socket.on<TypeRaceSockets>('update-game', (game: TypeRaceGameProps) => {
+			console.log('TypeRace Update Game State =>', game);
+			setGameState(game);
+		});
+		return () => {
+			socket.removeAllListeners();
+		};
+	}, []);
+
+	// Navigating to Type-Race Page
+	useEffect(() => {
+		if (gameState._id !== '') {
+			navigate(`/type-race/${gameState._id}`);
+		}
+	}, [gameState._id]);
+
+	// Handle Create Game
+	const HandleCreateForm = (e: FormEvent) => {
+		e.preventDefault();
+		socket.emit<TypeRaceSockets>('create-game', nickName);
+	};
+
+	// Handle Join Game
+	const HandleJoinForm = () => {};
 
 	return (
 		<div className="formsWrapper">
@@ -34,15 +74,19 @@ const TypeRaceForm = () => {
 			{form === 'Create' ? (
 				<div className="card">
 					<h2>Create Game</h2>
-					<form className="form">
+					<form
+						className="form"
+						onSubmit={HandleCreateForm}
+					>
 						<input
 							className="input"
 							placeholder="Enter Your Name"
-							value={userName}
-							onChange={(e) => setUserName(e.target.value)}
+							value={nickName}
+							onChange={(e) => setNickName(e.target.value)}
 							spellCheck={false}
 						/>
 						<button
+							onClick={HandleCreateForm}
 							type="submit"
 							className="mt-5 bg-slate-800 text-white w-full py-3 px-4 rounded-md transition-all duration-700 ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
 						>
@@ -53,12 +97,15 @@ const TypeRaceForm = () => {
 			) : (
 				<div className="card">
 					<h2>Join Game</h2>
-					<form className="form">
+					<form
+						className="form"
+						onSubmit={HandleJoinForm}
+					>
 						<input
 							className="input"
 							placeholder="Enter Your Name"
-							value={userName}
-							onChange={(e) => setUserName(e.target.value)}
+							value={nickName}
+							onChange={(e) => setNickName(e.target.value)}
 							spellCheck={false}
 						/>
 						<input
@@ -69,6 +116,7 @@ const TypeRaceForm = () => {
 							spellCheck={false}
 						/>
 						<button
+							onClick={HandleJoinForm}
 							type="submit"
 							className="mt-5 bg-slate-800 text-white w-full py-3 px-4 rounded-md transition-all duration-700 ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
 						>

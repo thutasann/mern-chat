@@ -130,6 +130,8 @@ export type TicTacSockets =
 	| 'draw'
 	| 'disconnect';
 
+export type TypeRaceSockets = 'create-game' | 'update-game';
+
 export interface MoveProps {
 	move: number;
 	myMove: boolean;
@@ -174,3 +176,23 @@ export interface WinPayloadProps {
 	userId: string;
 	username: string;
 }
+
+/**
+ * Type Race Game
+ */
+export type PlayerProps = {
+	currentWordIndex?: number;
+	socketId: string;
+	isPartyLeader: boolean;
+	WPM?: number;
+	nickName: string;
+};
+
+export type TypeRaceGameProps = {
+	_id: string;
+	words: string[];
+	isOpen: boolean;
+	isOver?: boolean;
+	players: PlayerProps[];
+	startTime?: number;
+};
