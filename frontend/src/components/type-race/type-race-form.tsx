@@ -26,6 +26,7 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	const [gameState, setGameState] = useState<TypeRaceGameProps>({
 		_id: '',
 		isOpen: false,
+		isOver: false,
 		players: [],
 		words: [],
 	});
@@ -36,17 +37,18 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	// Setting Game State
 	useEffect(() => {
 		socket.on<TypeRaceSockets>('update-game', (game: TypeRaceGameProps) => {
+			dispatch(actions.setGameState(game));
+			console.log('update-game state', game);
 			setGameState(game);
+			return () => {
+				socket.removeAllListeners();
+			};
 		});
-		return () => {
-			socket.removeAllListeners();
-		};
-	}, []);
+	}, [socket]);
 
 	// Navigating to Type-Race Page
 	useEffect(() => {
 		if (gameState._id !== '') {
-			dispatch(actions.setGameState(gameState));
 			navigate(`/type-race/${gameState._id}`);
 		}
 	}, [gameState._id]);
