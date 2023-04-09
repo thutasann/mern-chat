@@ -41,9 +41,16 @@ export type TypeRaceSockets =
 	| 'create-game'
 	| 'update-game'
 	| 'join-game'
-	| 'timer';
+	| 'timer'
+	| 'user-input'
+	| 'done';
 
 export type TypeRaceJoinRoomPayloadProps = {
 	nickName: string;
 	gameId: string;
 };
+
+export interface TypeRaceInputProps {
+	input: string;
+	gameId: string;
+}

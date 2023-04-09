@@ -6,6 +6,7 @@ import Counter from '../components/type-race/counter';
 import DisplayWords from '../components/type-race/display-words';
 import StartBtn from '../components/type-race/start-btn';
 import TypeRaceHeader from '../components/type-race/type-race-header';
+import TypeRaceInput from '../components/type-race/type-race-input';
 import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
 import { useAppSelector } from '../store/hook';
@@ -21,15 +22,9 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 	const navigate = useNavigate();
 	const params = useParams<{ gameId?: string }>();
 	const {
-		typeRaceGame: { _id, players, words },
+		typeRaceGame: { _id, players, words, isOpen, isOver },
 	} = useAppSelector((store) => store.typeRacer);
 	const player = findPlayer(players, socket);
-
-	useEffect(() => {
-		if (_id === '' || player === undefined) {
-			navigate('/games');
-		}
-	}, [_id, player]);
 
 	const HanldeCopy = () => {
 		copyToClipBoard(params.gameId!);
@@ -41,6 +36,12 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 			position: 'bottom',
 		});
 	};
+
+	useEffect(() => {
+		if (_id === '' || player === undefined) {
+			navigate('/games');
+		}
+	}, [_id, player]);
 
 	return (
 		<div>
@@ -65,6 +66,13 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 						/>
 					</>
 				) : null}
+
+				<TypeRaceInput
+					isOpen={isOpen}
+					isOver={isOver}
+					gameId={_id}
+					socket={socket}
+				/>
 			</div>
 		</div>
 	);

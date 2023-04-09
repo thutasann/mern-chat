@@ -353,8 +353,6 @@ io.on('connection', (socket) => {
 	socket.on<TypeRaceSockets>(
 		'timer',
 		async ({ playerId, gameId }: TimerPayloadProps) => {
-			console.log('Timer payload', { playerId, gameId });
-
 			let countDown: number = 5;
 			let game = await TypeRaceGame.findById(gameId);
 			let player = game?.players.id(playerId);
@@ -377,7 +375,8 @@ io.on('connection', (socket) => {
 						io.to(gameId).emit<TypeRaceSockets>('update-game', game);
 						countDown--;
 					} else {
-						if (game?.isOpen) {
+						if (game) {
+							console.log('isOpen false');
 							game.isOpen = false;
 							game = await game.save();
 							io.to(gameId).emit<TypeRaceSockets>('update-game', game);

@@ -1,4 +1,3 @@
-import { getType } from '@reduxjs/toolkit';
 import React from 'react';
 import { PlayerProps } from '../../types';
 
@@ -27,7 +26,7 @@ function getWordsToBeTyped(words: any, player: PlayerProps): React.ReactNode {
 
 const DisplayWords: React.FC<IDisplayWords> = ({ words, player }) => {
 	return (
-		<div className="mb-7 max-w-[340px] md:max-w-[750px] text-center">
+		<div className="my-7 max-w-[350px] md:max-w-[750px] text-center">
 			{getTypedWords(words, player)}
 			{getCurrentWord(words, player)}
 			{getWordsToBeTyped(words, player)}

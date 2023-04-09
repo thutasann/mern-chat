@@ -135,6 +135,7 @@ export type TypeRaceSockets =
 	| 'update-game'
 	| 'join-game'
 	| 'timer'
+	| 'user-input'
 	| 'done';
 
 export interface MoveProps {
@@ -198,7 +199,7 @@ export type TypeRaceGameProps = {
 	_id: string;
 	words: string[];
 	isOpen: boolean;
-	isOver?: boolean;
+	isOver: boolean;
 	players: PlayerProps[];
 	startTime?: number;
 };
@@ -215,4 +216,9 @@ export type TypeRaceJoinRoomPayloadProps = {
 export interface TimerProps {
 	countDown: string;
 	msg: string;
+}
+
+export interface TypeRaceInputProps {
+	input: string;
+	gameId: string;
 }

@@ -180,7 +180,7 @@ const SlideDrawer: React.FC = () => {
 										md: 'flex',
 									}}
 								>
-									Play Games
+									Games
 								</Text>
 							</Button>
 						</Link>

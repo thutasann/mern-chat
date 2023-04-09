@@ -5,6 +5,7 @@ const initialState: ReduxTypeRaceGameProps = {
 	typeRaceGame: {
 		_id: '',
 		isOpen: false,
+		isOver: false,
 		players: [],
 		words: [],
 	},

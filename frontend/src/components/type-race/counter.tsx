@@ -13,7 +13,6 @@ const Counter: React.FC<ICounter> = ({ socket }) => {
 		msg: '',
 	});
 	const { countDown, msg } = timer;
-	console.log('timer', timer);
 
 	useEffect(() => {
 		socket.on<TypeRaceSockets>('timer', (data) => {

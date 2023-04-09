@@ -84,7 +84,7 @@ const MyChats: FC<MyChatsProps> = ({ fetchAgain }) => {
 						}}
 						rightIcon={<AddIcon />}
 					>
-						New Group Chat
+						Group Chat
 					</Button>
 				</GroupChatModal>
 			</Box>
