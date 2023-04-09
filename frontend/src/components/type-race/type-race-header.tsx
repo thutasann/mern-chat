@@ -18,7 +18,7 @@ interface ITYpeRaceHeader {
 
 const TypeRaceHeader: React.FC<ITYpeRaceHeader> = ({ gameId, onClick }) => {
 	return (
-		<div className="flex items-center gap-2">
+		<div className="flex items-center gap-2 mb-7">
 			<h1 className="font-semibold text-2xl uppercase">Typing Race</h1>
 			<Popover>
 				<PopoverTrigger>

@@ -364,7 +364,7 @@ io.on('connection', (socket) => {
 					if (countDown >= 0) {
 						io.to(gameId).emit<TypeRaceSockets>('timer', {
 							countDown,
-							msg: 'Starting Game...',
+							msg: 'Starting Game in...',
 						});
 						io.to(gameId).emit<TypeRaceSockets>('update-game', game);
 						countDown--;

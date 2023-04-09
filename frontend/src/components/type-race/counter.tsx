@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
+import Spinner from '../../miscellaneous/spinner';
 import { TimerProps, TypeRaceSockets } from '../../types';
 
 interface ICounter {
@@ -24,9 +25,12 @@ const Counter: React.FC<ICounter> = ({ socket }) => {
 	}, [socket]);
 
 	return (
-		<div className="text-center mb-4">
-			<h1>{countDown}</h1>
-			<h3>{msg}</h3>
+		<div className="text-center text-slate-700">
+			<div className="flex items-center gap-2">
+				{msg && countDown ? <Spinner /> : null}
+				<h3 className="text-lg font-[400]">{msg}</h3>
+			</div>
+			<h1 className="text-6xl font-[700] mt-2">{countDown}</h1>
 		</div>
 	);
 };
