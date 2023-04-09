@@ -12,7 +12,7 @@ import TypeRacePage from './pages/type-race-page';
 import { DataResponseTypes, RoomTypes, SocketNames } from './types';
 import { DEV_ENDPOINT, PROD_ENDPOINT } from './util/constants';
 
-const server = PROD_ENDPOINT;
+const server = DEV_ENDPOINT;
 const connectionOptions = {
 	'force new connection': true,
 	reconnectionAttempt: 'Infinity',

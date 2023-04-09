@@ -7,7 +7,7 @@ const Spinner = () => {
 			role="status"
 		>
 			<svg
-				className="h-6 w-6 animate-spin stroke-gray-500"
+				className="h-6 w-6 animate-spin stroke-white"
 				viewBox="0 0 256 256"
 			>
 				<line

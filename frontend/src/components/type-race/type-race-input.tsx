@@ -46,7 +46,7 @@ const TypeRaceInput: React.FC<InputProps> = ({
 	return (
 		<div className="w-[350px] md:w-[750px]">
 			<input
-				className={`input mt-5 w-full ${
+				className={`input read-only:rounded-md mt-5 w-full ${
 					isOpen || isOver ? 'cursor-not-allowed' : 'cursor-auto'
 				}`}
 				placeholder="Enter Words"
