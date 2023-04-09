@@ -2,7 +2,11 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { ChatState } from '../../context/chat-provider';
-import { TypeRaceGameProps, TypeRaceSockets } from '../../types';
+import {
+	TypeRaceGameProps,
+	TypeRaceJoinRoomPayloadProps,
+	TypeRaceSockets,
+} from '../../types';
 
 type room = 'Create' | 'Join';
 
@@ -21,8 +25,8 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	});
 	const [form, setForm] = useState<room>('Create');
 	const [nickName, setNickName] = useState<string>(user.name);
-	const [roomId, setRoomId] = useState<string>('');
-	console.log('gameState', gameState);
+	const [gameId, setGameId] = useState<string>('');
+	console.log('Type Racing Game state', gameState);
 
 	// Setting Game State
 	useEffect(() => {
@@ -49,10 +53,19 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	};
 
 	// Handle Join Game
-	const HandleJoinForm = () => {};
+	const HandleJoinForm = (e: FormEvent) => {
+		e.preventDefault();
+		const payload: TypeRaceJoinRoomPayloadProps = {
+			nickName,
+			gameId,
+		};
+		console.log('payload', payload);
+		socket.emit<TypeRaceSockets>('join-game', payload);
+	};
 
 	return (
 		<div className="formsWrapper">
+			{/* Choose Room Buttons */}
 			<div className="flex my-2 items-center gap-2">
 				<button
 					className={`chooseRoom ${
@@ -71,6 +84,8 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 					Join
 				</button>
 			</div>
+
+			{/* Forms */}
 			{form === 'Create' ? (
 				<div className="card">
 					<h2>Create Game</h2>
@@ -110,9 +125,9 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 						/>
 						<input
 							className="input mt-3"
-							placeholder="Enter Room ID"
-							value={roomId}
-							onChange={(e) => setRoomId(e.target.value)}
+							placeholder="Enter Game ID"
+							value={gameId}
+							onChange={(e) => setGameId(e.target.value)}
 							spellCheck={false}
 						/>
 						<button
