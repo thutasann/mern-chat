@@ -18,14 +18,15 @@ const TypeRaceInput: React.FC<InputProps> = ({
 	const [input, setInput] = useState<string>('');
 	const textInput = useRef<any>(null);
 
-	console.log('isOPen', isOpen);
-	console.log('isOver', isOver);
-
 	useEffect(() => {
 		if (!isOpen) {
 			textInput.current.focus();
 		}
 	}, [isOpen]);
+
+	const resetForm = () => {
+		setInput('');
+	};
 
 	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value = e.target.value;
@@ -36,7 +37,7 @@ const TypeRaceInput: React.FC<InputProps> = ({
 				gameId,
 			};
 			socket.emit<TypeRaceSockets>('user-input', payload);
-			setInput('');
+			resetForm();
 		} else {
 			setInput(e.target.value);
 		}
@@ -48,7 +49,7 @@ const TypeRaceInput: React.FC<InputProps> = ({
 				className={`input mt-5 w-full ${
 					isOpen || isOver ? 'cursor-not-allowed' : 'cursor-auto'
 				}`}
-				placeholder="Eneter Words"
+				placeholder="Enter Words"
 				ref={textInput}
 				value={input}
 				onChange={handleOnChange}
