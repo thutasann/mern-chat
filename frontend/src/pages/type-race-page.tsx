@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
-import SideBar from '../components/canvas-forms/side-bar';
+import Counter from '../components/type-race/counter';
+import StartBtn from '../components/type-race/start-btn';
 import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
 import { useAppSelector } from '../store/hook';
 import { findPlayer } from '../util';
 
-interface ITypeRacePage {
+export interface ITypeRacePage {
 	socket: Socket;
 }
 
@@ -19,14 +20,29 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 		typeRaceGame: { _id, players },
 	} = useAppSelector((store) => store.typeRacer);
 	const player = findPlayer(players, socket);
+	console.log('player', player);
 
 	useEffect(() => {
-		if (_id === '') {
+		if (_id === '' || player === undefined) {
 			navigate('/games');
 		}
-	}, [_id]);
+	}, [_id, player]);
 
-	return <div>{user ? <SlideDrawer /> : null}</div>;
+	return (
+		<div>
+			{user ? <SlideDrawer /> : null}
+			<div className="flex flex-col items-center justify-center">
+				{player ? (
+					<StartBtn
+						player={player}
+						gameId={_id}
+						socket={socket}
+					/>
+				) : null}
+				<Counter socket={socket} />
+			</div>
+		</div>
+	);
 };
 
 export default TypeRacePage;

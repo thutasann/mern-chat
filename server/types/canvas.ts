@@ -36,7 +36,11 @@ export type RandomQuotesProps = {
 	tags: string[];
 };
 
-export type TypeRaceSockets = 'create-game' | 'update-game' | 'join-game';
+export type TypeRaceSockets =
+	| 'create-game'
+	| 'update-game'
+	| 'join-game'
+	| 'timer';
 
 export type TypeRaceJoinRoomPayloadProps = {
 	nickName: string;

@@ -141,7 +141,14 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 							type="submit"
 							className="mt-5 bg-slate-800 disabled:bg-gray-300  text-white w-full py-3 px-4 rounded-md hover:transition-all hover:duration-700 hover:ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
 						>
-							{loading ? <Spinner size="sm" /> : 'Create Game'}
+							{loading ? (
+								<Spinner
+									size="sm"
+									mt={1}
+								/>
+							) : (
+								'Create Game'
+							)}
 						</button>
 					</form>
 				</div>
@@ -172,7 +179,14 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 							type="submit"
 							className="mt-5 bg-slate-800 disabled:bg-gray-300  text-white w-full py-3 px-4 rounded-md hover:transition-all hover:duration-700 hover:ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
 						>
-							{loading ? <Spinner /> : 'Join Game'}
+							{loading ? (
+								<Spinner
+									size="sm"
+									mt={1}
+								/>
+							) : (
+								'Join Game'
+							)}
 						</button>
 					</form>
 				</div>
