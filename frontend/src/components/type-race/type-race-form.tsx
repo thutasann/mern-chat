@@ -1,3 +1,4 @@
+import { Spinner, useToast } from '@chakra-ui/react';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
@@ -18,8 +19,10 @@ interface TypeRaceFormProps {
 
 const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	const navigate = useNavigate();
+	const toast = useToast();
 	const dispatch = useAppDispatch();
 	const { user } = ChatState();
+	const [loading, setLoading] = useState<boolean>(false);
 	const [gameState, setGameState] = useState<TypeRaceGameProps>({
 		_id: '',
 		isOpen: false,
@@ -52,18 +55,47 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	// Handle Create Game
 	const HandleCreateForm = (e: FormEvent) => {
 		e.preventDefault();
-		socket.emit<TypeRaceSockets>('create-game', nickName);
+		if (!nickName) {
+			toast({
+				title: 'Please Enter Your Name!',
+				status: 'warning',
+				duration: 5000,
+				isClosable: true,
+				position: 'bottom',
+			});
+		} else {
+			socket.emit<TypeRaceSockets>('create-game', nickName);
+			if (gameState._id === '') {
+				setLoading(true);
+			} else {
+				setLoading(false);
+			}
+		}
 	};
 
 	// Handle Join Game
 	const HandleJoinForm = (e: FormEvent) => {
 		e.preventDefault();
-		const payload: TypeRaceJoinRoomPayloadProps = {
-			nickName,
-			gameId,
-		};
-		console.log('payload', payload);
-		socket.emit<TypeRaceSockets>('join-game', payload);
+		if (!nickName || !gameId) {
+			toast({
+				title: 'Please Enter all the Fields!',
+				status: 'warning',
+				duration: 5000,
+				isClosable: true,
+				position: 'bottom',
+			});
+		} else {
+			const payload: TypeRaceJoinRoomPayloadProps = {
+				nickName,
+				gameId,
+			};
+			socket.emit<TypeRaceSockets>('join-game', payload);
+			if (gameState._id === '') {
+				setLoading(true);
+			} else {
+				setLoading(false);
+			}
+		}
 	};
 
 	return (
@@ -104,11 +136,12 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 							spellCheck={false}
 						/>
 						<button
+							disabled={loading}
 							onClick={HandleCreateForm}
 							type="submit"
-							className="mt-5 bg-slate-800 text-white w-full py-3 px-4 rounded-md transition-all duration-700 ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
+							className="mt-5 bg-slate-800 disabled:bg-gray-300  text-white w-full py-3 px-4 rounded-md hover:transition-all hover:duration-700 hover:ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
 						>
-							Create Game
+							{loading ? <Spinner size="sm" /> : 'Create Game'}
 						</button>
 					</form>
 				</div>
@@ -134,11 +167,12 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 							spellCheck={false}
 						/>
 						<button
+							disabled={loading}
 							onClick={HandleJoinForm}
 							type="submit"
-							className="mt-5 bg-slate-800 text-white w-full py-3 px-4 rounded-md transition-all duration-700 ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
+							className="mt-5 bg-slate-800 disabled:bg-gray-300  text-white w-full py-3 px-4 rounded-md hover:transition-all hover:duration-700 hover:ease-in-out text-[16px] hover:bg-slate-700 font-[700]"
 						>
-							Join Game
+							{loading ? <Spinner /> : 'Join Game'}
 						</button>
 					</form>
 				</div>
