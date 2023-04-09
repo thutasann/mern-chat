@@ -13,6 +13,13 @@ const PlayerSchema = new mongoose.Schema<PlayerProps>(
 		isPartyLeader: {
 			type: Boolean,
 		},
+		WPM: {
+			type: Number,
+			default: -1,
+		},
+		nickName: {
+			type: String,
+		},
 	},
 	{
 		timestamps: true,

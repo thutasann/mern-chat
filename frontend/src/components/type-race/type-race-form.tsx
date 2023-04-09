@@ -36,7 +36,6 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	// Setting Game State
 	useEffect(() => {
 		socket.on<TypeRaceSockets>('update-game', (game: TypeRaceGameProps) => {
-			console.log('TypeRace Update Game =>', game);
 			setGameState(game);
 		});
 		return () => {

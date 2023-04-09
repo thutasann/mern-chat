@@ -25,9 +25,13 @@ const Counter: React.FC<ICounter> = ({ socket }) => {
 	}, [socket]);
 
 	return (
-		<div className="text-center text-slate-700">
-			<div className="flex items-center gap-2">
-				{msg && countDown ? <Spinner /> : null}
+		<div
+			className={`w-[300px] text-center text-slate-700 ${
+				msg && countDown ? 'block' : 'hidden'
+			} rounded-md py-5 px-7 bg-gray-200 shadow-sm `}
+		>
+			<div className="flex items-center justify-center gap-2">
+				{msg === 'Starting Game in...' ? <Spinner /> : null}
 				<h3 className="text-lg font-[400]">{msg}</h3>
 			</div>
 			<h1 className="text-6xl font-[700] mt-2">{countDown}</h1>

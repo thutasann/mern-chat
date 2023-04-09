@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import Counter from '../components/type-race/counter';
@@ -16,6 +16,7 @@ export interface ITypeRacePage {
 
 const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 	const { user } = ChatState();
+	const [isDisabled, setIsDisabled] = useState<boolean>(false);
 	const toast = useToast();
 	const navigate = useNavigate();
 	const params = useParams<{ gameId?: string }>();
@@ -23,7 +24,6 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 		typeRaceGame: { _id, players },
 	} = useAppSelector((store) => store.typeRacer);
 	const player = findPlayer(players, socket);
-	console.log('player', player);
 
 	useEffect(() => {
 		if (_id === '' || player === undefined) {
