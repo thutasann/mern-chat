@@ -14,7 +14,7 @@ export type RoomTypes = {
 export type PlayerProps = {
 	currentWordIndex?: number;
 	socketId: string;
-	isPartyLeader: boolean;
+	isPartyLeader?: boolean;
 	WPM?: number;
 	nickName: string;
 };

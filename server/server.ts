@@ -17,7 +17,13 @@ import {
 	TicTacSockets,
 	UserProps,
 } from './types';
-import { PlayerProps, RoomTypes, TypeRaceSockets } from './types/canvas';
+import {
+	PlayerProps,
+	RoomTypes,
+	TypeRaceGameProps,
+	TypeRaceJoinRoomPayloadProps,
+	TypeRaceSockets,
+} from './types/canvas';
 import { addUser } from './utils/user';
 import {
 	AddUser,
@@ -316,6 +322,29 @@ io.on('connection', (socket) => {
 			console.log('Create Game Error => ', error);
 		}
 	});
+
+	// Join Game (Type Race)
+	socket.on<TypeRaceSockets>(
+		'join-game',
+		async ({ gameId: _id, nickName }: TypeRaceJoinRoomPayloadProps) => {
+			try {
+				let game = await TypeRaceGame.findById(_id);
+				if (game?.isOpen) {
+					const gameId = game._id.toString();
+					socket.join(gameId);
+					let player: PlayerProps = {
+						socketId: socket.id,
+						nickName,
+					};
+					game.players.push(player);
+					game = await game.save();
+					io.to(gameId).emit<TypeRaceSockets>('update-game', game);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		},
+	);
 
 	// Disconnect
 	socket.on<TicTacSockets>('disconnect', () => {
