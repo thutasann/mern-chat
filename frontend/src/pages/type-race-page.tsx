@@ -5,6 +5,7 @@ import { Socket } from 'socket.io-client';
 import Counter from '../components/type-race/counter';
 import DisplayWords from '../components/type-race/display-words';
 import CustomProgress from '../components/type-race/progress';
+import ScoreBoard from '../components/type-race/score-board';
 import StartBtn from '../components/type-race/start-btn';
 import TypeRaceHeader from '../components/type-race/type-race-header';
 import TypeRaceInput from '../components/type-race/type-race-input';
@@ -82,6 +83,8 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 						wordsLength={words.length}
 					/>
 				) : null}
+
+				{players ? <ScoreBoard players={players} /> : null}
 			</div>
 		</div>
 	);

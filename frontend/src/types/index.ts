@@ -191,7 +191,7 @@ export type PlayerProps = {
 	currentWordIndex?: number;
 	socketId: string;
 	isPartyLeader: boolean;
-	WPM?: number;
+	WPM: number;
 	nickName: string;
 };
 

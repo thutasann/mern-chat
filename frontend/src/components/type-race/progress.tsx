@@ -25,10 +25,12 @@ const CustomProgress: React.FC<IProgress> = ({
 	console.log('players', players);
 
 	return (
-		<div className="w-[350px] md:w-[750px] mt-[50px] border-t pt-4">
+		<div className="w-[90%] mt-[50px] border-t pt-[50px]">
 			<h2 className="text-center mb-7 text-2xl font-[600]">Progresses</h2>
 			<div className="flex items-center justify-between font-[500]">
-				<h5>{player.nickName}</h5>
+				<h5>
+					{player.nickName} <span className="font-[600]">(You)</span>
+				</h5>
 				<span>{percentage} %</span>
 			</div>
 			<Progress
@@ -39,7 +41,6 @@ const CustomProgress: React.FC<IProgress> = ({
 
 			{/* Oponents */}
 			<div className="mt-7">
-				<h2 className="text-center mb-3 text-2xl font-[600]">Oponents</h2>
 				{players?.map((playerObj) => {
 					const percentage = calPercentage(playerObj, wordsLength);
 					return playerObj._id !== player._id ? (
