@@ -31,6 +31,10 @@ This is the Chat + Game Application crafted with MERN Stack & Socket.
 
 ![TicTacToe Game](/assets/tic-tac-toe.png)
 
+## Typing Race Game
+
+![TicTacToe Game](/assets/type-race.png)
+
 ## Run Locally
 
 Clone the project
