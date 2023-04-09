@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ITypeRacePage } from '../../pages/type-race-page';
 import { PlayerProps, TypeRaceSockets } from '../../types';
 

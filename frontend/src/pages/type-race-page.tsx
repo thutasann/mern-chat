@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import Counter from '../components/type-race/counter';
+import DisplayWords from '../components/type-race/display-words';
 import StartBtn from '../components/type-race/start-btn';
 import TypeRaceHeader from '../components/type-race/type-race-header';
 import { ChatState } from '../context/chat-provider';
@@ -16,12 +17,11 @@ export interface ITypeRacePage {
 
 const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 	const { user } = ChatState();
-	const [isDisabled, setIsDisabled] = useState<boolean>(false);
 	const toast = useToast();
 	const navigate = useNavigate();
 	const params = useParams<{ gameId?: string }>();
 	const {
-		typeRaceGame: { _id, players },
+		typeRaceGame: { _id, players, words },
 	} = useAppSelector((store) => store.typeRacer);
 	const player = findPlayer(players, socket);
 
@@ -53,11 +53,17 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 				<Counter socket={socket} />
 
 				{player ? (
-					<StartBtn
-						player={player}
-						gameId={_id}
-						socket={socket}
-					/>
+					<>
+						<DisplayWords
+							words={words}
+							player={player}
+						/>
+						<StartBtn
+							player={player}
+							gameId={_id}
+							socket={socket}
+						/>
+					</>
 				) : null}
 			</div>
 		</div>
