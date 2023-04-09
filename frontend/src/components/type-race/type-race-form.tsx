@@ -40,6 +40,9 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 			dispatch(actions.setGameState(game));
 			console.log('update-game state', game);
 			setGameState(game);
+			return () => {
+				socket.removeAllListeners();
+			};
 		});
 	}, [socket]);
 
