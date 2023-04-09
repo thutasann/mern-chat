@@ -7,9 +7,10 @@ interface IDisplayWords {
 }
 
 function getTypedWords(words: any, player: PlayerProps): React.ReactNode {
-	let typedWords = words.slice(0, player.currentWordIndex!);
+	let typedWords = words.slice(0, player.currentWordIndex);
 	typedWords = typedWords.join(' ');
-	return <span className="bg-[#008080]">{typedWords}</span>;
+	console.log('typedWords', typedWords);
+	return <span className="bg-[#16A194] text-white">{typedWords}</span>;
 }
 
 function getCurrentWord(words: any, player: PlayerProps): React.ReactNode {

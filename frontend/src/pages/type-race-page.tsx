@@ -30,7 +30,7 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 		copyToClipBoard(params.gameId!);
 		toast({
 			title: 'Copied to clipboard!',
-			status: 'warning',
+			status: 'info',
 			duration: 5000,
 			isClosable: true,
 			position: 'bottom',

@@ -23,6 +23,7 @@ import {
 	PlayerProps,
 	RoomTypes,
 	TypeRaceGameProps,
+	TypeRaceInputProps,
 	TypeRaceJoinRoomPayloadProps,
 	TypeRaceSockets,
 } from './types/canvas';
@@ -376,7 +377,6 @@ io.on('connection', (socket) => {
 						countDown--;
 					} else {
 						if (game) {
-							console.log('isOpen false');
 							game.isOpen = false;
 							game = await game.save();
 							io.to(gameId).emit<TypeRaceSockets>('update-game', game);
@@ -389,6 +389,45 @@ io.on('connection', (socket) => {
 		},
 	);
 
+	// UserInput (Type Race)
+	socket.on<TypeRaceSockets>(
+		'user-input',
+		async ({ input, gameId }: TypeRaceInputProps) => {
+			console.log('input', input);
+			try {
+				let game = await TypeRaceGame.findById(gameId);
+				if (!game?.isOpen && !game?.isOver) {
+					let player = game?.players.find(
+						(player: PlayerProps) => player.socketId === socket.id,
+					);
+					let word = game?.words[player.currentWordIndex];
+					console.log('word', word);
+					if (word === input) {
+						player.currentWordIndex++;
+						console.log('player.currentWordIndex', player.currentWordIndex);
+						if (player.currentWordIndex !== game?.words.length) {
+							if (game) {
+								game = await game?.save();
+								io.to(gameId).emit<TypeRaceSockets>('update-game', game);
+							}
+						} else {
+							if (game) {
+								let endTime = new Date().getTime();
+								let { startTime } = game;
+								player.WPM = calculateWPM(endTime, startTime, player);
+								game = await game?.save();
+								socket.emit<TypeRaceSockets>('done');
+								io.to(gameId).emit<TypeRaceSockets>('update-game', game);
+							}
+						}
+					}
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		},
+	);
+
 	// Disconnect
 	socket.on<TicTacSockets>('disconnect', () => {
 		const roomId = UserLeft(socket.id)!;
@@ -396,6 +435,10 @@ io.on('connection', (socket) => {
 	});
 });
 
+/**
+ * Start Game Clock Util
+ * @param {string} gameId
+ */
 async function startGameClock(gameId: string) {
 	let game = await TypeRaceGame.findById(gameId);
 	if (game) {
