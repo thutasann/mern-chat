@@ -16,7 +16,7 @@ This is the Chat + Game Application crafted with MERN Stack & Socket.
 - 🚀 Real-Time Typing
 - 🚀 Canvas Drawing (MultiPlayer)
 - 🚀 TIC-TAC-TOE Game (One vs One)
-- 🚀 Type Race Game (MultiPlayer) [Beta]
+- 🚀 Type Race Game (MultiPlayer)
 
 ## Onboarding and Games Screen
 
