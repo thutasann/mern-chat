@@ -12,6 +12,7 @@ export type RoomTypes = {
 };
 
 export type PlayerProps = {
+	_id?: string;
 	currentWordIndex?: number;
 	socketId: string;
 	isPartyLeader?: boolean;
@@ -23,7 +24,7 @@ export type TypeRaceGameProps = {
 	words: string[];
 	isOpen: boolean;
 	isOver: boolean;
-	players: PlayerProps[];
+	players: PlayerProps[] | any;
 	startTime: number;
 };
 
@@ -36,7 +37,11 @@ export type RandomQuotesProps = {
 	tags: string[];
 };
 
-export type TypeRaceSockets = 'create-game' | 'update-game' | 'join-game';
+export type TypeRaceSockets =
+	| 'create-game'
+	| 'update-game'
+	| 'join-game'
+	| 'timer';
 
 export type TypeRaceJoinRoomPayloadProps = {
 	nickName: string;

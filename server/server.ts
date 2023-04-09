@@ -15,6 +15,8 @@ import {
 	SocketEmitNames,
 	SocketNames,
 	TicTacSockets,
+	TimerPayloadProps,
+	TimerProps,
 	UserProps,
 } from './types';
 import {
@@ -35,6 +37,7 @@ import {
 } from './utils/tictactoe';
 import { TypeRaceGame } from './models/type-race-game/player-model';
 import { getQuoteData } from './utils/quotable-api';
+import { calculateTime, calculateWPM } from './utils/game-clock';
 
 dotenv.config();
 connectDB();
@@ -346,9 +349,97 @@ io.on('connection', (socket) => {
 		},
 	);
 
+	// Timer (Type Race)
+	socket.on<TypeRaceSockets>(
+		'timer',
+		async ({ playerId, gameId }: TimerPayloadProps) => {
+			console.log('Timer payload', { playerId, gameId });
+
+			let countDown: number = 5;
+			let game = await TypeRaceGame.findById(gameId);
+			let player = game?.players.id(playerId);
+
+			if (player === undefined) {
+				io.to(gameId).emit<TypeRaceSockets>('timer', {
+					countDown: 0,
+					msg: 'There is no Player, TryAgain',
+				});
+				io.to(gameId).emit<TypeRaceSockets>('update-game', game);
+			}
+
+			if (player?.isPartyLeader) {
+				let timerId = setInterval(async () => {
+					if (countDown >= 0) {
+						io.to(gameId).emit<TypeRaceSockets>('timer', {
+							countDown,
+							msg: 'Starting Game in...',
+						});
+						io.to(gameId).emit<TypeRaceSockets>('update-game', game);
+						countDown--;
+					} else {
+						if (game?.isOpen) {
+							game.isOpen = false;
+							game = await game.save();
+							io.to(gameId).emit<TypeRaceSockets>('update-game', game);
+							startGameClock(gameId);
+							clearInterval(timerId);
+						}
+					}
+				}, 1000);
+			}
+		},
+	);
+
 	// Disconnect
 	socket.on<TicTacSockets>('disconnect', () => {
 		const roomId = UserLeft(socket.id)!;
 		io.in(roomId).emit<TicTacSockets>('userLeave', { roomId });
 	});
 });
+
+async function startGameClock(gameId: string) {
+	let game = await TypeRaceGame.findById(gameId);
+	if (game) {
+		game.startTime = new Date().getTime();
+		game = await game.save();
+		let time: number = 120;
+
+		let timerID = setInterval(
+			(function getIntervalFunc() {
+				if (time >= 0) {
+					const formatTime = calculateTime(time);
+					io.to(gameId).emit<TypeRaceSockets>('timer', {
+						countDown: formatTime,
+						msg: 'Time Remaining',
+					});
+					time--;
+				} else {
+					(async () => {
+						let endTime = new Date().getTime();
+						let game = await TypeRaceGame.findById(gameId);
+
+						if (game) {
+							let { startTime } = game;
+							game.isOver = true;
+							game.players.forEach((player: PlayerProps, index: number) => {
+								if (player.WPM === -1 && game) {
+									game.players[index].WPM = calculateWPM(
+										endTime,
+										startTime,
+										player,
+									);
+								}
+							});
+							game = await game.save();
+							io.to(gameId).emit<TypeRaceSockets>('update-game', game);
+							// @ts-ignore
+							clearInterval(timerID);
+						}
+					})();
+				}
+				return getIntervalFunc;
+			})(),
+			1000,
+		);
+	}
+}

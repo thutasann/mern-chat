@@ -11,7 +11,7 @@ import Forms from '../components/canvas-forms/forms';
 import { uuid } from '../util';
 import TicTacForm from '../components/tic-tac/form';
 import { Socket } from 'socket.io-client';
-import TypeRaceForm from '../components/tic-tac/type-race-form';
+import TypeRaceForm from '../components/type-race/type-race-form';
 
 const gameTypes: GamTypesBtns[] = [
 	{

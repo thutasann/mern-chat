@@ -1,17 +1,67 @@
-import React from 'react';
+import { useToast } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
-import SideBar from '../components/canvas-forms/side-bar';
+import Counter from '../components/type-race/counter';
+import StartBtn from '../components/type-race/start-btn';
+import TypeRaceHeader from '../components/type-race/type-race-header';
 import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
+import { useAppSelector } from '../store/hook';
+import { copyToClipBoard, findPlayer } from '../util';
 
-interface ITypeRacePage {
+export interface ITypeRacePage {
 	socket: Socket;
 }
 
-const TypeRacePage: React.FC<ITypeRacePage> = () => {
+const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 	const { user } = ChatState();
+	const [isDisabled, setIsDisabled] = useState<boolean>(false);
+	const toast = useToast();
+	const navigate = useNavigate();
+	const params = useParams<{ gameId?: string }>();
+	const {
+		typeRaceGame: { _id, players },
+	} = useAppSelector((store) => store.typeRacer);
+	const player = findPlayer(players, socket);
 
-	return <div>{user ? <SlideDrawer /> : null}</div>;
+	useEffect(() => {
+		if (_id === '' || player === undefined) {
+			navigate('/games');
+		}
+	}, [_id, player]);
+
+	const HanldeCopy = () => {
+		copyToClipBoard(params.gameId!);
+		toast({
+			title: 'Copied to clipboard!',
+			status: 'warning',
+			duration: 5000,
+			isClosable: true,
+			position: 'bottom',
+		});
+	};
+
+	return (
+		<div>
+			{user ? <SlideDrawer /> : null}
+			<div className="mainWrapper">
+				<TypeRaceHeader
+					gameId={params.gameId!}
+					onClick={HanldeCopy}
+				/>
+				<Counter socket={socket} />
+
+				{player ? (
+					<StartBtn
+						player={player}
+						gameId={_id}
+						socket={socket}
+					/>
+				) : null}
+			</div>
+		</div>
+	);
 };
 
 export default TypeRacePage;

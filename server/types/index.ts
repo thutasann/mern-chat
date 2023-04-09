@@ -100,3 +100,13 @@ export interface RoomUser {
 	username: string;
 	roomId: string;
 }
+
+export interface TimerProps {
+	countDown: string;
+	msg: string;
+}
+
+export interface TimerPayloadProps {
+	gameId: string;
+	playerId: string;
+}

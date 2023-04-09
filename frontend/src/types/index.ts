@@ -130,7 +130,12 @@ export type TicTacSockets =
 	| 'draw'
 	| 'disconnect';
 
-export type TypeRaceSockets = 'create-game' | 'update-game' | 'join-game';
+export type TypeRaceSockets =
+	| 'create-game'
+	| 'update-game'
+	| 'join-game'
+	| 'timer'
+	| 'done';
 
 export interface MoveProps {
 	move: number;
@@ -181,6 +186,7 @@ export interface WinPayloadProps {
  * Type Race Game
  */
 export type PlayerProps = {
+	_id: string;
 	currentWordIndex?: number;
 	socketId: string;
 	isPartyLeader: boolean;
@@ -197,7 +203,16 @@ export type TypeRaceGameProps = {
 	startTime?: number;
 };
 
+export interface ReduxTypeRaceGameProps {
+	typeRaceGame: TypeRaceGameProps;
+}
+
 export type TypeRaceJoinRoomPayloadProps = {
 	nickName: string;
 	gameId: string;
 };
+
+export interface TimerProps {
+	countDown: string;
+	msg: string;
+}
