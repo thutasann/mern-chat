@@ -15,6 +15,8 @@ import {
 	SocketEmitNames,
 	SocketNames,
 	TicTacSockets,
+	TimerPayloadProps,
+	TimerProps,
 	UserProps,
 } from './types';
 import {
@@ -342,6 +344,38 @@ io.on('connection', (socket) => {
 				}
 			} catch (error) {
 				console.log(error);
+			}
+		},
+	);
+
+	// Timer (Type Race)
+	socket.on<TypeRaceSockets>(
+		'timer',
+		async ({ playerId, gameId }: TimerPayloadProps) => {
+			console.log('Timer payload', { playerId, gameId });
+
+			let countDown: number = 5;
+			let game = await TypeRaceGame.findById(gameId);
+			let player = game?.players.id(playerId);
+			console.log('player', player);
+
+			if (player?.isPartyLeader) {
+				let timerId = setInterval(async () => {
+					if (countDown >= 0) {
+						io.to(gameId).emit<TypeRaceSockets>('timer', {
+							countDown,
+							msg: 'Starting Game...',
+						});
+						io.to(gameId).emit<TypeRaceSockets>('update-game', game);
+						countDown--;
+					} else {
+						if (game?.isOpen) {
+							game.isOpen = false;
+							game = await game.save();
+							clearInterval(timerId);
+						}
+					}
+				}, 1000);
 			}
 		},
 	);

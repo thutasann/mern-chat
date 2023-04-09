@@ -1,12 +1,14 @@
+import { useToast } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import Counter from '../components/type-race/counter';
 import StartBtn from '../components/type-race/start-btn';
+import TypeRaceHeader from '../components/type-race/type-race-header';
 import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
 import { useAppSelector } from '../store/hook';
-import { findPlayer } from '../util';
+import { copyToClipBoard, findPlayer } from '../util';
 
 export interface ITypeRacePage {
 	socket: Socket;
@@ -14,6 +16,7 @@ export interface ITypeRacePage {
 
 const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 	const { user } = ChatState();
+	const toast = useToast();
 	const navigate = useNavigate();
 	const params = useParams<{ gameId?: string }>();
 	const {
@@ -28,10 +31,27 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 		}
 	}, [_id, player]);
 
+	const HanldeCopy = () => {
+		copyToClipBoard(params.gameId!);
+		toast({
+			title: 'Copied to clipboard!',
+			status: 'warning',
+			duration: 5000,
+			isClosable: true,
+			position: 'bottom',
+		});
+	};
+
 	return (
 		<div>
 			{user ? <SlideDrawer /> : null}
-			<div className="flex flex-col items-center justify-center">
+			<div className="mainWrapper">
+				<TypeRaceHeader
+					gameId={params.gameId!}
+					onClick={HanldeCopy}
+				/>
+				<Counter socket={socket} />
+
 				{player ? (
 					<StartBtn
 						player={player}
@@ -39,7 +59,6 @@ const TypeRacePage: React.FC<ITypeRacePage> = ({ socket }) => {
 						socket={socket}
 					/>
 				) : null}
-				<Counter socket={socket} />
 			</div>
 		</div>
 	);

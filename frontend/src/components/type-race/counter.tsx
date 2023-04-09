@@ -12,22 +12,21 @@ const Counter: React.FC<ICounter> = ({ socket }) => {
 		msg: '',
 	});
 	const { countDown, msg } = timer;
+	console.log('timer', timer);
 
 	useEffect(() => {
-		socket.on<TypeRaceSockets>('timer', (data: TimerProps) => {
+		socket.on<TypeRaceSockets>('timer', (data) => {
 			setTimer(data);
 		});
 		socket.on<TypeRaceSockets>('done', () => {
 			socket.removeListener<TypeRaceSockets>('timer');
 		});
-	}, []);
+	}, [socket]);
 
 	return (
-		<div>
-			<>
-				<h1>{countDown}</h1>
-				<h3>{msg}</h3>
-			</>
+		<div className="text-center mb-4">
+			<h1>{countDown}</h1>
+			<h3>{msg}</h3>
 		</div>
 	);
 };
