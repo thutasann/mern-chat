@@ -2,6 +2,8 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { ChatState } from '../../context/chat-provider';
+import { useAppDispatch } from '../../store/hook';
+import { actions } from '../../store/slices/type-race';
 import {
 	TypeRaceGameProps,
 	TypeRaceJoinRoomPayloadProps,
@@ -16,6 +18,7 @@ interface TypeRaceFormProps {
 
 const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
 	const { user } = ChatState();
 	const [gameState, setGameState] = useState<TypeRaceGameProps>({
 		_id: '',
@@ -26,12 +29,11 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	const [form, setForm] = useState<room>('Create');
 	const [nickName, setNickName] = useState<string>(user.name);
 	const [gameId, setGameId] = useState<string>('');
-	console.log('Type Racing Game state', gameState);
 
 	// Setting Game State
 	useEffect(() => {
 		socket.on<TypeRaceSockets>('update-game', (game: TypeRaceGameProps) => {
-			console.log('TypeRace Update Game State =>', game);
+			console.log('TypeRace Update Game =>', game);
 			setGameState(game);
 		});
 		return () => {
@@ -42,6 +44,7 @@ const TypeRaceForm: React.FC<TypeRaceFormProps> = ({ socket }) => {
 	// Navigating to Type-Race Page
 	useEffect(() => {
 		if (gameState._id !== '') {
+			dispatch(actions.setGameState(gameState));
 			navigate(`/type-race/${gameState._id}`);
 		}
 	}, [gameState._id]);

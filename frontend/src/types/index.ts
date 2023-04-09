@@ -197,6 +197,10 @@ export type TypeRaceGameProps = {
 	startTime?: number;
 };
 
+export interface ReduxTypeRaceGameProps {
+	typeRaceGame: TypeRaceGameProps;
+}
+
 export type TypeRaceJoinRoomPayloadProps = {
 	nickName: string;
 	gameId: string;
