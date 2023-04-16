@@ -9,6 +9,7 @@ import HomePage from './pages/home';
 import NotFound from './pages/not-found';
 import TicTacToePage from './pages/tic-tac-toe';
 import TypeRacePage from './pages/type-race-page';
+import VideoChatPage from './pages/video-chat-page';
 import { DataResponseTypes, RoomTypes, SocketNames } from './types';
 import { DEV_ENDPOINT, PROD_ENDPOINT } from './util/constants';
 
@@ -92,6 +93,10 @@ const App = () => {
 				<Route
 					path="/type-race/:gameId"
 					element={<TypeRacePage socket={socket} />}
+				/>
+				<Route
+					path="/video-chat"
+					element={<VideoChatPage />}
 				/>
 				<Route
 					path="*"
