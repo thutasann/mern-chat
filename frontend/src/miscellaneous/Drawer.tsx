@@ -31,6 +31,7 @@ import ChatLoading from '../components/chat/chat-loading';
 import UserList from '../components/chat/user-list';
 import { getSender } from '../config/chat-logic';
 import { IoGameControllerOutline } from 'react-icons/io5';
+import { MdVideoChat } from 'react-icons/md';
 
 const SlideDrawer: React.FC = () => {
 	const navigate = useNavigate();
@@ -119,12 +120,10 @@ const SlideDrawer: React.FC = () => {
 	return (
 		<>
 			<Box
+				className="flex flex-col md:flex-row items-start md:items-center gap-y-3 md:gap-y-0 justify-between"
 				position={'sticky'}
 				zIndex={9}
 				top={0}
-				display={'flex'}
-				justifyContent={'space-between'}
-				alignItems="center"
 				bg="white"
 				w="100%"
 				p="12px"
@@ -141,7 +140,7 @@ const SlideDrawer: React.FC = () => {
 						</Link>
 					</div>
 
-					<div>
+					<div className="flex items-center">
 						<Tooltip
 							label="Search Users to chat"
 							hasArrow
@@ -181,6 +180,25 @@ const SlideDrawer: React.FC = () => {
 									}}
 								>
 									Games
+								</Text>
+							</Button>
+						</Link>
+
+						<Link to="/video-chat">
+							<Button
+								ml={2}
+								variant="solid"
+								colorScheme={'telegram'}
+								gap={2}
+							>
+								<MdVideoChat size={20} />
+								<Text
+									display={{
+										base: 'none',
+										md: 'flex',
+									}}
+								>
+									Video
 								</Text>
 							</Button>
 						</Link>
