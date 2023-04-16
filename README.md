@@ -14,6 +14,7 @@ This is the Chat + Game Application crafted with MERN Stack & Socket.
 - 🚀 Add/Remove Users
 - 🚀 Notifications
 - 🚀 Real-Time Typing
+- 🚀 Video Chat (One - One)
 - 🚀 Canvas Drawing (MultiPlayer)
 - 🚀 TIC-TAC-TOE Game (One vs One)
 - 🚀 Type Race Game (MultiPlayer)

@@ -58,3 +58,7 @@
 label {
 	@apply text-gray-600;
 }
+
+.video {
+	@apply w-[300px] rounded-md;
+}
