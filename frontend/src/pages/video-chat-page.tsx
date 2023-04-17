@@ -1,22 +1,39 @@
 import { Button } from '@chakra-ui/button';
 import { Input } from '@chakra-ui/input';
+import { Spinner } from '@chakra-ui/spinner';
+import { useToast } from '@chakra-ui/toast';
 import { Tooltip } from '@chakra-ui/tooltip';
-import { isNull } from '@chakra-ui/utils';
-import { useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { BsFillTelephoneFill } from 'react-icons/bs';
+import { Socket } from 'socket.io-client';
 import { ChatState } from '../context/chat-provider';
 import SlideDrawer from '../miscellaneous/Drawer';
+import { VideoCallUser, VideoSockets } from '../types';
+import { copyToClipBoard } from '../util';
 
-const VideoChatPage = () => {
+interface IVideo {
+	socket: Socket;
+}
+
+const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 	const { user: loggedInUser } = ChatState();
-	const myVideo = useRef<any>();
-	const userVideo = useRef<any>();
+	const toast = useToast();
+	const myVideo = useRef<HTMLVideoElement | null>(null);
+	const userVideo = useRef<HTMLVideoElement | null>(null);
 	const [name, setName] = useState<string>('');
 	const [idToCall, setIdtoCall] = useState<string>('');
 	const [stream, setStream] = useState<any>();
 	const [callAccepted, setCallAccepted] = useState<boolean>(false);
+	const [camLoading, setCamLoading] = useState<boolean>(false);
 	const [receivingCall, setReceivingCall] = useState<boolean>(false);
+	const [me, setMe] = useState<string>('');
 	const [callEnded, setCallEnded] = useState<boolean>(false);
+	const [copied, setCopied] = useState<boolean>(false);
+	const [caller, setCaller] = useState<string>('');
+	const [callerSignal, setCallerSignal] = useState<any>();
+
+	console.log('caller', caller);
+	console.log('callerSignal', callerSignal);
 
 	useEffect(() => {
 		navigator.mediaDevices
@@ -27,13 +44,49 @@ const VideoChatPage = () => {
 			.then((stream) => {
 				setStream(stream);
 			});
-	}, [myVideo.current]);
+	}, []);
 
 	useEffect(() => {
 		if (myVideo.current) {
 			myVideo.current.srcObject = stream;
+			setCamLoading(false);
+		} else {
+			setCamLoading(true);
 		}
+
+		socket.on<VideoSockets>('me', (id) => {
+			console.log('id', id);
+			setMe(id);
+		});
+
+		socket.on<VideoSockets>('callUser', (data: VideoCallUser) => {
+			setReceivingCall(true);
+			setCaller(data.from);
+			setName(data.name);
+			setCallerSignal(data.signal);
+		});
 	}, [stream]);
+
+	const HanldeCopy = () => {
+		setCopied(true);
+		copyToClipBoard(me);
+		toast({
+			title: 'Copied to clipboard!',
+			status: 'info',
+			duration: 5000,
+			isClosable: true,
+			position: 'bottom',
+		});
+		setTimeout(() => {
+			setCopied(false);
+		}, 1200);
+	};
+
+	const AnswerCall = () => {};
+
+	const LeaveCall = () => {};
+
+	const CallUser = (id: string) => {};
 
 	return (
 		<>
@@ -43,7 +96,16 @@ const VideoChatPage = () => {
 
 				<section className="flex flex-col lg:flex-row items-start gap-4 mt-3">
 					{/* Videos */}
-					<div className="flex items-center gap-4 border p-4 rounded-md shadow-md h-auto lg:h-[258px]">
+					<div className="flex items-center gap-4 border p-4 rounded-md shadow-md h-auto lg:h-[268px]">
+						{camLoading && (
+							<Spinner
+								size="xl"
+								w={19}
+								h={19}
+								alignSelf="center"
+								margin="auto"
+							/>
+						)}
 						<div>
 							{stream && (
 								<video
@@ -55,7 +117,8 @@ const VideoChatPage = () => {
 								/>
 							)}
 						</div>
-						{callAccepted && !callAccepted ? (
+
+						{callAccepted && !callEnded ? (
 							<div>
 								<video
 									playsInline
@@ -68,7 +131,7 @@ const VideoChatPage = () => {
 					</div>
 
 					{/* Join Info */}
-					<div className="w-full lg:w-auto shadow-md p-5 rounded-md border border-gray-200 h-auto lg:h-[258px]">
+					<div className="w-full lg:w-auto shadow-md p-5 rounded-md border border-gray-200 h-auto lg:h-[268px]">
 						<div className="flex items-center">
 							<Input
 								placeholder="Enter your Name"
@@ -89,21 +152,22 @@ const VideoChatPage = () => {
 							/>
 							<Button
 								variant="solid"
-								background={name ? 'teal.600' : 'gray.600'}
+								background={name && me ? 'teal.600' : 'gray.600'}
 								color="white"
-								disabled={!name}
-								pointerEvents={!name ? 'none' : 'auto'}
+								disabled={!name && !me}
+								pointerEvents={!name && !me ? 'none' : 'auto'}
+								onClick={HanldeCopy}
 								borderLeftRadius={0}
 								_hover={{
 									backgroundColor: 'teal',
 								}}
 							>
-								Copy ID
+								{copied ? 'Copied' : 'Copy ID'}
 							</Button>
 						</div>
 
 						<div className="mt-5">
-							<label className="font-bold">Enter ID to be called</label>
+							<label className="font-bold">Enter ID to call</label>
 							<Input
 								placeholder="Enter ID"
 								color="gray.800"
@@ -122,7 +186,7 @@ const VideoChatPage = () => {
 							/>
 						</div>
 
-						<div className="mt-3">
+						<div className="mt-5">
 							{callAccepted && !callEnded ? (
 								<Tooltip
 									label="End Call"
@@ -130,6 +194,7 @@ const VideoChatPage = () => {
 									placement="bottom-end"
 								>
 									<Button
+										onClick={LeaveCall}
 										variant="solid"
 										color="white"
 										background="red.600"
@@ -147,6 +212,7 @@ const VideoChatPage = () => {
 									placement="bottom-end"
 								>
 									<Button
+										onClick={() => CallUser(idToCall)}
 										variant="solid"
 										color="white"
 										background={idToCall && name ? 'teal.600' : 'gray.600'}
@@ -176,6 +242,7 @@ const VideoChatPage = () => {
 									_hover={{
 										backgroundColor: '#005885',
 									}}
+									onClick={AnswerCall}
 								>
 									Answer
 								</Button>

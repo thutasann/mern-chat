@@ -96,7 +96,7 @@ const App = () => {
 				/>
 				<Route
 					path="/video-chat"
-					element={<VideoChatPage />}
+					element={<VideoChatPage socket={socket} />}
 				/>
 				<Route
 					path="*"

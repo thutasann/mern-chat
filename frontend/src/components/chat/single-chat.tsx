@@ -278,7 +278,8 @@ const SingleChat: React.FC<ChatBoxProps> = ({ fetchAgain, setFetchAgain }) => {
 					h="100%"
 				>
 					<Text
-						fontSize={'3xl'}
+						fontSize={'2xl'}
+						fontWeight="semibold"
 						pb={3}
 						color="lightGray"
 					>
