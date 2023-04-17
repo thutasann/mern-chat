@@ -62,3 +62,7 @@ label {
 .video {
 	@apply w-[300px] rounded-md;
 }
+
+.callerInfo {
+	@apply absolute text-center bottom-0 bg-black/40 w-full text-white rounded-b-md font-semibold text-[16px] py-1;
+}
