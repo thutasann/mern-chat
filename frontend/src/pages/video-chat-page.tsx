@@ -9,15 +9,16 @@ import SlideDrawer from '../miscellaneous/Drawer';
 
 const VideoChatPage = () => {
 	const { user: loggedInUser } = ChatState();
-	const myVideo = useRef<any>(isNull);
+	const myVideo = useRef<any>();
 	const userVideo = useRef<any>();
 	const [name, setName] = useState<string>('');
 	const [idToCall, setIdtoCall] = useState<string>('');
 	const [stream, setStream] = useState<any>();
 	const [callAccepted, setCallAccepted] = useState<boolean>(false);
 	const [receivingCall, setReceivingCall] = useState<boolean>(false);
-
 	const [callEnded, setCallEnded] = useState<boolean>(false);
+
+	console.log('myVideo', myVideo);
 
 	useEffect(() => {
 		navigator.mediaDevices
@@ -27,11 +28,14 @@ const VideoChatPage = () => {
 			})
 			.then((stream) => {
 				setStream(stream);
-				if (myVideo.current !== null) {
-					myVideo.current.srcObject = stream;
-				}
 			});
-	}, []);
+	}, [myVideo.current]);
+
+	useEffect(() => {
+		if (myVideo.current) {
+			myVideo.current.srcObject = stream;
+		}
+	}, [stream]);
 
 	return (
 		<>
@@ -41,7 +45,7 @@ const VideoChatPage = () => {
 
 				<section className="flex flex-col lg:flex-row items-start gap-4 mt-3">
 					{/* Videos */}
-					<div className="flex items-center gap-4 border p-4 rounded-md shadow-md">
+					<div className="flex items-center gap-4 border p-4 rounded-md shadow-md h-auto lg:h-[258px]">
 						<div>
 							{stream && (
 								<video
