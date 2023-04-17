@@ -18,8 +18,6 @@ const VideoChatPage = () => {
 	const [receivingCall, setReceivingCall] = useState<boolean>(false);
 	const [callEnded, setCallEnded] = useState<boolean>(false);
 
-	console.log('myVideo', myVideo);
-
 	useEffect(() => {
 		navigator.mediaDevices
 			.getUserMedia({
