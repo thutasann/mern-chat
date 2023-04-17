@@ -24,6 +24,7 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 	const connectionRef = useRef<any>();
 
 	const [name, setName] = useState<string>('');
+	const [callerName, setCallerName] = useState<string>('');
 	const [idToCall, setIdtoCall] = useState<string>('');
 	const [stream, setStream] = useState<any>();
 	const [callAccepted, setCallAccepted] = useState<boolean>(false);
@@ -55,6 +56,7 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 		}
 
 		socket.on<VideoSockets>('me', (id) => {
+			console.log('id', id);
 			setMe(id);
 		});
 
@@ -67,18 +69,22 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 	}, [socket, stream, receivingCall]);
 
 	const HanldeCopy = () => {
-		setCopied(true);
-		copyToClipBoard(me);
-		toast({
-			title: 'Copied to clipboard!',
-			status: 'info',
-			duration: 5000,
-			isClosable: true,
-			position: 'bottom',
-		});
-		setTimeout(() => {
-			setCopied(false);
-		}, 1200);
+		if (me) {
+			setCopied(true);
+			copyToClipBoard(me);
+			toast({
+				title: 'Copied to clipboard!',
+				status: 'info',
+				duration: 5000,
+				isClosable: true,
+				position: 'bottom',
+			});
+			setTimeout(() => {
+				setCopied(false);
+			}, 1200);
+		} else {
+			return;
+		}
 	};
 
 	const CallUser = (id: string) => {
@@ -92,7 +98,7 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 				userToCall: id,
 				signalData: data,
 				from: me,
-				name: name,
+				name: callerName,
 			});
 		});
 		peer.on('stream', (stream) => {
@@ -129,6 +135,8 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 
 	const LeaveCall = () => {
 		setCallEnded(true);
+		setCallAccepted(false);
+		setIdtoCall('');
 		connectionRef.current.destroy();
 	};
 
@@ -150,7 +158,8 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 								margin="auto"
 							/>
 						)}
-						<div>
+						<div className="relative">
+							<div className="callerInfo">{callerName || 'You'}</div>
 							{stream && (
 								<video
 									playsInline
@@ -163,7 +172,8 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 						</div>
 
 						{callAccepted && !callEnded ? (
-							<div>
+							<div className="relative">
+								<div className="callerInfo">{name || 'Caller'}</div>
 								<video
 									playsInline
 									ref={userVideo}
@@ -176,6 +186,7 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 
 					{/* Join Info */}
 					<div className="w-full lg:w-auto shadow-md p-5 rounded-md border border-gray-200 h-auto lg:h-[268px]">
+						{/* Name Input */}
 						<div className="flex items-center">
 							<Input
 								placeholder="Enter your Name"
@@ -183,8 +194,8 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 								borderColor="gray"
 								roundedRight={0}
 								spellCheck={false}
-								value={name}
-								onChange={(e) => setName(e.target.value)}
+								value={callerName}
+								onChange={(e) => setCallerName(e.target.value)}
 								_hover={{
 									border: '1px solid teal',
 								}}
@@ -201,14 +212,14 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 							>
 								<Button
 									variant="solid"
-									background={name && me ? 'teal.600' : 'gray.600'}
+									background={callerName && me ? 'teal.600' : 'gray.600'}
 									color="white"
-									disabled={!name && !me}
-									pointerEvents={!name && !me ? 'none' : 'auto'}
+									disabled={!callerName && !me}
+									pointerEvents={!callerName && !me ? 'none' : 'auto'}
 									onClick={HanldeCopy}
 									borderLeftRadius={0}
 									_hover={{
-										backgroundColor: name && me ? 'teal' : '#4A5567',
+										backgroundColor: callerName && me ? 'teal' : '#4A5567',
 									}}
 								>
 									{copied ? 'Copied' : 'Copy ID'}
@@ -216,6 +227,7 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 							</Tooltip>
 						</div>
 
+						{/* ID Input */}
 						<div className="mt-5">
 							<label className="font-bold">Enter ID to call</label>
 							<Input
@@ -236,6 +248,7 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 							/>
 						</div>
 
+						{/* Ansnwer / End Call */}
 						<div className="mt-5">
 							{callAccepted && !callEnded ? (
 								<Tooltip
@@ -265,11 +278,14 @@ const VideoChatPage: FC<IVideo> = ({ socket }): JSX.Element => {
 										onClick={() => CallUser(idToCall)}
 										variant="solid"
 										color="white"
-										background={idToCall && name ? 'teal.600' : 'gray.600'}
-										disabled={!idToCall && !name}
-										pointerEvents={!idToCall && !name ? 'none' : 'auto'}
+										background={
+											idToCall && callerName ? 'teal.600' : 'gray.600'
+										}
+										disabled={!idToCall && !callerName}
+										pointerEvents={!idToCall && !callerName ? 'none' : 'auto'}
 										_hover={{
-											backgroundColor: idToCall && name ? 'teal' : '#4A5567',
+											backgroundColor:
+												idToCall && callerName ? 'teal' : '#4A5567',
 										}}
 										className="flex items-center gap-2"
 									>
