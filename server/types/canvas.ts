@@ -45,6 +45,22 @@ export type TypeRaceSockets =
 	| 'user-input'
 	| 'done';
 
+export type VideoSockets =
+	| 'me'
+	| 'callEnded'
+	| 'callUser'
+	| 'callAccepted'
+	| 'answerCall';
+
+export type VideoCallUser = {
+	userToCall: any;
+	signalData: any;
+	from: any;
+	to: any;
+	name: string;
+	signal: any;
+};
+
 export type TypeRaceJoinRoomPayloadProps = {
 	nickName: string;
 	gameId: string;

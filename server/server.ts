@@ -16,16 +16,16 @@ import {
 	SocketNames,
 	TicTacSockets,
 	TimerPayloadProps,
-	TimerProps,
 	UserProps,
 } from './types';
 import {
 	PlayerProps,
 	RoomTypes,
-	TypeRaceGameProps,
 	TypeRaceInputProps,
 	TypeRaceJoinRoomPayloadProps,
 	TypeRaceSockets,
+	VideoCallUser,
+	VideoSockets,
 } from './types/canvas';
 import { addUser } from './utils/user';
 import {
@@ -428,10 +428,29 @@ io.on('connection', (socket) => {
 		},
 	);
 
+	// Me (Video Call)
+	socket.emit<VideoSockets>('me', socket.id);
+
+	// Call User (Video call)
+	socket.on<VideoSockets>('callUser', (data: VideoCallUser) => {
+		io.to(data.userToCall).emit<VideoSockets>('callUser', {
+			signal: data.signalData,
+			from: data.from,
+			name: data.name,
+		});
+	});
+
+	// Answer Call (Video Call)
+	socket.on<VideoSockets>('answerCall', (data: VideoCallUser) => {
+		io.to(data.to).emit<VideoSockets>('callAccepted', data.signal);
+	});
+
 	// Disconnect
 	socket.on<TicTacSockets>('disconnect', () => {
 		const roomId = UserLeft(socket.id)!;
 		io.in(roomId).emit<TicTacSockets>('userLeave', { roomId });
+
+		socket.broadcast.emit<VideoSockets>('callEnded');
 	});
 });
 
